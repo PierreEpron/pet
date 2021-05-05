@@ -48,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  function redirection(e){
+    e.preventDefault()
+    console.log("redirection")
+    window.location = "/Header"
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -63,7 +68,7 @@ export default function SignIn() {
           <TextField
             variant="outlined"
             margin="normal"
-            required
+            //required
             fullWidth
             id="email"
             label="Email Address"
@@ -74,7 +79,7 @@ export default function SignIn() {
           <TextField
             variant="outlined"
             margin="normal"
-            required
+            //required
             fullWidth
             name="password"
             label="Password"
@@ -92,6 +97,7 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={redirection}
           >
             Sign In
           </Button>
