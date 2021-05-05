@@ -7,6 +7,9 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import { Link as RouterLink } from "react-router-dom";
 import {Button} from "@material-ui/core";
+// eslint-disable-next-line
+import IconButton from '@material-ui/core/IconButton';
+import ExportButton from "./ExportButton"
 
 
 const headersData = [
@@ -14,10 +17,7 @@ const headersData = [
     label: "Export",
     href: "/export",
   },
-  {
-    label: "Import",
-    href: "/import",
-  },
+
   {
     label: "Statistiques",
     href: "/statistiques",
@@ -106,6 +106,7 @@ export default function SearchAppBar() {
             PetApp_Nancyclotep
           </Typography>
           {getMenuButtons()}
+          <ExportButton/>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
