@@ -18,7 +18,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        Micka
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function connect() {
+export default function SignIn() {
   const classes = useStyles();
 
   return (
