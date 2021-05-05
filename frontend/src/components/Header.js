@@ -48,6 +48,7 @@ export default function Header() {
   const { header, logo, menuButton } = useStyles();
   const displayDesktop = () => {
     return (
+      // Ne fonctionne pas à vérifier devrait aligné les bouton menu sur la droite.
       // eslint-disable-next-line no-restricted-globals
       <Toolbar className={toolbar}>
         {PetApp_Nancyclotep}
