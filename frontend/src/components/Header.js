@@ -99,7 +99,6 @@ export default function SearchAppBar() {
   };
 
   return (
-    <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
@@ -122,6 +121,5 @@ export default function SearchAppBar() {
           </div>
         </Toolbar>
       </AppBar>
-    </div>
   );
 }
