@@ -11,9 +11,9 @@ function App() {
           <Route path="/" exact component={() => <SignIn />} />
             {/*<Route path="/pages1" exact component={() => <Pages1 />} />*/}
             <Route path="/pagestest" exact component={() => <PageTest />} />
-
         </Switch>
       </Router>
+
     </div>
   );
 }
