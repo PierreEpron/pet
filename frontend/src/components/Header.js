@@ -10,6 +10,7 @@ import {Button} from "@material-ui/core";
 // eslint-disable-next-line
 import IconButton from '@material-ui/core/IconButton';
 import ExportButton from "./ExportButton"
+import PageTest from "../pages/PageTest";
 
 
 const headersData = [
@@ -105,7 +106,7 @@ export default function SearchAppBar() {
             PetApp_Nancyclotep
           </Typography>
           {getMenuButtons()}
-          <ExportButton/>
+          <PageTest/>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

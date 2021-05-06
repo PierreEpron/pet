@@ -51,7 +51,7 @@ export default function SignIn() {
   function redirection(e){
     e.preventDefault()
     console.log("redirection")
-    window.location = "/pages1"
+    window.location = "/pagestest"
   }
 
   return (

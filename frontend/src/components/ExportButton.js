@@ -20,11 +20,12 @@ export default function UploadButtons() {
   return (
     <div className={classes.root}>
       <input
-        accept="image/*"
+        // accept="image/*"
         className={classes.input}
         id="contained-button-file"
         multiple
         type="file"
+        accept=".csv,.xlsx,.xls"
       />
       <label htmlFor="contained-button-file">
         <Button variant="contained" color="primary" component="span">
