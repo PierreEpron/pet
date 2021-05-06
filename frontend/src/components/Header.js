@@ -106,7 +106,7 @@ export default function SearchAppBar() {
             PetApp_Nancyclotep
           </Typography>
           {getMenuButtons()}
-          <PageTest/>
+          <ExportButton/>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
