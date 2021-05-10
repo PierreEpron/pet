@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
   backend:
-    image: python:3.6
+    image: python:3.8
     volumes:
       - .:/src
       - venv:/src/venv
@@ -11,7 +11,7 @@ services:
       ADMIN_USERNAME: "admin"
       ADMIN_PASSWORD: "password"
       ADMIN_EMAIL: "admin@example.com"
-      DATABASE_URL: "postgres://doccano:doccano@postgres:5432/doccano?sslmode=disable"
+      DATABASE_URL: "postgres://pet:pet@postgres:5432/pet?sslmode=disable"
       ALLOW_SIGNUP: "False"
       DEBUG: "True"
     ports:

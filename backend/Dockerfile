@@ -1,4 +1,4 @@
-FROM alpine:3.9.6
+FROM alpine:3.8.9
 
 CMD ["python3"]
 
@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED 1
 
 COPY . /backend/
 
-RUN apk add -U --no-cache bash python3 python3-dev libpq postgresql-dev unixodbc-dev musl-dev g++ libffi-dev \
+RUN apk add -U --no-cache bash python3 python3-pip python3-dev libpq postgresql-dev unixodbc-dev musl-dev g++ libffi-dev \
   && pip3 install --upgrade --no-cache-dir pip setuptools \
   && pip3 install --no-cache-dir -r requirements.txt \
   && ln -s /usr/bin/python3 /usr/bin/python \
