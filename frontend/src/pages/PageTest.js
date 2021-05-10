@@ -82,18 +82,18 @@ function ReadCsv() {
   }
 
   return (
-    <div className={classes.root}>
+    <div>
       <Header></Header>
       <input
         // accept="image/*"
-        className={classes.input}
+        /*className={classes.input}*/
         id="contained-button-file"
         multiple
         onChange={handleFileUpload}
         type="file"
         accept=".csv,.xlsx,.xls"
       />
-      <label htmlFor="contained-button-file">
+      {/*<label htmlFor="contained-button-file">
         <Button variant="contained" color="primary" component="span">
           Import
         </Button>
@@ -102,7 +102,7 @@ function ReadCsv() {
       <label htmlFor="icon-button-file">
         <IconButton color="primary" aria-label="upload picture" component="span">
         </IconButton>
-      </label>
+      </label>*/}
       <DataTable
         pagination
         highlightOnHover
