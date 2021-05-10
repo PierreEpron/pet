@@ -1,8 +1,8 @@
 FROM node:13.7-alpine
 
-WORKDIR /app
+WORKDIR /frontend
 
-COPY . /app/
+COPY . /frontend/
 
 RUN apk add -U --no-cache git python3 make g++ \
   # && npm install -g yarn@latest \
