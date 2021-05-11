@@ -5,13 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-/*import { Link as RouterLink } from "react-router-dom";
-import {Button} from "@material-ui/core";
-// eslint-disable-next-line
-import IconButton from '@material-ui/core/IconButton';*/
-import ExportButton from "./Button/ImportButton"
-// import PageTest from "../pages/PageTest";
-import StatsButton from "./Button/StatsButton"
+import ImportButton from "./Button/ImportButton";
+import StatsButton from "./Button/StatsButton";
+import ExportButton from "./Button/ExportButton";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -71,32 +67,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchAppBar() {
   const classes = useStyles();
-   /*const getMenuButtons = () => {
-    return headersData.map(({ label, href }) => {
-      return (
-        <Button
-          {...{
-            key: label,
-            color: "inherit",
-            to: href,
-            component: RouterLink,
-          }}
-        >
-          {label}
-        </Button>
-      );
-    });
-  };
-*/
   return (
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
             PetApp_Nancyclotep
           </Typography>
-          {/*{getMenuButtons()}*/}
-          <ExportButton/>
+          <ImportButton/>
           <StatsButton/>
+          <ExportButton/>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
