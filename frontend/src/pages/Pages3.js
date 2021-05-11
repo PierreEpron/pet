@@ -9,6 +9,7 @@ import Chart from '../components/Charts/Chart';
 import Header from "../components/Header";
 import Deposits from "../components/Charts/Deposits";
 
+import HomeButton from "../components/Button/HomeButton"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,6 +66,7 @@ export default function Dashboard() {
           </Box>
         </Container>
       </main>
+      <HomeButton/>
     </div>
   );
 }
