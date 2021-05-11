@@ -11,6 +11,7 @@ import {Button} from "@material-ui/core";
 import IconButton from '@material-ui/core/IconButton';*/
 import ExportButton from "./Button/ImportButton"
 // import PageTest from "../pages/PageTest";
+import StatsButton from "./Button/StatsButton"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -95,6 +96,7 @@ export default function SearchAppBar() {
           </Typography>
           {/*{getMenuButtons()}*/}
           <ExportButton/>
+          <StatsButton/>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

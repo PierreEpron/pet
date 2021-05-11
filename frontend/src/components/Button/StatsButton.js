@@ -9,12 +9,18 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+function redirection(e){
+    e.preventDefault()
+    console.log("redirection")
+    window.location = "/pages3"
+  }
+
 
 export default function ContainedButtons() {
   const classes = useStyles();
 return (
     <div className={classes.root}>
-      <Button variant="contained" color="primary">
+      <Button variant="contained" color="primary" onClick={redirection}>
         Statistiques
       </Button>
     </div>
