@@ -60,7 +60,7 @@ export default function Dashboard() {
                 <Deposits />
               </Paper>
             </Grid>
-          <Box pt={4}>
+          <Box pt={3}>
           </Box>
         </Container>
       </main>
