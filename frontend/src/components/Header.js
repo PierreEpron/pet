@@ -67,10 +67,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchAppBar() {
   const classes = useStyles();
+  function redirection(e){
+    e.preventDefault()
+    console.log("redirection")
+    window.location = "/pages1"
+  }
+
   return (
       <AppBar position="static">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography className={classes.title} variant="h6" noWrap onClick={redirection}>
             PetApp_Nancyclotep
           </Typography>
           <ImportButton/>
