@@ -1,3 +1,4 @@
+/*
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import DataTable from 'react-data-table-component';
@@ -68,13 +69,13 @@ function ReadCsv() {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onload = (evt) => {
-      /* Parse data */
+      /!* Parse data *!/
       const bstr = evt.target.result;
       const wb = XLSX.read(bstr, { type: 'binary' });
-      /* Get first worksheet */
+      /!* Get first worksheet *!/
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
-      /* Convert array of arrays */
+      /!* Convert array of arrays *!/
       const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
       processData(data);
     };
@@ -85,24 +86,24 @@ function ReadCsv() {
     <div>
       <Header></Header>
       <input
-        // accept="image/*"
-        /*className={classes.input}*/
+        // accept="image/!*"
+        /!*className={classes.input}*!/
         id="contained-button-file"
         multiple
         onChange={handleFileUpload}
         type="file"
         accept=".csv,.xlsx,.xls"
       />
-      {/*<label htmlFor="contained-button-file">
+      {/!*<label htmlFor="contained-button-file">
         <Button variant="contained" color="primary" component="span">
           Import
         </Button>
       </label>
-      <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
+      <input accept="image/!*" className={classes.input} id="icon-button-file" type="file" />
       <label htmlFor="icon-button-file">
         <IconButton color="primary" aria-label="upload picture" component="span">
         </IconButton>
-      </label>*/}
+      </label>*!/}
       <DataTable
         pagination
         highlightOnHover
@@ -114,3 +115,4 @@ function ReadCsv() {
 }
 
 export default ReadCsv;
+*/
