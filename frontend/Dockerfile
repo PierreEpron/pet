@@ -1,11 +1,12 @@
-FROM node:13.7-alpine
+FROM node:latest
 
-WORKDIR /frontend
+RUN mkdir -p /usr/src/frontend
+WORKDIR /usr/src/frontend
 
-COPY . /frontend/
+COPY ./package.json .
 
-RUN apk add -U --no-cache git python3 make g++ \
-  # && npm install -g yarn@latest \
-  && yarn install \
-  && yarn build \
-  && apk del --no-cache git make g++
+RUN npm install
+
+COPY . .
+RUN sed -i 's/\r//' start.sh
+RUN chmod +x start.sh
