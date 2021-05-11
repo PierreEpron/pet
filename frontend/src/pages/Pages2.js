@@ -6,6 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import Paper from '@material-ui/core/Paper';
+import Header from "../components/Header";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,12 +25,15 @@ export default function SpacingGrid() {
   const [spacing, setSpacing] = React.useState(2);
   const classes = useStyles();
 
+
   const handleChange = (event) => {
     setSpacing(Number(event.target.value));
   };
 
   return (
+
     <Grid container className={classes.root} spacing={2}>
+        <Header/>
       <Grid item xs={12}>
         <Grid container justify="center" spacing={spacing}>
           {[0, 1, 2].map((value) => (
