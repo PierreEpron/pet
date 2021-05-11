@@ -1,16 +1,18 @@
-FROM alpine:3.8.9
+# pull official base image
+FROM python:3.8.5
 
-CMD ["python3"]
+# set work directory
+RUN mkdir -p /usr/src/backend
+WORKDIR /usr/src/backend
 
-WORKDIR /backend
-
+# set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-COPY . /backend/
+# install dependencies
+RUN pip3 install --upgrade pip
+COPY ./requirements.txt .
+RUN pip3 install -r requirements.txt
 
-RUN apk add -U --no-cache bash python3 python3-pip python3-dev libpq postgresql-dev unixodbc-dev musl-dev g++ libffi-dev \
-  && pip3 install --upgrade --no-cache-dir pip setuptools \
-  && pip3 install --no-cache-dir -r requirements.txt \
-  && ln -s /usr/bin/python3 /usr/bin/python \
-  && apk del --no-cache python3-dev postgresql-dev unixodbc-dev musl-dev g++ libffi-dev
+# copy project
+COPY . .
