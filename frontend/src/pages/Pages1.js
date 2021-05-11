@@ -79,6 +79,11 @@ export default function StickyHeadTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  function redirection(e){
+    e.preventDefault()
+    console.log("redirection")
+    window.location = "/pages2"
+  }
 
   return (
     <Paper className={classes.root}>
@@ -91,6 +96,7 @@ export default function StickyHeadTable() {
                     <TableCell
                       key={column.id}
                       align={column.align}
+                      onClick={redirection}
                       style={{ minWidth: column.minWidth }}
                     >
                       {column.label}
