@@ -1,73 +1,77 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
-import Paper from '@material-ui/core/Paper';
-import Header from "../components/Header";
+import ListSubheader from '@material-ui/core/ListSubheader';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import SendIcon from '@material-ui/icons/Send';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import StarBorder from '@material-ui/icons/StarBorder';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
   },
-  paper: {
-    height: 140,
-    width: 100,
-  },
-  control: {
-    padding: theme.spacing(2),
+  nested: {
+    paddingLeft: theme.spacing(4),
   },
 }));
 
-export default function SpacingGrid() {
-  const [spacing, setSpacing] = React.useState(2);
+export default function NestedList() {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
 
-
-  const handleChange = (event) => {
-    setSpacing(Number(event.target.value));
+  const handleClick = () => {
+    setOpen(!open);
   };
 
   return (
-
-    <Grid container className={classes.root} spacing={2}>
-        <Header/>
-      <Grid item xs={12}>
-        <Grid container justify="center" spacing={spacing}>
-          {[0, 1, 2].map((value) => (
-            <Grid key={value} item>
-              <Paper className={classes.paper} />
-            </Grid>
-          ))}
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <Paper className={classes.control}>
-          <Grid container>
-            <Grid item>
-              <FormLabel>spacing</FormLabel>
-              <RadioGroup
-                name="spacing"
-                aria-label="spacing"
-                value={spacing.toString()}
-                onChange={handleChange}
-                row
-              >
-                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => (
-                  <FormControlLabel
-                    key={value}
-                    value={value.toString()}
-                    control={<Radio />}
-                    label={value.toString()}
-                  />
-                ))}
-              </RadioGroup>
-            </Grid>
-          </Grid>
-        </Paper>
-      </Grid>
-    </Grid>
+    <List
+      component="nav"
+      aria-labelledby="nested-list-subheader"
+      subheader={
+        <ListSubheader component="div" id="nested-list-subheader">
+          Nested List Items
+        </ListSubheader>
+      }
+      className={classes.root}
+    >
+      <ListItem button>
+        <ListItemIcon>
+          <SendIcon />
+        </ListItemIcon>
+        <ListItemText primary="Sent mail" />
+      </ListItem>
+      <ListItem button>
+        <ListItemIcon>
+          <DraftsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Drafts" />
+      </ListItem>
+      <ListItem button onClick={handleClick}>
+        <ListItemIcon>
+          <InboxIcon />
+        </ListItemIcon>
+        <ListItemText primary="Inbox" />
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItem button className={classes.nested}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary="Starred" />
+          </ListItem>
+        </List>
+      </Collapse>
+    </List>
   );
 }
