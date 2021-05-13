@@ -18,6 +18,7 @@ import Header from "../components/Header";
 import Container from "@material-ui/core/Container";
 import Grid from '@material-ui/core/Grid';
 import TextArea from "../components/Text/TextArea"
+import Footer from "../components/Footer"
 
 const useRowStyles = makeStyles({
   root: {
@@ -169,6 +170,7 @@ export default function CollapsibleTable() {
             </Grid>
           </Grid>
         </Container>
+      <Footer/>
     </div>
   );
 }

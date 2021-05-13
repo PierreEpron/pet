@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,6 +10,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Header from "../components/Header";
 import Container from '@material-ui/core/Container';
+import Footer from "../components/Footer"
 
 const columns = [
   { id: 'name', label: 'Name', minWidth: 170 },
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingBottom: theme.spacing(6),
   },
 }));
 
@@ -90,8 +91,10 @@ export default function StickyHeadTable() {
   }
 
   return (
-    <Paper className={classes.root}>
-        <Header></Header>
+    <div className={classes.root}>
+      <Header></Header>
+    {/*<Paper className={classes.root}>*/}
+
         <Container maxWidth="lg" className={classes.container}>
           <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
@@ -139,7 +142,10 @@ export default function StickyHeadTable() {
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
           </Container>
-    </Paper>
+
+    {/*</Paper>*/}
+      <Footer/>
+      </div>
 
   );
 }

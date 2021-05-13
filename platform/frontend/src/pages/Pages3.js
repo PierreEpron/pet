@@ -9,6 +9,7 @@ import Chart from '../components/Charts/Chart';
 import Header from "../components/Header";
 import Deposits from "../components/Charts/Deposits";
 import BarChart from "../components/Charts/BarChart"
+import Footer from "../components/Footer"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,6 +74,7 @@ export default function Dashboard() {
           </Box>
         </Container>
       </main>
+      <Footer/>
     </div>
   );
 }
