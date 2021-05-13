@@ -59,8 +59,9 @@ export default function ButtonAppBar() {
       >
         NancyClopet
       </Button>
-
-            <Button
+        <Button
+        target="_blank"
+        href="https://github.com/Nancyclotep/devia"
         variant="contained"
         color="secondary"
         size="large"
@@ -70,15 +71,13 @@ export default function ButtonAppBar() {
         Git
       </Button>
             <Button
-        target="_blank"
-        href="https://github.com/Nancyclotep/devia"
         variant="contained"
-        color="s-dark"
+        color="s-black"
         size="large"
         className={classes.WebButton}
         startIcon={<EmailIcon />}
       >
-        Xxxxxx@chru-nancy.fr
+        xxxx@chru-nancy.fr
       </Button>
 
         </Toolbar>
