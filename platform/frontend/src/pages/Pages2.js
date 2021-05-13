@@ -17,7 +17,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Header from "../components/Header";
 import Container from "@material-ui/core/Container";
 import Grid from '@material-ui/core/Grid';
-
+import BarChart from "../components/Charts/BarChart"
 
 const useRowStyles = makeStyles({
   root: {
@@ -142,30 +142,33 @@ export default function CollapsibleTable() {
   const classes = useStyles();
   return (
     <div>
-    <Header/>
-    <Container maxWidth="lg" className={classes.container}>
-    <Grid container spacing={2}>
-    <Grid xs={12} sm={6}>
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>information Extraite</TableCell>
-            <TableCell align="center">precision&nbsp;(en %)</TableCell>
-            <TableCell align="center">résultat</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.info} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    </Grid>
-    </Grid>
-    </Container>
+      <Header/>
+        <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={2}>
+            <Grid xs={12} sm={6}>
+                <BarChart />
+            </Grid>
+            <Grid xs={12} sm={6}>
+              <TableContainer component={Paper}>
+                <Table aria-label="collapsible table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell />
+                      <TableCell>information Extraite</TableCell>
+                      <TableCell align="center">precision&nbsp;(en %)</TableCell>
+                      <TableCell align="center">résultat</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map((row) => (
+                      <Row key={row.info} row={row} />
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Grid>
+          </Grid>
+        </Container>
     </div>
   );
 }
