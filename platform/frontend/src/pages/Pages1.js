@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingBottom: theme.spacing(6),
   },
 }));
 
@@ -91,9 +91,9 @@ export default function StickyHeadTable() {
   }
 
   return (
-    <div>
+    <div className={classes.root}>
       <Header></Header>
-    <Paper className={classes.root}>
+    {/*<Paper className={classes.root}>*/}
 
         <Container maxWidth="lg" className={classes.container}>
           <TableContainer className={classes.container}>
@@ -143,7 +143,7 @@ export default function StickyHeadTable() {
           />
           </Container>
 
-    </Paper>
+    {/*</Paper>*/}
       <Footer/>
       </div>
 
