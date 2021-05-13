@@ -91,8 +91,10 @@ export default function StickyHeadTable() {
   }
 
   return (
+    <div>
+      <Header></Header>
     <Paper className={classes.root}>
-        <Header></Header>
+
         <Container maxWidth="lg" className={classes.container}>
           <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
@@ -140,8 +142,10 @@ export default function StickyHeadTable() {
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
           </Container>
-      <Footer/>
+
     </Paper>
+      <Footer/>
+      </div>
 
   );
 }
