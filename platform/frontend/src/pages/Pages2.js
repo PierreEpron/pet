@@ -17,7 +17,6 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Header from "../components/Header";
 import Container from "@material-ui/core/Container";
 import Grid from '@material-ui/core/Grid';
-import BarChart from "../components/Charts/BarChart"
 import TextArea from "../components/Text/TextArea"
 
 const useRowStyles = makeStyles({
@@ -146,9 +145,9 @@ export default function CollapsibleTable() {
       <Header/>
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={2}>
-            <Grid xs={12} sm={6}>
-                <TextArea />
-            </Grid>
+              <Grid xs={12} sm={6}>
+                  <TextArea />
+              </Grid>
             <Grid xs={12} sm={6}>
               <TableContainer component={Paper}>
                 <Table aria-label="collapsible table">

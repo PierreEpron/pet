@@ -5,6 +5,7 @@ export default function MaxHeightTextarea() {
   return (
     <TextareaAutosize
         rowsMin={8}
+        disabled={true}
         aria-label="maximum height"
         aria-multiline= 'True'
         style={{width:"95%"}}
