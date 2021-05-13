@@ -44,7 +44,10 @@ export default function ButtonAppBar() {
           {/*<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>*/}
+
       <Button
+        target="_blank"
+        href="https://nancyclotep.com/fr/accueil/"
         variant="contained"
         color="primary"
         size="large"
@@ -54,6 +57,7 @@ export default function ButtonAppBar() {
         NancyClopet
       </Button>
           <Button color="inherit">Login</Button>
+            <Button target="_blank" href="http://www.google.com/">Google</Button>
         </Toolbar>
 
       </AppBar>
