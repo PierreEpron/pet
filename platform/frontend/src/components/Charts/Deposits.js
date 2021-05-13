@@ -21,7 +21,7 @@ export default function Deposits() {
     <React.Fragment>
       <Title>Solde compte Mr Dino</Title>
       <Typography component="p" variant="h4">
-        $3,024.00
+        $3000000,024.01
       </Typography>
       <Typography color="textSecondary" className={classes.depositContext}>
         on 15 March, 2019
