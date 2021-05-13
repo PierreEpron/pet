@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Header from "../components/Header";
+import Container from '@material-ui/core/Container';
 
 const columns = [
   { id: 'name', label: 'Name', minWidth: 170 },
@@ -59,12 +60,15 @@ const rows = [
   createData('Brazil', 'BR', 210147125, 8515767),
 ];
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
-
-});
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+}));
 
 export default function StickyHeadTable() {
   const classes = useStyles();
@@ -88,6 +92,7 @@ export default function StickyHeadTable() {
   return (
     <Paper className={classes.root}>
         <Header></Header>
+        <Container maxWidth="lg" className={classes.container}>
           <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -121,7 +126,9 @@ export default function StickyHeadTable() {
                 })}
               </TableBody>
             </Table>
+
           </TableContainer>
+
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
@@ -131,6 +138,8 @@ export default function StickyHeadTable() {
             onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
+          </Container>
     </Paper>
+
   );
 }

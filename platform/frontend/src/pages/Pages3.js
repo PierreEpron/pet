@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import Chart from '../components/Charts/Chart';
 import Header from "../components/Header";
 import Deposits from "../components/Charts/Deposits";
+import BarChart from "../components/Charts/BarChart"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
+    paddingRight: 24,
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -46,21 +48,28 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <Chart />
-              </Paper>
-            </Grid>
-          </Grid>
-          {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
+          <Grid container spacing={2}>
+              {/* Chart */}
+              <Grid xs={12}>
+                <Paper className={fixedHeightPaper}>
+                  <Chart />
+                </Paper>
+              </Grid>
+            {/*Recent Deposits*/}
+            <Grid xs={6} sm={6}>
               <Paper className={fixedHeightPaper}>
                 <Deposits />
               </Paper>
             </Grid>
-          <Box pt={4}>
+          {/*Bar Chart*/}
+           <Grid xs={6} sm={6}>
+              <Paper className={fixedHeightPaper}>
+                <BarChart />
+              </Paper>
+            </Grid>
+          </Grid>
+
+          <Box pt={3}>
           </Box>
         </Container>
       </main>

@@ -14,6 +14,10 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Header from "../components/Header";
+import Container from "@material-ui/core/Container";
+import Grid from '@material-ui/core/Grid';
+import TextArea from "../components/Text/TextArea"
 
 const useRowStyles = makeStyles({
   root: {
@@ -23,14 +27,40 @@ const useRowStyles = makeStyles({
   },
 });
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  // appBarSpacer: theme.mixins.toolbar,
+  // content: {
+  //   flexGrow: 1,
+  //   height: '100vh',
+  //   overflow: 'auto',
+  //   paddingRight: 24,
+  // },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+  },
+  fixedHeight: {
+    height: 240,
+  },
+}));
+
 function createData(info, precision, résultat) {
   return {
     info,
     precision,
     résultat,
-    history: [
-      { date: '2020-01-05', customerId: '11091700', amount: 3 },
-      { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
+    Another: [
+      { autres: '2020-01-05', customerId: '11091700'},
+      { autres: '2020-01-02', customerId: 'Anonymouse'},
     ],
   };
 }
@@ -51,8 +81,8 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row.info}
         </TableCell>
-        <TableCell align="right">{row.precision}</TableCell>
-        <TableCell align="right">{row.résultat}</TableCell>
+        <TableCell align="center">{row.precision}</TableCell>
+        <TableCell align="center">{row.résultat}</TableCell>
 
       </TableRow>
       <TableRow>
@@ -60,28 +90,22 @@ function Row(props) {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography variant="h6" gutterBottom component="div">
-                History
+                Another
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
                     <TableCell>Autres</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
+                    <TableCell>Xxxxx</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
+                  {row.Another.map((historyRow) => (
+                    <TableRow key={historyRow.autres}>
                       <TableCell component="th" scope="row">
-                        {historyRow.date}
+                        {historyRow.autres}
                       </TableCell>
                       <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -96,50 +120,55 @@ function Row(props) {
 
 Row.propTypes = {
   row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
+    precision: PropTypes.number.isRequired,
+    résultat: PropTypes.string.isRequired,
     history: PropTypes.arrayOf(
       PropTypes.shape({
-        amount: PropTypes.number.isRequired,
         customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
+        autres: PropTypes.string.isRequired,
       }),
     ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
+    info: PropTypes.string.isRequired,
   }).isRequired,
 };
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-  createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
+  createData('score de deauville', 50, "6"),
+  createData('Traitement', 99, "Chimio"),
+
 ];
 
 export default function CollapsibleTable() {
+  const classes = useStyles();
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      <Header/>
+        <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={2}>
+              <Grid xs={12} sm={6}>
+                  <TextArea />
+              </Grid>
+            <Grid xs={12} sm={6}>
+              <TableContainer component={Paper}>
+                <Table aria-label="collapsible table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell />
+                      <TableCell>information Extraite</TableCell>
+                      <TableCell align="center">precision&nbsp;(en %)</TableCell>
+                      <TableCell align="center">résultat</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map((row) => (
+                      <Row key={row.info} row={row} />
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Grid>
+          </Grid>
+        </Container>
+    </div>
   );
 }
