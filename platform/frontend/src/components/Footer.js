@@ -4,10 +4,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import Link from "@material-ui/core/Link";
 import WebIcon from '@material-ui/icons/Web';
+import GitHubIcon from '@material-ui/icons/GitHub';
 
 function Copyright() {
   return (
@@ -26,12 +25,16 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  menuButton: {
+  WebButton: {
     marginRight: theme.spacing(2),
+
   },
-  title: {
-    flexGrow: 1,
-  },
+    appbar: {
+    alignItems: 'center',
+        bottom:0
+  }
+
+
 }));
 
 export default function ButtonAppBar() {
@@ -39,7 +42,7 @@ export default function ButtonAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar className={classes.appbar} position="static" >
         <Toolbar>
           {/*<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
@@ -51,17 +54,27 @@ export default function ButtonAppBar() {
         variant="contained"
         color="primary"
         size="large"
-        className={classes.button}
+        className={classes.WebButton}
         startIcon={<WebIcon />}
       >
         NancyClopet
       </Button>
-          <Button color="inherit">Login</Button>
-            <Button target="_blank" href="http://www.google.com/">Google</Button>
+        <Button
+        target="_blank"
+        href="https://github.com/Nancyclotep/devia"
+        variant="contained"
+        color="secondary"
+        size="large"
+        className={classes.WebButton}
+        startIcon={<GitHubIcon />}
+      >
+        Git
+      </Button>
+
         </Toolbar>
 
       </AppBar>
-      <Copyright/>
+    <Copyright/>
     </div>
   );
 }
