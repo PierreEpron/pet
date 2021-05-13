@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import Chart from '../components/Charts/Chart';
 import Header from "../components/Header";
 import Deposits from "../components/Charts/Deposits";
+import BarChart from "../components/Charts/BarChart"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,10 +56,16 @@ export default function Dashboard() {
               </Paper>
             </Grid>
           </Grid>
-          {/* Recent Deposits */}
+           {/*Recent Deposits*/}
             <Grid xs={12} sm={6}>
               <Paper className={fixedHeightPaper}>
                 <Deposits />
+              </Paper>
+            </Grid>
+          {/*Bar Chart*/}
+           <Grid xs={12} sm={6}>
+              <Paper className={fixedHeightPaper}>
+                <BarChart />
               </Paper>
             </Grid>
           <Box pt={3}>
