@@ -10,6 +10,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Header from "../components/Header";
 import Container from '@material-ui/core/Container';
+import Footer from "../components/Footer"
 
 const columns = [
   { id: 'name', label: 'Name', minWidth: 170 },
@@ -139,6 +140,7 @@ export default function StickyHeadTable() {
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
           </Container>
+      <Footer/>
     </Paper>
 
   );
