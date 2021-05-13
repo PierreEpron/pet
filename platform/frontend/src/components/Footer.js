@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
   },
     appbar: {
     alignItems: 'center',
-    marginBottom: -8,
   }
 
 
