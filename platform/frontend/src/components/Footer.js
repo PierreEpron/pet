@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Link from "@material-ui/core/Link";
 import WebIcon from '@material-ui/icons/Web';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import EmailIcon from '@material-ui/icons/Email';
 
 function Copyright() {
   return (
@@ -58,9 +59,8 @@ export default function ButtonAppBar() {
       >
         NancyClopet
       </Button>
-        <Button
-        target="_blank"
-        href="https://github.com/Nancyclotep/devia"
+
+            <Button
         variant="contained"
         color="secondary"
         size="large"
@@ -68,6 +68,17 @@ export default function ButtonAppBar() {
         startIcon={<GitHubIcon />}
       >
         Git
+      </Button>
+            <Button
+        target="_blank"
+        href="https://github.com/Nancyclotep/devia"
+        variant="contained"
+        color="s-dark"
+        size="large"
+        className={classes.WebButton}
+        startIcon={<EmailIcon />}
+      >
+        Xxxxxx@chru-nancy.fr
       </Button>
 
         </Toolbar>
