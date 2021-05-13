@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
     appbar: {
     alignItems: 'center',
-        bottom:0
+    marginBottom: -8,
   }
 
 
@@ -72,9 +72,9 @@ export default function ButtonAppBar() {
       </Button>
 
         </Toolbar>
-
-      </AppBar>
     <Copyright/>
+      </AppBar>
+
     </div>
   );
 }
