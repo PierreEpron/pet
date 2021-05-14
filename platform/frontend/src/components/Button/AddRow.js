@@ -63,10 +63,17 @@ const { useState } = React;
 
   return (
     <MaterialTable
+       options={{
+        showTitle: false,
+        search: false,
+
+                }}
       title="Résultat Modéle"
+       onTreeExpandChange
       icons={tableIcons}
       columns={columns}
       data={data}
+
       editable={{
         onRowAdd: newData =>
           new Promise((resolve, reject) => {
