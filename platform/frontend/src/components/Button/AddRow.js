@@ -57,8 +57,8 @@ const { useState } = React;
   ]);
 
   const [data, setData] = useState([
-    { info: 'score de deauville', preci: 80, result: '5'},
-    { info: 'Traitement', preci: 70, result: 'Chimio'},
+    { id: 0, info: 'score de deauville', preci: 80, result: '5'},
+    { id: 1, info: 'Traitement', preci: 70, result: 'Chimio', parentId: 0},
   ]);
 
   return (
@@ -69,7 +69,6 @@ const { useState } = React;
 
                 }}
       title="Résultat Modéle"
-       onTreeExpandChange
       icons={tableIcons}
       columns={columns}
       data={data}
@@ -105,6 +104,10 @@ const { useState } = React;
               resolve();
             }, 1000)
           }),
+      }}
+       parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
+      options={{
+        selection: true,
       }}
     />
   )
