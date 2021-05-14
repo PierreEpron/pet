@@ -3,7 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import {fade, makeStyles} from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import ImportButton from "./Button/ImportButton";
 import StatsButton from "./Button/StatsButton";
@@ -67,7 +67,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchAppBar() {
   const classes = useStyles();
-  function redirection(e){
+
+  function redirection(e) {
     e.preventDefault()
     console.log("redirection")
     window.location = "/HomePage"
@@ -84,15 +85,15 @@ export default function SearchAppBar() {
           <ExportButton/>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
-              <SearchIcon />
+              <SearchIcon/>
             </div>
             <InputBase
-              placeholder="Rechercher…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
+                placeholder="Rechercher…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{'aria-label': 'search'}}
             />
           </div>
         </Toolbar>

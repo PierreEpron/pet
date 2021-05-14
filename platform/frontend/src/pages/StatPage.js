@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -44,37 +44,37 @@ export default function Dashboard() {
 
   return (
 
-    <div>
-      <Header/>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={2}>
+      <div>
+        <Header/>
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer}/>
+          <Container maxWidth="lg" className={classes.container}>
+            <Grid container spacing={2}>
               {/* Chart */}
               <Grid xs={12}>
                 <Paper className={fixedHeightPaper}>
-                  <Chart />
+                  <Chart/>
                 </Paper>
               </Grid>
-            {/*Recent Deposits*/}
-            <Grid xs={6} sm={6}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
+              {/*Recent Deposits*/}
+              <Grid xs={6} sm={6}>
+                <Paper className={fixedHeightPaper}>
+                  <Deposits/>
+                </Paper>
+              </Grid>
+              {/*Bar Chart*/}
+              <Grid xs={6} sm={6}>
+                <Paper className={fixedHeightPaper}>
+                  <BarChart/>
+                </Paper>
+              </Grid>
             </Grid>
-          {/*Bar Chart*/}
-           <Grid xs={6} sm={6}>
-              <Paper className={fixedHeightPaper}>
-                <BarChart />
-              </Paper>
-            </Grid>
-          </Grid>
 
-          <Box pt={3}>
-          </Box>
-        </Container>
-      </main>
-      <Footer/>
-    </div>
+            <Box pt={3}>
+            </Box>
+          </Container>
+        </main>
+        <Footer/>
+      </div>
   );
 }
