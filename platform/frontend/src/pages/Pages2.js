@@ -19,6 +19,7 @@ import Container from "@material-ui/core/Container";
 import Grid from '@material-ui/core/Grid';
 import TextArea from "../components/Text/TextArea"
 import Footer from "../components/Footer"
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useRowStyles = makeStyles({
   root: {
@@ -70,6 +71,9 @@ function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
+  const { numSelected, rowCount, onSelectAllClick } = props;
+
+
 
   return (
     <React.Fragment>
@@ -87,7 +91,7 @@ function Row(props) {
 
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6} >
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography variant="h6" gutterBottom component="div">
@@ -96,7 +100,14 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Autres</TableCell>
+                    <TableCell padding="checkbox">Autres
+                    <Checkbox
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{ 'aria-label': 'select all desserts' }}
+          />
+                    </TableCell>
                     <TableCell>Xxxxx</TableCell>
                   </TableRow>
                 </TableHead>
@@ -125,6 +136,9 @@ Row.propTypes = {
     résultat: PropTypes.string.isRequired,
     history: PropTypes.arrayOf(
       PropTypes.shape({
+        numSelected: PropTypes.number.isRequired,
+        onSelectAllClick: PropTypes.func.isRequired,
+        rowCount: PropTypes.number.isRequired,
         customerId: PropTypes.string.isRequired,
         autres: PropTypes.string.isRequired,
       }),
@@ -141,6 +155,7 @@ const rows = [
 
 export default function CollapsibleTable() {
   const classes = useStyles();
+
   return (
     <div>
       <Header/>
