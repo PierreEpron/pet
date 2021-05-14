@@ -20,6 +20,7 @@ import Grid from '@material-ui/core/Grid';
 import TextArea from "../components/Text/TextArea"
 import Footer from "../components/Footer"
 import BoxCheck from '../components/BoxCheck'
+import AddRow from '../components/Button/AddRow'
 
 
 const useRowStyles = makeStyles({
@@ -72,10 +73,6 @@ function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
-
-
-
-
 
   return (
     <React.Fragment>
@@ -157,6 +154,7 @@ export default function CollapsibleTable() {
   return (
     <div>
       <Header/>
+
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={2}>
               <Grid xs={12} sm={6}>
@@ -181,8 +179,13 @@ export default function CollapsibleTable() {
                 </Table>
               </TableContainer>
             </Grid>
+            <Grid xs={12} sm={6}>
+                  <AddRow />
+              </Grid>
           </Grid>
         </Container>
+
+
       <Footer/>
     </div>
   );
