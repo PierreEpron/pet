@@ -1,7 +1,7 @@
 import React from 'react';
 import SignIn from "./components/SignIn";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Pages1 from "./pages/Pages1"
+import Pages1 from "./pages/Home_page"
 import Pages2 from "./pages/Pages2"
 import Pages3 from "./pages/Pages3"
 
