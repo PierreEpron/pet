@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 function redirection(e){
     e.preventDefault()
     console.log("redirection")
-    window.location = "/pages3"
+    window.location = "/StatPage"
   }
 
 
