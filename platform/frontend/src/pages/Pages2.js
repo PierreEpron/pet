@@ -62,8 +62,8 @@ function createData(info, precision, résultat) {
     precision,
     résultat,
     Another: [
-      { autres: '2020-01-05', customerId: '11091700'},
-      { autres: '2020-01-02', customerId: 'Anonymouse'},
+      { Date: '2020-01-05', Source: '11091700', Valeur: 10},
+      { Date: '2020-01-02', Source: 'Anonymouse', Valeur: 1},
     ],
   };
 }
@@ -102,19 +102,22 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell >Autres</TableCell>
-                    <TableCell>Xxxxx</TableCell>
+                    <TableCell >Date</TableCell>
+                    <TableCell>Source</TableCell>
+                    <TableCell>Valeur</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {row.Another.map((historyRow) => (
-                    <TableRow key={historyRow.autres}>
+                    <TableRow key={historyRow.Date}>
                       <TableCell component="th" scope="row">
                         <BoxCheck/>
-                        {historyRow.autres}
+                        {historyRow.Date}
                       </TableCell>
                       <TableCell>
-                        {historyRow.customerId}</TableCell>
+                        {historyRow.Source}</TableCell>
+                      <TableCell>
+                        {historyRow.Valeur}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -133,8 +136,9 @@ Row.propTypes = {
     résultat: PropTypes.string.isRequired,
     history: PropTypes.arrayOf(
       PropTypes.shape({
-        customerId: PropTypes.string.isRequired,
-        autres: PropTypes.string.isRequired,
+        Source: PropTypes.string.isRequired,
+        Date: PropTypes.string.isRequired,
+        Valeur: PropTypes.number.isRequired,
       }),
     ).isRequired,
     info: PropTypes.string.isRequired,
