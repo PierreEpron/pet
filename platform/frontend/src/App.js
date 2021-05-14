@@ -2,7 +2,7 @@ import React from 'react';
 import SignIn from "./components/SignIn";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HomePage from './pages/HomePage'
-import Pages2 from "./pages/Pages2"
+import Docpage from "./pages/DocPage"
 import Pages3 from "./pages/Pages3"
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={() => <SignIn />} />
             <Route path="/HomePage" exact component={() => <HomePage />} />
-            <Route path="/pages2" exact component={() => <Pages2 />} />
+            <Route path="/Docpage" exact component={() => <Docpage />} />
             <Route path="/pages3" exact component={() => <Pages3 />} />
             {/*<Route path="/pagestest" exact component={() => <PageTest />} />*/}
         </Switch>

@@ -87,7 +87,7 @@ export default function StickyHeadTable() {
   function redirection(e){
     e.preventDefault()
     console.log("redirection")
-    window.location = "/pages2"
+    window.location = "/Docpage"
   }
 
   return (
