@@ -29,10 +29,6 @@ export default function CheckboxLabels() {
           />
         }
       />
-
-
-
-
     </FormGroup>
   );
 }
