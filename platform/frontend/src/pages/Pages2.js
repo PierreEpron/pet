@@ -19,7 +19,8 @@ import Container from "@material-ui/core/Container";
 import Grid from '@material-ui/core/Grid';
 import TextArea from "../components/Text/TextArea"
 import Footer from "../components/Footer"
-import Checkbox from '@material-ui/core/Checkbox';
+import BoxCheck from '../components/BoxCheck'
+
 
 const useRowStyles = makeStyles({
   root: {
@@ -71,7 +72,8 @@ function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
-  const { numSelected, rowCount, onSelectAllClick } = props;
+
+
 
 
 
@@ -100,14 +102,7 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell padding="checkbox">Autres
-                    <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          />
-                    </TableCell>
+                    <TableCell >Autres</TableCell>
                     <TableCell>Xxxxx</TableCell>
                   </TableRow>
                 </TableHead>
@@ -115,9 +110,11 @@ function Row(props) {
                   {row.Another.map((historyRow) => (
                     <TableRow key={historyRow.autres}>
                       <TableCell component="th" scope="row">
+                        <BoxCheck/>
                         {historyRow.autres}
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
+                      <TableCell>
+                        {historyRow.customerId}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -136,9 +133,6 @@ Row.propTypes = {
     résultat: PropTypes.string.isRequired,
     history: PropTypes.arrayOf(
       PropTypes.shape({
-        numSelected: PropTypes.number.isRequired,
-        onSelectAllClick: PropTypes.func.isRequired,
-        rowCount: PropTypes.number.isRequired,
         customerId: PropTypes.string.isRequired,
         autres: PropTypes.string.isRequired,
       }),
