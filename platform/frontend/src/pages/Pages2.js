@@ -19,6 +19,8 @@ import Container from "@material-ui/core/Container";
 import Grid from '@material-ui/core/Grid';
 import TextArea from "../components/Text/TextArea"
 import Footer from "../components/Footer"
+import BoxCheck from '../components/BoxCheck'
+
 
 const useRowStyles = makeStyles({
   root: {
@@ -71,6 +73,10 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
+
+
+
+
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
@@ -87,7 +93,7 @@ function Row(props) {
 
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6} >
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography variant="h6" gutterBottom component="div">
@@ -96,7 +102,7 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Autres</TableCell>
+                    <TableCell >Autres</TableCell>
                     <TableCell>Xxxxx</TableCell>
                   </TableRow>
                 </TableHead>
@@ -104,9 +110,11 @@ function Row(props) {
                   {row.Another.map((historyRow) => (
                     <TableRow key={historyRow.autres}>
                       <TableCell component="th" scope="row">
+                        <BoxCheck/>
                         {historyRow.autres}
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
+                      <TableCell>
+                        {historyRow.customerId}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -141,6 +149,7 @@ const rows = [
 
 export default function CollapsibleTable() {
   const classes = useStyles();
+
   return (
     <div>
       <Header/>
