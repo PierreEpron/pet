@@ -1,6 +1,6 @@
 from django.db import models
 from rest_framework import serializers
-from .models import ExamWording # , ExamRoom , Exam
+from .models import ExamWording, ExamRoom  # , Exam
 
 class ContentSerializer(serializers.ModelSerializer):
     FIELDS = ['modified_by', 'created_by', 'created_date' , 'modified_date']
@@ -30,7 +30,11 @@ class ExamWordingSerializer(ContentSerializer):
         model = ExamWording
         fields = ['word'] + ContentSerializer.FIELDS
 
-
+class ExamRoomSerializer(ContentSerializer):
+    class Meta:
+        model = ExamRoom
+        fields = ['ref'] + ContentSerializer.FIELDS
+        
 # class ExamSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Exam
