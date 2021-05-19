@@ -5,8 +5,8 @@ def get_user_sentinel():
     return get_user_model().objects.get_or_create(username='deleted')[0]
 
 class Content(models.Model):
-    created_date = models.DateField(auto_now_add=True, blank=True, null=True)
-    modified_date = models.DateField(auto_now=True, blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, blank=True, null=True)
     created_by = models.ForeignKey(get_user_model(), on_delete=models.SET(get_user_model), 
         related_name='created_by', blank=True, null=True, editable=False)
     modified_by = models.ForeignKey(get_user_model(), on_delete=models.SET(get_user_model),
