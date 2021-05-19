@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ExamWording, ExamRoom, Exam
+from .models import ExamWording, ExamRoom, Exam, ExamReport
 
 class ContentSerializer(serializers.ModelSerializer):
     FIELDS = ['modified_by', 'created_by', 'created_date' , 'modified_date']
@@ -38,3 +38,8 @@ class ExamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exam
         fields = ['ref', 'date', 'wording', 'room'] + ContentSerializer.FIELDS
+
+class ExamReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamReport
+        fields = ['text', 'exam'] + ContentSerializer.FIELDS

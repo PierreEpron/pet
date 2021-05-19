@@ -32,3 +32,6 @@ class Exam(Content):
     wording = models.ForeignKey(ExamWording, on_delete=models.SET(get_wording_sentinel))
     room = models.ForeignKey(ExamRoom, on_delete=models.SET(get_room_sentinel))
 
+class ExamReport(Content):
+    text = models.TextField()
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
