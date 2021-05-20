@@ -2,7 +2,13 @@ from rest_framework import viewsets, permissions
 from .models import ExamWording, ExamRoom, Exam, ExamReport
 from .serializers import ExamWordingSerializer, ExamRoomSerializer, ExamSerializer, ExamReportSerializer
 
-class ExamWordingViewSet(viewsets.ModelViewSet):
+class ContentViewSet(viewsets.ModelViewSet):
+    def get_serializer(self, *args, **kwargs):
+        if isinstance(self.request.data, list):
+            kwargs['many'] = True
+        return super().get_serializer(*args, **kwargs)
+
+class ExamWordingViewSet(ContentViewSet):
     """
     API endpoint that allows ExamWording to be viewed or edited.
     """
@@ -10,7 +16,7 @@ class ExamWordingViewSet(viewsets.ModelViewSet):
     serializer_class = ExamWordingSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
-class ExamRoomViewSet(viewsets.ModelViewSet):
+class ExamRoomViewSet(ContentViewSet):
     """
     API endpoint that allows ExamRoom to be viewed or edited.
     """
@@ -18,7 +24,7 @@ class ExamRoomViewSet(viewsets.ModelViewSet):
     serializer_class = ExamRoomSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
-class ExamViewSet(viewsets.ModelViewSet):
+class ExamViewSet(ContentViewSet):
     """
     API endpoint that allows Exam to be viewed or edited.
     """
@@ -26,7 +32,7 @@ class ExamViewSet(viewsets.ModelViewSet):
     serializer_class = ExamSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
-class ExamReportViewSet(viewsets.ModelViewSet):
+class ExamReportViewSet(ContentViewSet):
     """
     API endpoint that allows ExamReport to be viewed or edited.
     """
