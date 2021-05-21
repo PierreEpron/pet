@@ -2,8 +2,9 @@ from rest_framework import serializers
 from .models import ExamWording, ExamRoom, Exam, ExamReport
 
 class ContentSerializer(serializers.ModelSerializer):
-    FIELDS = ['modified_by', 'created_by', 'created_date' , 'modified_date']
-
+    FIELDS = ['id', 'modified_by', 'created_by', 'created_date' , 'modified_date']
+    id = serializers.ReadOnlyField()
+    
     def create(self, validated_data):
         user = self.context['request'].user
 
@@ -34,12 +35,12 @@ class ExamRoomSerializer(ContentSerializer):
         model = ExamRoom
         fields = ['ref'] + ContentSerializer.FIELDS
 
-class ExamSerializer(serializers.ModelSerializer):
+class ExamSerializer(ContentSerializer):
     class Meta:
         model = Exam
         fields = ['ref', 'date', 'wording', 'room'] + ContentSerializer.FIELDS
 
-class ExamReportSerializer(serializers.ModelSerializer):
+class ExamReportSerializer(ContentSerializer):
     class Meta:
         model = ExamReport
         fields = ['text', 'exam'] + ContentSerializer.FIELDS
