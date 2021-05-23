@@ -10,10 +10,9 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
+import {makeStyles, recomposeColor} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {login, logout} from '../services/auth.service'
-import Email from '@material-ui/icons/Email';
 
 function Copyright() {
   return (
@@ -51,13 +50,19 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
 
+  const [msg, setMsg] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-
   function handleSubmit(event) {
     event.preventDefault()
-    login({username: email, password: password})
+    login({username: email, password: password}, setMsg)
+  }
+
+  function showMsg() {
+    if (msg != '') {
+      return (<p>{msg}</p>)
+    }
   }
 
   return (
@@ -109,6 +114,7 @@ export default function SignIn() {
             >
               Sign In
             </Button>
+            {showMsg()}
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">

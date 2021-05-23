@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 const REACT_APP_API_URL = "http://localhost:8000/api"
+const HOME_URL = "/HomePage"
 
-function login(user) {
+function login(user, msgHandler) {
     axios.post(REACT_APP_API_URL + "/token/", JSON.stringify(user), {headers: {"Content-Type":"application/json"}})
         .then(function (response) {
             if (response.status === 200 ) {
@@ -10,16 +11,22 @@ function login(user) {
                     userName:user.username,
                     access:response.data.access,
                     refresh:response.data.refresh
-                }));
-                window.location = "/HomePage"
+                }));    
+                window.location = HOME_URL
             }
         })
         .catch(function (error) {
-            if (response.status === 401 ) {
-
-            }
-            else {
-                console.log(error);
+            console.log(error.response.status)
+            switch (error.response.status) {
+                case 400:
+                    msgHandler('Email and Password should not be blank.')
+                    break
+                case 401:
+                    msgHandler('Bad Email or Password.')
+                    break
+                default:
+                    console.log(error)
+                    break
             }
         })
 }
