@@ -1,10 +1,11 @@
 #!/bin/sh
 
 python3 manage.py wait_for_db
-python manage.py reset_db --noinput
 
-# python3 manage.py review_db 
-
+if [ ${RESET_DB} = 1 ]
+then
+    python manage.py reset_db --noinput
+fi
 
 python3 manage.py makemigrations --noinput
 python3 manage.py makemigrations api --noinput
