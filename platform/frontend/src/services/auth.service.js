@@ -6,14 +6,12 @@ const HOME_URL = "/HomePage"
 function login(user, msgHandler) {
     axios.post(REACT_APP_API_URL + "/token/", JSON.stringify(user), {headers: {"Content-Type":"application/json"}})
         .then(function (response) {
-            if (response.status === 200 ) {
-                localStorage.setItem('currentUser', JSON.stringify({
-                    userName:user.username,
-                    access:response.data.access,
-                    refresh:response.data.refresh
-                }));    
-                window.location = HOME_URL
-            }
+            localStorage.setItem('currentUser', JSON.stringify({
+                userName:user.username,
+                access:response.data.access,
+                refresh:response.data.refresh
+            }));    
+            window.location = HOME_URL
         })
         .catch(function (error) {
             console.log(error.response.status)
