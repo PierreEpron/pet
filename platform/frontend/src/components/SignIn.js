@@ -60,7 +60,7 @@ export default function SignIn() {
   }
 
   function showMsg() {
-    if (msg != '') {
+    if (msg !== '') {
       return (<p>{msg}</p>)
     }
   }
