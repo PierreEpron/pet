@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import {upload} from '../../services/upload.service'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +19,15 @@ const useStyles = makeStyles((theme) => ({
 export default function UploadButtons() {
   const classes = useStyles();
 
+  const [file, setFile] = React.useState(null);
+
+  function onFileChange(event) {
+      const file = event.target.files[0]
+      const formData = new FormData()
+      formData.append("csv", file, file.name);
+      upload(formData)
+  }
+
   return (
     <div className={classes.root}>
       <input
@@ -26,13 +37,13 @@ export default function UploadButtons() {
         multiple
         type="file"
         accept=".csv,.xlsx,.xls"
+        onChange={onFileChange}
       />
       <label htmlFor="contained-button-file">
         <Button variant="contained" color="primary" component="span">
           Import
         </Button>
       </label>
-      <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
       <label htmlFor="icon-button-file">
         <IconButton color="primary" aria-label="upload picture" component="span">
         </IconButton>
