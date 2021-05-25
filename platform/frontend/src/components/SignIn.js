@@ -12,7 +12,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles, recomposeColor} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+
 import {login, logout} from '../services/auth.service'
+import {checkCurrentUser} from '../services/apiConfig'
 
 function Copyright() {
   return (
@@ -54,6 +56,13 @@ export default function SignIn() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+      if (!checkCurrentUser())
+        setIsLoading(false)
+  });
+
   function handleSubmit(event) {
     event.preventDefault()
     login({username: email, password: password}, setMsg)
@@ -64,6 +73,9 @@ export default function SignIn() {
       return (<p>{msg}</p>)
     }
   }
+
+  if (isLoading)
+    return (<div></div>)
 
   return (
       <Container component="main" maxWidth="xs">

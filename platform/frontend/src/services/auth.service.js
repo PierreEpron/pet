@@ -1,10 +1,10 @@
 import axios from 'axios';
+import {REACT_APP_API_URL, HOME_URL, get_header} from './apiConfig'
 
-const REACT_APP_API_URL = "http://localhost:8000/api"
-const HOME_URL = "/HomePage"
+
 
 function login(user, msgHandler) {
-    axios.post(REACT_APP_API_URL + "/token/", JSON.stringify(user), {headers: {"Content-Type":"application/json"}})
+    axios.post(REACT_APP_API_URL + "/token/", JSON.stringify(user), {headers: get_header(false)})
         .then(function (response) {
             localStorage.setItem('currentUser', JSON.stringify({
                 userName:user.username,
@@ -14,7 +14,6 @@ function login(user, msgHandler) {
             window.location = HOME_URL
         })
         .catch(function (error) {
-            console.log(error.response.status)
             switch (error.response.status) {
                 case 400:
                     msgHandler('Email and Password should not be blank.')

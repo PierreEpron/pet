@@ -12,6 +12,9 @@ import Header from "../components/Header";
 import Container from '@material-ui/core/Container';
 import Footer from "../components/Footer"
 
+import {get_contents} from "../services/content.service"
+import axios from 'axios';
+
 const columns = [
     {id: 'name', label: 'Name', minWidth: 170},
     {id: 'code', label: 'ISO\u00a0Code', minWidth: 100},
@@ -61,6 +64,8 @@ const rows = [
     createData('Brazil', 'BR', 210147125, 8515767),
 ];
 
+
+
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -75,6 +80,21 @@ export default function StickyHeadTable() {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [data, setData] = React.useState(null);
+
+    React.useEffect(() => {
+        if (data) {
+            console.log(data)
+        }
+        else if (!isLoading) {
+            setIsLoading(true)
+            const depth = 1
+            get_contents('/exam-reports/', {depth}, setData)
+        }
+     });
+
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
