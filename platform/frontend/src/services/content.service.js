@@ -10,8 +10,7 @@ function parse_query(query) {
 }
 
 function get_contents(path, query, dataHandler) {
-    console.log(get_header(true))
-    axios.get(REACT_APP_API_URL + path + '?' + query, {headers: get_header(true)})
+    axios.get(REACT_APP_API_URL + path + '?' + parse_query(query), {headers: get_header(true)})
         .then(function (response) {
             dataHandler(response.data)
         })
