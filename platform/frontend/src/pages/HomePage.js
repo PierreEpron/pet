@@ -12,7 +12,7 @@ import Header from "../components/Header";
 import Container from '@material-ui/core/Container';
 import Footer from "../components/Footer"
 
-import {get_contents} from "../services/content.service"
+import {getContents} from "../services/content.service"
 import axios from 'axios';
 
 const columns = [
@@ -91,7 +91,7 @@ export default function StickyHeadTable() {
         }
         else if (!isLoading) {
             setIsLoading(true)
-            get_contents('/exam-reports/', {depth:3}, setData)
+            getContents('/exam-reports/', {depth:3}, setData)
         }
      }, [data, setData, isLoading, setIsLoading]);
 

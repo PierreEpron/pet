@@ -1,10 +1,10 @@
 import axios from 'axios';
-import {REACT_APP_API_URL, HOME_URL, get_header} from './apiConfig'
+import {REACT_APP_API_URL, HOME_URL, getHeader} from './apiConfig'
 
 
 
 function login(user, msgHandler) {
-    axios.post(REACT_APP_API_URL + "/token/", JSON.stringify(user), {headers: get_header(false)})
+    axios.post(REACT_APP_API_URL + "/token/", JSON.stringify(user), {headers: getHeader(false)})
         .then(function (response) {
             localStorage.setItem('currentUser', JSON.stringify({
                 userName:user.username,

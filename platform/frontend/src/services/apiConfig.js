@@ -14,7 +14,7 @@ function checkCurrentUser() {
     return false
 }
 
-function get_header(auth=true) {
+function getHeader(auth=true) {
     const header = {"Content-Type":"application/json"}
     const user = JSON.parse(localStorage.getItem("currentUser"))
     if (auth && user)
@@ -22,4 +22,4 @@ function get_header(auth=true) {
     return header
 }
 
-export {REACT_APP_API_URL, HOME_URL, SIGNIN_URL, get_header, checkCurrentUser, clearCurrentUser}
+export {REACT_APP_API_URL, HOME_URL, SIGNIN_URL, getHeader, checkCurrentUser, clearCurrentUser}

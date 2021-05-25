@@ -1,16 +1,15 @@
 import axios from 'axios';
-import {REACT_APP_API_URL, SIGNIN_URL, get_header, clearCurrentUser} from './apiConfig'
+import {REACT_APP_API_URL, SIGNIN_URL, getHeader, clearCurrentUser} from './apiConfig'
 
-
-function parse_query(query) {
+function parseQuery(query) {
     const parsed = []
     for (var key in query)
         parsed.push(encodeURIComponent(key) + '=' + encodeURIComponent(query[key]))
     return parsed.join('&')
 }
 
-function get_contents(path, query, dataHandler) {
-    axios.get(REACT_APP_API_URL + path + '?' + parse_query(query), {headers: get_header(true)})
+function getContents(path, query, dataHandler) {
+    axios.get(REACT_APP_API_URL + path + '?' + parseQuery(query), {headers: getHeader(true)})
         .then(function (response) {
             dataHandler(response.data)
         })
@@ -25,7 +24,6 @@ function get_contents(path, query, dataHandler) {
                     break             
             }        
         })
-    return parse_query(query)
 }
 
-export {get_contents}
+export {getContents}
