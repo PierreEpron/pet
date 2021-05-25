@@ -7,9 +7,10 @@ function clearCurrentUser() {
 }
 
 function checkCurrentUser() {
-    if (localStorage.getItem("currentUser"))
+    if (localStorage.getItem("currentUser")) {
         window.location = HOME_URL
         return true
+    }
     return false
 }
 
