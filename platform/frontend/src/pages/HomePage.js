@@ -15,29 +15,32 @@ import Footer from "../components/Footer"
 import {getContents} from "../services/content.service"
 
 const columns = [
-    {id: 'name', label: 'Name', minWidth: 170},
-    {id: 'code', label: 'ISO\u00a0Code', minWidth: 100},
-    {
-        id: 'population',
-        label: 'Population',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'size',
-        label: 'Size\u00a0(km\u00b2)',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'density',
-        label: 'Density',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toFixed(2),
-    },
+    {id: 'examRef', label: 'Examen Ref',  extract:(row) => {return row.exam.ref}},
+    {id: 'examDate', label: 'Examen Date',  extract:(row) => {return row.exam.date}},
+    {id: 'examWording', label: 'Examen Wording', extract:(row) => {return row.exam.wording.word}},
+    {id: 'examRoom', label: 'Examen Room', extract:(row) => {return row.exam.room.ref}},
+    // {id: 'code', label: 'ISO\u00a0Code', minWidth: 100},
+    // {
+    //     id: 'population',
+    //     label: 'Population',
+    //     minWidth: 170,
+    //     align: 'right',
+    //     format: (value) => value.toLocaleString('en-US'),
+    // },
+    // {
+    //     id: 'size',
+    //     label: 'Size\u00a0(km\u00b2)',
+    //     minWidth: 170,
+    //     align: 'right',
+    //     format: (value) => value.toLocaleString('en-US'),
+    // },
+    // {
+    //     id: 'density',
+    //     label: 'Density',
+    //     minWidth: 170,
+    //     align: 'right',
+    //     format: (value) => value.toFixed(2),
+    // },
 ];
 
 function createData(name, code, population, size) {
@@ -80,18 +83,14 @@ export default function StickyHeadTable() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-    const [isLoading, setIsLoading] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(true);
     const [data, setData] = React.useState(null);
 
     React.useEffect(() => {
-        if (data) {
+        if (data)
             setIsLoading(false)
-
-        }
-        else if (!isLoading) {
-            setIsLoading(true)
+        else
             getContents('/exam-reports/', {depth:3}, setData)
-        }
      }, [data, setData, isLoading, setIsLoading]);
 
 
@@ -109,6 +108,9 @@ export default function StickyHeadTable() {
         console.log("redirection")
         window.location = "/Docpage"
     }
+
+    if (isLoading)
+       return (<div></div>)
 
     return (
         <div className={classes.root}>
@@ -133,14 +135,14 @@ export default function StickyHeadTable() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            {data.results.map((row) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.ref}>
                                         {columns.map((column) => {
-                                            const value = row[column.id];
+                                            console.log(row)
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
-                                                    {column.format && typeof value === 'number' ? column.format(value) : value}
+                                                    {column.extract(row)}
                                                 </TableCell>
                                             );
                                         })}
