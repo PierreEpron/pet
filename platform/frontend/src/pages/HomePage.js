@@ -86,14 +86,14 @@ export default function StickyHeadTable() {
 
     React.useEffect(() => {
         if (data) {
-            console.log(data)
+            setIsLoading(false)
+
         }
         else if (!isLoading) {
             setIsLoading(true)
-            const depth = 1
-            get_contents('/exam-reports/', {depth}, setData)
+            get_contents('/exam-reports/', {depth:3}, setData)
         }
-     });
+     }, [data, setData, isLoading, setIsLoading]);
 
 
     const handleChangePage = (event, newPage) => {

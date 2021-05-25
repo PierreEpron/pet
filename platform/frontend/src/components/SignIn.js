@@ -61,7 +61,7 @@ export default function SignIn() {
   React.useEffect(() => {
       if (!checkCurrentUser())
         setIsLoading(false)
-  });
+  }, [setIsLoading]);
 
   function handleSubmit(event) {
     event.preventDefault()
