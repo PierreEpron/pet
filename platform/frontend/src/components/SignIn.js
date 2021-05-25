@@ -14,7 +14,7 @@ import {makeStyles, recomposeColor} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import {login, logout} from '../services/auth.service'
-import {checkCurrentUser} from '../services/apiConfig'
+import {checkCurrentUser} from '../services/apiHelpers'
 
 function Copyright() {
   return (

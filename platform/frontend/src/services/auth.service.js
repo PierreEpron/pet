@@ -1,7 +1,6 @@
 import axios from 'axios';
-import {REACT_APP_API_URL, HOME_URL, getHeader} from './apiConfig'
-
-
+import {REACT_APP_API_URL, HOME_URL} from './apiConfig'
+import {getHeader} from './apiHelpers'
 
 function login(user, msgHandler) {
     axios.post(REACT_APP_API_URL + "/token/", JSON.stringify(user), {headers: getHeader(false)})

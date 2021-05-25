@@ -13,7 +13,6 @@ import Container from '@material-ui/core/Container';
 import Footer from "../components/Footer"
 
 import {getContents} from "../services/content.service"
-import axios from 'axios';
 
 const columns = [
     {id: 'name', label: 'Name', minWidth: 170},
