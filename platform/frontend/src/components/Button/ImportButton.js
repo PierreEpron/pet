@@ -19,8 +19,6 @@ const useStyles = makeStyles((theme) => ({
 export default function UploadButtons() {
   const classes = useStyles();
 
-  const [file, setFile] = React.useState(null);
-
   function onFileChange(event) {
       const file = event.target.files[0]
       const formData = new FormData()

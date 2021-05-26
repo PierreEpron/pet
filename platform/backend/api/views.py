@@ -11,8 +11,12 @@ class ContentViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
 
     def get_serializer(self, *args, **kwargs):
+        
         if isinstance(self.request.data, list):
             kwargs['many'] = True
+
+        self.serializer_class.Meta.depth = int(self.request.GET.get('depth', 0))
+
         return super().get_serializer(*args, **kwargs)
 
 class ExamWordingViewSet(ContentViewSet):
