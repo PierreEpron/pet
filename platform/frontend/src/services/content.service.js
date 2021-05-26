@@ -5,7 +5,6 @@ import {getHeader, clearCurrentUser, parseQuery} from './apiHelpers'
 function getContents(path, query, dataHandler) {
     axios.get(REACT_APP_API_URL + path + '?' + parseQuery(query), {headers: getHeader(true)})
         .then(function (response) {
-            console.log(response)
             dataHandler(response.data)
         })
         .catch(function (error) {
