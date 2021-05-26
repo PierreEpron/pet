@@ -45,7 +45,7 @@ export default function StickyHeadTable() {
             setIsLoading(false)
         if (refreshData){
             setRefreshData(false)
-            getContents('/exam-reports/', {limit:rowsPerPage,offset:page * rowsPerPage,depth:3}, setData)
+            getContents('/exam-reports/', {limit:rowsPerPage, offset:page * rowsPerPage, depth:3}, setData)
         }
      }, [data, setData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
 
