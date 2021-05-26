@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import MaterialTable from "material-table";
 import { forwardRef } from 'react';
 import AddBox from '@material-ui/icons/AddBox';
@@ -41,7 +41,7 @@ export default function AddRow() {
 
 const { useState } = React;
 
-  const [columns, setColumns] = useState([
+  const [columns] = useState([
     {
       title: 'information Extraite', field: 'info',
       editComponent: props => (
@@ -63,11 +63,7 @@ const { useState } = React;
 
   return (
     <MaterialTable
-       options={{
-        showTitle: false,
-        search: false,
-
-                }}
+      options={{selection: true}}
       title="Résultat Modéle"
       icons={tableIcons}
       columns={columns}
@@ -106,9 +102,7 @@ const { useState } = React;
           }),
       }}
        parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
-      options={{
-        selection: true,
-      }}
+
     />
   )
 }

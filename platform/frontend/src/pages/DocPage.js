@@ -157,20 +157,20 @@ export default function CollapsibleTable() {
 
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={2}>
-            <Grid xs={12} sm={6}>
+            <Grid item xs={12} sm={6}>
               <TextArea/>
             </Grid>
-            <Grid xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TableContainer component={Paper}>
                 <Table aria-label="collapsible table">
                   <TableHead>
                     <TableRow>
                       <TableCell/>
-                      <TableCell>information Extraite</TableCell>
-                      <TableCell align="center">precision&nbsp;(en %)</TableCell>
-                      <TableCell align="center">résultat</TableCell>
+                      <TableCell>Informations Extraites</TableCell>
+                      <TableCell align="center">Précision&nbsp;(en %)</TableCell>
+                      <TableCell align="center">Résultat</TableCell>
                     </TableRow>
-                  </TableHead>
+                  </TableHead>  
                   <TableBody>
                     {rows.map((row) => (
                         <Row key={row.info} row={row}/>
@@ -178,8 +178,8 @@ export default function CollapsibleTable() {
                   </TableBody>
                 </Table>
               </TableContainer>
-            </Grid>
-            <Grid xs={12} sm={6}>
+            </Grid> */}
+            <Grid item xs={12} sm={6}>
               <AddRow/>
             </Grid>
           </Grid>

@@ -12,7 +12,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={() => <SignIn />} />
             <Route path="/HomePage" exact component={() => <HomePage />} />
-            <Route path="/Docpage" exact component={() => <Docpage />} />
+            <Route path="/document/:id" exact component={() => <Docpage />} />
             <Route path="/StatPage" exact component={() => <StatPage />} />
             {/*<Route path="/pagestest" exact component={() => <PageTest />} />*/}
         </Switch>
