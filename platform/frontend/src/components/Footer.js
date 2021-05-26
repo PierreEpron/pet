@@ -72,7 +72,6 @@ export default function ButtonAppBar() {
                     </Button>
                     <Button
                         variant="contained"
-                        color="s-black"
                         size="large"
                         className={classes.WebButton}
                         startIcon={<EmailIcon/>}

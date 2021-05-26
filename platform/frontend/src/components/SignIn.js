@@ -10,8 +10,9 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
+import {makeStyles, recomposeColor} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import {login, logout} from '../services/auth.service'
 
 function Copyright() {
   return (
@@ -49,10 +50,19 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
 
-  function redirection(e) {
-    e.preventDefault()
-    console.log("redirection")
-    window.location = "/HomePage"
+  const [msg, setMsg] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  function handleSubmit(event) {
+    event.preventDefault()
+    login({username: email, password: password}, setMsg)
+  }
+
+  function showMsg() {
+    if (msg !== '') {
+      return (<p>{msg}</p>)
+    }
   }
 
   return (
@@ -76,6 +86,7 @@ export default function SignIn() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={(event) => {setEmail(event.target.value)}}
             />
             <TextField
                 variant="outlined"
@@ -87,6 +98,7 @@ export default function SignIn() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={(event) => {setPassword(event.target.value)}}
             />
             <FormControlLabel
                 control={<Checkbox value="remember" color="primary"/>}
@@ -98,10 +110,11 @@ export default function SignIn() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={redirection}
+                onClick={handleSubmit}
             >
               Sign In
             </Button>
+            {showMsg()}
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">

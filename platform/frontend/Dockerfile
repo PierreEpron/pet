@@ -5,7 +5,7 @@ WORKDIR /usr/src/frontend
 
 COPY ./package.json .
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 COPY . .
 RUN sed -i 's/\r//' start.sh
