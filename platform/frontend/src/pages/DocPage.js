@@ -160,7 +160,7 @@ export default function CollapsibleTable() {
             <Grid item xs={12} sm={6}>
               <TextArea/>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TableContainer component={Paper}>
                 <Table aria-label="collapsible table">
                   <TableHead>
@@ -178,7 +178,7 @@ export default function CollapsibleTable() {
                   </TableBody>
                 </Table>
               </TableContainer>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={6}>
               <AddRow/>
             </Grid>
