@@ -166,9 +166,9 @@ export default function CollapsibleTable() {
                   <TableHead>
                     <TableRow>
                       <TableCell/>
-                      <TableCell>information Extraite</TableCell>
-                      <TableCell align="center">precision&nbsp;(en %)</TableCell>
-                      <TableCell align="center">résultat</TableCell>
+                      <TableCell>Informations Extraites</TableCell>
+                      <TableCell align="center">Précision&nbsp;(en %)</TableCell>
+                      <TableCell align="center">Résultat</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
