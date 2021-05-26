@@ -16,7 +16,7 @@ services:
   django:
     container_name: django_server
     build: ./backend
-    command: ./start.sh
+    command: ["./start.sh"]
     volumes:
       - ./backend/:/usr/src/backend/
     ports:
@@ -28,7 +28,7 @@ services:
   node:
     container_name: node_server
     build: ./frontend
-    command: ./start.sh
+    command: ["./start.sh"]
     volumes: 
       - ./frontend/src:/usr/src/frontend/src
       - ./frontend/public:/usr/src/frontend/public
