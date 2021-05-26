@@ -1,6 +1,7 @@
 import axios from 'axios';
-import {REACT_APP_API_URL, SIGNIN_URL} from './apiConfig'
-import {getHeader, clearCurrentUser, parseQuery} from './apiHelpers'
+import {onBadAuth} from './auth.service'
+import {REACT_APP_API_URL} from './apiConfig'
+import {getHeader, parseQuery} from './apiHelpers'
 
 function getContents(path, query, dataHandler) {
     axios.get(REACT_APP_API_URL + path + '?' + parseQuery(query), {headers: getHeader(true)})
@@ -10,8 +11,7 @@ function getContents(path, query, dataHandler) {
         .catch(function (error) {
             switch (error.response.status) {
                 case 401:
-                    clearCurrentUser()
-                    window.location = SIGNIN_URL   
+                    onBadAuth()
                     break
                 default:
                     console.log(error)
