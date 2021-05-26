@@ -19,54 +19,7 @@ const columns = [
     {id: 'examDate', label: 'Examen Date',  extract:(row) => {return row.exam.date}},
     {id: 'examWording', label: 'Examen Wording', extract:(row) => {return row.exam.wording.word}},
     {id: 'examRoom', label: 'Examen Room', extract:(row) => {return row.exam.room.ref}},
-    // {id: 'code', label: 'ISO\u00a0Code', minWidth: 100},
-    // {
-    //     id: 'population',
-    //     label: 'Population',
-    //     minWidth: 170,
-    //     align: 'right',
-    //     format: (value) => value.toLocaleString('en-US'),
-    // },
-    // {
-    //     id: 'size',
-    //     label: 'Size\u00a0(km\u00b2)',
-    //     minWidth: 170,
-    //     align: 'right',
-    //     format: (value) => value.toLocaleString('en-US'),
-    // },
-    // {
-    //     id: 'density',
-    //     label: 'Density',
-    //     minWidth: 170,
-    //     align: 'right',
-    //     format: (value) => value.toFixed(2),
-    // },
 ];
-
-function createData(name, code, population, size) {
-    const density = population / size;
-    return {name, code, population, size, density};
-}
-
-const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-];
-
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -87,17 +40,14 @@ export default function StickyHeadTable() {
     const [refreshData, setRefreshData] = React.useState(true);
     const [data, setData] = React.useState(null);
 
-    const loadData = () => {
-        setRefreshData(false)
-        getContents('/exam-reports/', {limit:rowsPerPage,offset:page * rowsPerPage,depth:3}, setData)
-    } 
-
     React.useEffect(() => {
         if (data)
             setIsLoading(false)
-        if (refreshData)
-            loadData()
-     }, [data, setData, isLoading, setIsLoading, refreshData, setRefreshData]);
+        if (refreshData){
+            setRefreshData(false)
+            getContents('/exam-reports/', {limit:rowsPerPage,offset:page * rowsPerPage,depth:3}, setData)
+        }
+     }, [data, setData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
 
 
     const handleChangePage = (event, newPage) => {
@@ -108,8 +58,12 @@ export default function StickyHeadTable() {
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(event.target.value);
         setPage(0);
-        setRefreshData(true)
-    };
+        setRefreshData(true);
+    }
+
+    const handleDocumentClick = (event) => {
+        window.location = "/document/" + event.target.parentElement.id;
+    }
 
     if (isLoading)
        return (<div></div>)
@@ -138,7 +92,7 @@ export default function StickyHeadTable() {
                         <TableBody>
                             {data.results.map((row) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.ref}>
+                                    <TableRow id={row.id} hover role="checkbox" tabIndex={-1} key={row.id} onClick={handleDocumentClick}>
                                         {columns.map((column) => {
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
