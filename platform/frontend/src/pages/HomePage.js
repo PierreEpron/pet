@@ -84,30 +84,32 @@ export default function StickyHeadTable() {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const [isLoading, setIsLoading] = React.useState(true);
+    const [refreshData, setRefreshData] = React.useState(true);
     const [data, setData] = React.useState(null);
+
+    const loadData = () => {
+        setRefreshData(false)
+        getContents('/exam-reports/', {limit:rowsPerPage,offset:page * rowsPerPage,depth:3}, setData)
+    } 
 
     React.useEffect(() => {
         if (data)
             setIsLoading(false)
-        else
-            getContents('/exam-reports/', {depth:3}, setData)
-     }, [data, setData, isLoading, setIsLoading]);
+        if (refreshData)
+            loadData()
+     }, [data, setData, isLoading, setIsLoading, refreshData, setRefreshData]);
 
 
     const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+        setPage(newPage)
+        setRefreshData(true)
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
+        setRowsPerPage(event.target.value);
         setPage(0);
+        setRefreshData(true)
     };
-
-    function redirection(e) {
-        e.preventDefault()
-        console.log("redirection")
-        window.location = "/Docpage"
-    }
 
     if (isLoading)
        return (<div></div>)
@@ -126,7 +128,6 @@ export default function StickyHeadTable() {
                                     <TableCell
                                         key={column.id}
                                         align={column.align}
-                                        onClick={redirection}
                                         style={{minWidth: column.minWidth}}
                                     >
                                         {column.label}
@@ -139,7 +140,6 @@ export default function StickyHeadTable() {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.ref}>
                                         {columns.map((column) => {
-                                            console.log(row)
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
                                                     {column.extract(row)}
@@ -155,9 +155,9 @@ export default function StickyHeadTable() {
                 </TableContainer>
 
                 <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
+                    rowsPerPageOptions={[10, 25, 50, 100]}
                     component="div"
-                    count={rows.length}
+                    count={data.count}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onChangePage={handleChangePage}
