@@ -84,20 +84,29 @@ export default function StickyHeadTable() {
                                     >
 
                                         {column.label}
+
                                     </TableCell>
                                 ))}
                             </TableRow >
                         </TableHead>
+
                         <TableBody >
 
                             {data.results.map((row) => {
                                 return (
+
                                     <TableRow id={row.id} hover tabIndex={-1} key={row.id} onClick={handleDocumentClick}>
 
                                         {columns.map((column) => {
                                             return (
-                                                <TableCell key={column.id} align={column.align}>
+                                                <TableCell key={column.id} align={column.align} padding={columns.disablePadding ? 'none' : 'default'}>
                                                     {column.extract(row)}
+                                                    <Checkbox
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{ 'aria-label': 'select all desserts' }}
+          />
                                                 </TableCell>
                                             );
                                         })}
