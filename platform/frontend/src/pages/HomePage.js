@@ -11,7 +11,7 @@ import Header from "../components/Header";
 import Container from '@material-ui/core/Container';
 import Footer from "../components/Footer"
 import Progress from "../components/CircularProgress/CircularProgress"
-
+import Checkbox from '@material-ui/core/Checkbox';
 import {getContents} from "../services/content.service"
 
 const columns = [
@@ -35,11 +35,10 @@ export default function StickyHeadTable() {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
     const [isLoading, setIsLoading] = React.useState(true);
     const [refreshData, setRefreshData] = React.useState(true);
     const [data, setData] = React.useState(null);
-
+    const { onSelectAllClick,numSelected, rowCount } = React.useState();
     React.useEffect(() => {
         if (data)
             setIsLoading(false)
@@ -70,32 +69,44 @@ export default function StickyHeadTable() {
 
     return (
         <div className={classes.root}>
-            <Header></Header>
+            <Header/>
 
             <Container maxWidth="lg" className={classes.container}>
                 <TableContainer className={classes.container}>
-                    <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
+                    <Table stickyHeader aria-label="sticky table" >
+                        <TableHead >
+                            <TableRow >
                                 {columns.map((column) => (
                                     <TableCell
                                         key={column.id}
                                         align={column.align}
                                         style={{minWidth: column.minWidth}}
                                     >
+
                                         {column.label}
+
                                     </TableCell>
                                 ))}
-                            </TableRow>
+                            </TableRow >
                         </TableHead>
-                        <TableBody>
+
+                        <TableBody >
+
                             {data.results.map((row) => {
                                 return (
-                                    <TableRow id={row.id} hover role="checkbox" tabIndex={-1} key={row.id} onClick={handleDocumentClick}>
+
+                                    <TableRow id={row.id} hover tabIndex={-1} key={row.id} onClick={handleDocumentClick}>
+
                                         {columns.map((column) => {
                                             return (
-                                                <TableCell key={column.id} align={column.align}>
+                                                <TableCell key={column.id} align={column.align} padding={columns.disablePadding ? 'none' : 'default'}>
                                                     {column.extract(row)}
+                                                    <Checkbox
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{ 'aria-label': 'select all desserts' }}
+          />
                                                 </TableCell>
                                             );
                                         })}
