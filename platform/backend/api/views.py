@@ -1,17 +1,20 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from numpy.core.fromnumeric import put
 from rest_framework import viewsets, permissions
+from rest_framework.serializers import Serializer
 from .models import ExamWording, ExamRoom, Exam, ExamReport
 from .serializers import ExamWordingSerializer, ExamRoomSerializer, ExamSerializer, ExamReportSerializer
 from rest_framework.response import Response
+import os
+
 
 class ContentViewSet(viewsets.ModelViewSet):
     FILTERSET_FIELDS = ['modified_by', 'created_by', 'created_date' , 'modified_date']
-
     filter_backends = [DjangoFilterBackend]
+    permission_classes = [] if os.environ.get("SECURITY", "0") == "0" else [permissions.IsAuthenticated]
 
     def get_serializer(self, *args, **kwargs):
-        
+        print(self.permission_classes)
         if isinstance(self.request.data, list):
             kwargs['many'] = True
 
@@ -25,7 +28,6 @@ class ExamWordingViewSet(ContentViewSet):
     """
     queryset = ExamWording.objects.all().order_by('-modified_date')
     serializer_class = ExamWordingSerializer
-    # permission_classes = [permissions.IsAuthenticated]
 
     filterset_fields = ['word'] + ContentViewSet.FILTERSET_FIELDS
 
@@ -37,7 +39,6 @@ class ExamRoomViewSet(ContentViewSet):
     serializer_class = ExamRoomSerializer
 
     filterset_fields = ['ref'] + ContentViewSet.FILTERSET_FIELDS
-    # permission_classes = [permissions.IsAuthenticated]
 
 class ExamViewSet(ContentViewSet):
     """
@@ -45,7 +46,6 @@ class ExamViewSet(ContentViewSet):
     """
     queryset = Exam.objects.all().order_by('-modified_date')
     serializer_class = ExamSerializer
-    # permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['ref', 'date', 'wording', 'room'] + ContentViewSet.FILTERSET_FIELDS
 
 class ExamReportViewSet(ContentViewSet):
@@ -54,8 +54,8 @@ class ExamReportViewSet(ContentViewSet):
     """
     queryset = ExamReport.objects.all().order_by('-modified_date')
     serializer_class = ExamReportSerializer
-    # permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['text', 'exam'] + ContentViewSet.FILTERSET_FIELDS
+
 
 from rest_framework.decorators import api_view
 import numpy as np
