@@ -41,7 +41,6 @@ function onBadAuth() {
             })
             .catch(function (error) {
                 clearCurrentUser()
-                window.location = SIGNIN_URL  
             })
     else         
         window.location = SIGNIN_URL  
@@ -49,8 +48,7 @@ function onBadAuth() {
 
 
 function logout() {
-    console.log("logout")
-    localStorage.removeItem('currentUser');
+    clearCurrentUser()
 }
 
 

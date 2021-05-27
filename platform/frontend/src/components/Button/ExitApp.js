@@ -1,8 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import SaveIcon from '@material-ui/icons/Save';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {logout} from '../../services/auth.service';
 
 
 
@@ -24,6 +24,7 @@ export default function IconLabelButtons() {
         size="small"
         className={classes.button}
         startIcon={<ExitToAppIcon />}
+        onClick={logout}
       >
         LogOut
       </Button>
