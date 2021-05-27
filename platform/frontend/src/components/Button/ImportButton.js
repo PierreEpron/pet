@@ -2,7 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import {upload} from '../../services/upload.service'
+import {upload} from '../../services/upload.service';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -16,12 +17,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UploadButtons() {
+export default function UploadButtons(props) {
   const classes = useStyles();
+  const { onClick, loading } = props;
 
   function onFileChange(event) {
-      const file = event.target.files[0]
-      const formData = new FormData()
+      const file = event.target.files[0];
+      const formData = new FormData();
+
       formData.append("csv", file, file.name);
       upload(formData)
   }
@@ -38,9 +41,10 @@ export default function UploadButtons() {
         onChange={onFileChange}
       />
       <label htmlFor="contained-button-file">
-        <Button variant="contained" color="primary" component="span">
-          Import
-        </Button>
+        <Button variant="contained" color= 'primary' component="span" onClick={onClick} disabled={loading}>
+      {loading && <CircularProgress size={14} />}
+      {!loading && 'import'}
+    </Button>
       </label>
       <label htmlFor="icon-button-file">
         <IconButton color="primary" aria-label="upload picture" component="span">
