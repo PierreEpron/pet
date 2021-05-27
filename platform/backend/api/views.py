@@ -57,7 +57,6 @@ class ExamReportViewSet(ContentViewSet):
 
 
 from rest_framework.decorators import api_view
-import numpy as np
 import pandas as pd
 from datetime import datetime
 from django.utils import timezone
@@ -70,7 +69,7 @@ def parse_datetime(date, time):
 @api_view(['POST'])
 def upload(request):
     data = pd.read_csv(request.data['csv'], sep='\t')
-    for item in data[:500].values:
+    for item in data.values:
         wording, _ = ExamWording.objects.get_or_create(word=item[2])
         room, _ = ExamRoom.objects.get_or_create(ref=item[3])
         exam, _ = Exam.objects.get_or_create(ref=item[0], defaults={
@@ -79,6 +78,5 @@ def upload(request):
             'room':room
         })
         ExamReport.objects.get_or_create(text=item[6], exam=exam)
-        print(f"{wording.id}, {room.id}, {exam.id}")        
 
     return Response({"message": "Hello, world!"})
