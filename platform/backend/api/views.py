@@ -14,7 +14,6 @@ class ContentViewSet(viewsets.ModelViewSet):
     permission_classes = [] if os.environ.get("SECURITY", "0") == "0" else [permissions.IsAuthenticated]
 
     def get_serializer(self, *args, **kwargs):
-        print(self.permission_classes)
         if isinstance(self.request.data, list):
             kwargs['many'] = True
 
