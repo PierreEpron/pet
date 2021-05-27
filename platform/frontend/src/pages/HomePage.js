@@ -11,6 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Header from "../components/Header";
 import Container from '@material-ui/core/Container';
 import Footer from "../components/Footer"
+import Progress from "../components/CircularProgress/CircularProgress"
 
 import {getContents} from "../services/content.service"
 
@@ -66,7 +67,7 @@ export default function StickyHeadTable() {
     }
 
     if (isLoading)
-       return (<div></div>)
+       return (<div><Progress/></div>)
 
     return (
         <div className={classes.root}>
