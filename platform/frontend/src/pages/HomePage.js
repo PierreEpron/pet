@@ -74,7 +74,7 @@ export default function StickyHeadTable() {
 
             <Container maxWidth="lg" className={classes.container}>
                 <TableContainer className={classes.container}>
-                    <Table stickyHeader aria-label="sticky table">
+                    <Table stickyHeader aria-label="sticky table" checkboxSelection>
                         <TableHead>
                             <TableRow>
                                 {columns.map((column) => (
