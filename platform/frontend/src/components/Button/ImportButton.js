@@ -34,29 +34,18 @@ const useStyles = makeStyles((theme) => ({
 export default function UploadButtons() {
   const classes = useStyles();
   const [loading, setLoading] = React.useState(false);
-  const [success, setSuccess] = React.useState(false);
-  const timer = React.useRef();
 
-  const buttonClassname = clsx({
-    [classes.buttonSuccess]: success,
-  });
-  const handleButtonClick = () => {
-    if (!loading) {
-      setSuccess(false);
-      setLoading(true);
-      timer.current = window.setTimeout(() => {
-        setSuccess(true);
-        setLoading(false);
-      }, 5000);
-    }
-  };
 
   function onFileChange(event) {
+      setLoading(true)
       const file = event.target.files[0]
       const formData = new FormData()
       formData.append("csv", file, file.name);
-      upload(formData)
-  }
+      upload(formData, () => {
+        setLoading(false);
+        window.location = window.location
+      });
+    }
 
   return (
     <div className={classes.root}>
@@ -68,6 +57,7 @@ export default function UploadButtons() {
         type="file"
         accept=".csv,.xlsx,.xls"
         onChange={onFileChange}
+        disabled={loading}
       />
       <label htmlFor="contained-button-file" className={classes.wrapper}>
         {/*<Button variant="contained" color="primary" component="span">
@@ -76,18 +66,12 @@ export default function UploadButtons() {
         <Button
           variant="contained"
           color="primary"
-          className={buttonClassname}
           disabled={loading}
-          onClick={handleButtonClick}
           component="span"
         >
           Import
         </Button>
         {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
-      </label>
-      <label htmlFor="icon-button-file">
-        <IconButton color="primary" aria-label="upload picture" component="span">
-        </IconButton>
       </label>
     </div>
   );

@@ -10,10 +10,10 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route path="/" exact component={() => <SignIn />} />
-            <Route path="/HomePage" exact component={() => <HomePage />} />
-            <Route path="/document/:id" exact component={() => <Docpage />} />
-            <Route path="/StatPage" exact component={() => <StatPage />} />
+          <Route path="/" exact component={SignIn} />
+            <Route path="/HomePage" exact component={HomePage} />
+            <Route path="/document/:id" exact component={Docpage} />
+            <Route path="/StatPage" exact component={StatPage} />
             {/*<Route path="/pagestest" exact component={() => <PageTest />} />*/}
         </Switch>
       </Router>

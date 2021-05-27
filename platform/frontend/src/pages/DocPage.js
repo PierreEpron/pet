@@ -7,11 +7,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Header from "../components/Header";
@@ -21,7 +19,9 @@ import TextArea from "../components/Text/TextArea"
 import Footer from "../components/Footer"
 import BoxCheck from '../components/BoxCheck'
 import AddRow from '../components/Button/AddRow'
+import Progress from "../components/CircularProgress/CircularProgress"
 
+import {getContents} from "../services/content.service"
 
 const useRowStyles = makeStyles({
   root: {
@@ -148,8 +148,23 @@ const rows = [
 
 ];
 
-export default function CollapsibleTable() {
+export default function CollapsibleTable({match}) { 
   const classes = useStyles();
+  
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [data, setData] = React.useState(null);
+
+  React.useEffect(() => {
+    if (data)
+      setIsLoading(false)
+    else
+      getContents("/exam-reports/" + match.params.id + "/", {depth:2}, setData)
+    console.log(data)
+  }, [match, isLoading, data, setData, setIsLoading]);
+
+
+  if (isLoading)
+    return (<div><Progress/></div>)
 
   return (
       <div>
@@ -158,27 +173,8 @@ export default function CollapsibleTable() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextArea/>
+              <TextArea text={data.text}/>
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TableContainer component={Paper}>
-                <Table aria-label="collapsible table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell/>
-                      <TableCell>Informations Extraites</TableCell>
-                      <TableCell align="center">Précision&nbsp;(en %)</TableCell>
-                      <TableCell align="center">Résultat</TableCell>
-                    </TableRow>
-                  </TableHead>  
-                  <TableBody>
-                    {rows.map((row) => (
-                        <Row key={row.info} row={row}/>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Grid> */}
             <Grid item xs={12} sm={6}>
               <AddRow/>
             </Grid>
