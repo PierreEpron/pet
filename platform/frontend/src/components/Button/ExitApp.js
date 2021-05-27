@@ -1,29 +1,33 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import SaveIcon from '@material-ui/icons/Save';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-const useStyles = makeStyles({
-  root: {
-    width: 500,
-  },
-});
 
-export default function ExitApp() {
+
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
+
+export default function IconLabelButtons() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
 
   return (
-    <BottomNavigation
-      value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-      }}
-      showLabels
-      className={classes.root}
-    >
-      <BottomNavigationAction label="LogOut" icon={<ExitToAppIcon />} />
-    </BottomNavigation>
+    <div>
+      <Button
+        variant="contained"
+        color="secondary"
+        size="small"
+        className={classes.button}
+        startIcon={<ExitToAppIcon />}
+      >
+        LogOut
+      </Button>
+
+    </div>
   );
 }

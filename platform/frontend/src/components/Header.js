@@ -8,7 +8,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import ImportButton from "./Button/ImportButton";
 import StatsButton from "./Button/StatsButton";
 import ExportButton from "./Button/ExportButton";
-
+import ExitApp from "./Button/ExitApp"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,6 +83,7 @@ export default function SearchAppBar() {
           <ImportButton/>
           <StatsButton/>
           <ExportButton/>
+
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon/>
@@ -96,6 +97,7 @@ export default function SearchAppBar() {
                 inputProps={{'aria-label': 'search'}}
             />
           </div>
+          <ExitApp/>
         </Toolbar>
       </AppBar>
   );
