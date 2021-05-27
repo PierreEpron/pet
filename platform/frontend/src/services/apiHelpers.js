@@ -1,7 +1,8 @@
-import {HOME_URL} from "./apiConfig"
+import {HOME_URL, SIGNIN_URL} from "./apiConfig"
 
 function clearCurrentUser() {
     localStorage.removeItem("currentUser")
+    window.location = SIGNIN_URL
 }
 
 function checkCurrentUser() {

@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import Progress from '../components/CircularProgress/CircularProgress.js'
 import {login} from '../services/auth.service'
 import {checkCurrentUser} from '../services/apiHelpers'
 
@@ -75,7 +75,7 @@ export default function SignIn() {
   }
 
   if (isLoading)
-    return (<div></div>)
+    return (<div><Progress/></div>)
 
   return (
       <Container component="main" maxWidth="xs">

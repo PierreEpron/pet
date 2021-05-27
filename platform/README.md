@@ -14,5 +14,8 @@ npm start
 OU
 
 ```
+pour windows
 docker-compose -f docker-compose.dev.yml up --build
+pour linux
+sudo docker-compose -f docker-compose.dev.yml up --build
 ``
