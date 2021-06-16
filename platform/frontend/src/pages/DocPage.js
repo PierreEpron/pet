@@ -164,8 +164,8 @@ export default function CollapsibleTable({match}) {
       <div>
         <Header/>
 
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={2}>
+        <Container maxWidth="xl" className={classes.container}>
+          <Grid container spacing={6}>
             <Grid item xs={12} sm={6}>
               <TextArea text={data.text}/>
             </Grid>
