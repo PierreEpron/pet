@@ -100,12 +100,12 @@ export default function StickyHeadTable() {
                             {data.results.map((row) => {
                                 return (
 
-                                    <TableRow id={row.id} hover tabIndex={-1} key={row.id} role="checkbox" onClick={handleDocumentClick}>
+                                    <TableRow id={row.id} hover tabIndex={-1} key={row.id} onClick={handleDocumentClick}>
                                         <TableCell><Checkbox/></TableCell>
 
                                         {columns.map((column) => {
                                             return (
-                                                <TableCell className="selectCheckbox" key={column.id} align={column.align} padding={row.disablePadding ? 'none' : 'default'}>
+                                                <TableCell key={column.id} align={column.align} padding={row.disablePadding ? 'none' : 'default'}>
                                                     {column.extract(row)}
 
                                                 </TableCell>
