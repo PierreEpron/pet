@@ -13,7 +13,6 @@ import Footer from "../components/Footer"
 import Progress from "../components/CircularProgress/CircularProgress"
 import Checkbox from '@material-ui/core/Checkbox';
 import {getContents} from "../services/content.service"
-// import { DataGrid } from '@material-ui/data-grid';
 
 
 
@@ -42,7 +41,6 @@ export default function StickyHeadTable() {
     const [isLoading, setIsLoading] = React.useState(true);
     const [refreshData, setRefreshData] = React.useState(true);
     const [data, setData] = React.useState(null);
-    const { onSelectAllClick,numSelected, rowCount } = React.useState();
     React.useEffect(() => {
         if (data)
             setIsLoading(false)
