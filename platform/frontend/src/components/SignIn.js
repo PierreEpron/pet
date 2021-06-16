@@ -71,7 +71,7 @@ export default function SignIn() {
 
   function showMsg() {
     if (msg !== '') {
-      return (<Alert severity="error">Bad Mail/Password</Alert>)
+      return (<Alert severity="error">{msg}</Alert>)
     }
   }
 
