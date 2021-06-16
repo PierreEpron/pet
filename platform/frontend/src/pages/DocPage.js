@@ -154,7 +154,6 @@ export default function CollapsibleTable({match}) {
       setIsLoading(false)
     else
       getContents("/exam-reports/" + match.params.id + "/", {depth:2}, setData)
-    console.log(data)
   }, [match, isLoading, data, setData, setIsLoading]);
 
 

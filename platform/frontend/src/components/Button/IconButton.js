@@ -16,7 +16,7 @@ export default function IconButtons() {
 
   return (
     <div className={classes.root}>
-      <IconButton color="primary" aria-label="add an alarm">
+      <IconButton color="primary" aria-label="go DocPage">
         <ForwardIcon />
       </IconButton>
     </div>

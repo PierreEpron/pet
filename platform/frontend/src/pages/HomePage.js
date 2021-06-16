@@ -13,6 +13,7 @@ import Footer from "../components/Footer"
 import Progress from "../components/CircularProgress/CircularProgress"
 import Checkbox from '@material-ui/core/Checkbox';
 import {getContents} from "../services/content.service"
+import IconButton from "../components/Button/IconButton"
 
 
 
@@ -62,8 +63,11 @@ export default function StickyHeadTable() {
         setRefreshData(true);
     }
 
-    const handleDocumentClick = (event) => {
-        window.location = "/document/" + event.target.parentElement.id;
+    const handleDocumentClick = (documentId) => {
+        return (event) =>{
+            console.log(documentId)
+        window.location = "/document/" + documentId;
+        }
     }
 
     if (isLoading)
@@ -89,7 +93,7 @@ export default function StickyHeadTable() {
                                         {column.label}
 
                                     </TableCell>))}
-                                <TableCell/>
+                                <TableCell>Select</TableCell>
                             </TableRow >
                         </TableHead>
 
@@ -102,16 +106,17 @@ export default function StickyHeadTable() {
                                         <TableCell><Checkbox/></TableCell>
 
                                         {columns.map((column) => {
-
+                                            console.log(row["id"])
                                             return (
                                                 <TableCell key={column.id} align={column.align}
                                                            padding={row.disablePadding ? 'none' : 'default'}
-                                                            onClick={column.id === "examRef" ? handleDocumentClick : null} >
+                                                >
                                                     {column.extract(row)}
 
                                                 </TableCell>
                                             );
                                         })}
+                                        <TableCell onClick = {handleDocumentClick(row.id)}>< IconButton> </IconButton></TableCell>
 
                                     </TableRow>
 
