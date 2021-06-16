@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import Progress from '../components/CircularProgress/CircularProgress.js'
 import {login} from '../services/auth.service'
 import {checkCurrentUser} from '../services/apiHelpers'
+import Alert from '@material-ui/lab/Alert';
 
 function Copyright() {
   return (
@@ -70,7 +71,7 @@ export default function SignIn() {
 
   function showMsg() {
     if (msg !== '') {
-      return (<p>{msg}</p>)
+      return (<Alert severity="error">This is an error alert — check it out!</Alert>)
     }
   }
 
