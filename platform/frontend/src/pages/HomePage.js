@@ -13,8 +13,12 @@ import Footer from "../components/Footer"
 import Progress from "../components/CircularProgress/CircularProgress"
 import Checkbox from '@material-ui/core/Checkbox';
 import {getContents} from "../services/content.service"
+// import { DataGrid } from '@material-ui/data-grid';
+
+
 
 const columns = [
+
     {id: 'examRef', label: 'Examen Ref',  extract:(row) => {return row.exam.ref}},
     {id: 'examDate', label: 'Examen Date',  extract:(row) => {return row.exam.date}},
     {id: 'examWording', label: 'Examen Wording', extract:(row) => {return row.exam.wording.word}},
@@ -76,6 +80,7 @@ export default function StickyHeadTable() {
                     <Table stickyHeader aria-label="sticky table" >
                         <TableHead >
                             <TableRow >
+                                <TableCell><Checkbox/></TableCell>
                                 {columns.map((column) => (
                                     <TableCell
                                         key={column.id}
@@ -95,22 +100,20 @@ export default function StickyHeadTable() {
                             {data.results.map((row) => {
                                 return (
 
-                                    <TableRow id={row.id} hover tabIndex={-1} key={row.id} onClick={handleDocumentClick}>
+                                    <TableRow id={row.id} hover tabIndex={-1} key={row.id} role="checkbox" onClick={handleDocumentClick}>
+                                        <TableCell><Checkbox/></TableCell>
 
                                         {columns.map((column) => {
                                             return (
-                                                <TableCell key={column.id} align={column.align} padding={columns.disablePadding ? 'none' : 'default'}>
+                                                <TableCell className="selectCheckbox" key={column.id} align={column.align} padding={row.disablePadding ? 'none' : 'default'}>
                                                     {column.extract(row)}
-                                                    <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          />
+
                                                 </TableCell>
                                             );
                                         })}
+
                                     </TableRow>
+
                                 );
                             })}
                         </TableBody>
