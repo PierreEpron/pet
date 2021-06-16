@@ -5,6 +5,8 @@ import IconButton from '@material-ui/core/IconButton';
 import {upload} from '../../services/upload.service';
 import clsx from 'clsx';
 import CircularProgress from '@material-ui/core/CircularProgress';
+// import LinearProgress from '@material-ui/core/LinearProgress';
+
 import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
@@ -72,6 +74,7 @@ export default function UploadButtons() {
           Import
         </Button>
         {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+          {/*{loading && <LinearProgress color="red" variant="determinate" value={loading}  size={24} className={classes.buttonProgress} />}*/}
       </label>
     </div>
   );
