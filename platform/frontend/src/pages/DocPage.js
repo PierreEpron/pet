@@ -20,6 +20,7 @@ import Footer from "../components/Footer"
 import BoxCheck from '../components/BoxCheck'
 import AddRow from '../components/Button/AddRow'
 import Progress from "../components/CircularProgress/CircularProgress"
+import WordCloud from "../components/Charts/WordCloud"
 
 import {getContents} from "../services/content.service"
 
@@ -164,14 +165,16 @@ export default function CollapsibleTable({match}) {
       <div>
         <Header/>
 
-        <Container maxWidth="xl" className={classes.container}>
+        <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={6}>
             <Grid item xs={12} sm={6}>
               <TextArea text={data.text}/>
             </Grid>
             <Grid item xs={12} sm={6}>
               <AddRow/>
+              <WordCloud/>
             </Grid>
+
           </Grid>
         </Container>
 
