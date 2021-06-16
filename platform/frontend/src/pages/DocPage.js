@@ -91,7 +91,7 @@ function Row(props) {
         </TableRow>
         <TableRow>
           <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
-            <Collapse in={open} timeout="auto" unmountOnExit>
+            {/*<Collapse in={open} timeout="auto" unmountOnExit>*/}
               <Box margin={1}>
                 <Typography variant="h6" gutterBottom component="div">
                   Another
@@ -120,7 +120,7 @@ function Row(props) {
                   </TableBody>
                 </Table>
               </Box>
-            </Collapse>
+            {/*</Collapse>*/}
           </TableCell>
         </TableRow>
       </React.Fragment>
@@ -142,11 +142,6 @@ Row.propTypes = {
   }).isRequired,
 };
 
-const rows = [
-  createData('score de deauville', 50, "6"),
-  createData('Traitement', 99, "Chimio"),
-
-];
 
 export default function CollapsibleTable({match}) { 
   const classes = useStyles();

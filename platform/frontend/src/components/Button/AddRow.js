@@ -58,7 +58,9 @@ const { useState } = React;
 
   const [data, setData] = useState([
     { id: 0, info: 'score de deauville', preci: 80, result: '5'},
-    { id: 1, info: 'Traitement', preci: 70, result: 'Chimio', parentId: 0},
+    { id: 1, info: 'Traitement'},
+    { id: 2, info: 'Traitement', preci: 70, result: 'Chimio', parentId: 1},
+
   ]);
 
   return (
