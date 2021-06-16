@@ -90,8 +90,8 @@ export default function StickyHeadTable() {
 
                                         {column.label}
 
-                                    </TableCell>
-                                ))}
+                                    </TableCell>))}
+                                <TableCell/>
                             </TableRow >
                         </TableHead>
 
@@ -100,12 +100,15 @@ export default function StickyHeadTable() {
                             {data.results.map((row) => {
                                 return (
 
-                                    <TableRow id={row.id} hover tabIndex={-1} key={row.id} onClick={handleDocumentClick}>
+                                    <TableRow id={row.id} hover tabIndex={-1} key={row.id} >
                                         <TableCell><Checkbox/></TableCell>
 
                                         {columns.map((column) => {
+
                                             return (
-                                                <TableCell key={column.id} align={column.align} padding={row.disablePadding ? 'none' : 'default'}>
+                                                <TableCell key={column.id} align={column.align}
+                                                           padding={row.disablePadding ? 'none' : 'default'}
+                                                            onClick={column.id === "examRef" ? handleDocumentClick : null} >
                                                     {column.extract(row)}
 
                                                 </TableCell>
