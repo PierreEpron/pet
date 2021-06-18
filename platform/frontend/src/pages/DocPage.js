@@ -17,7 +17,7 @@ import Grid from '@material-ui/core/Grid';
 import TextArea from "../components/Text/TextArea"
 import Footer from "../components/Footer"
 import BoxCheck from '../components/BoxCheck'
-import FeaturesTable from '../components/Button/FeaturesTable'
+import FeaturesTable from '../components/FeaturesTable'
 import Progress from "../components/CircularProgress/CircularProgress"
 import CloudWord from "../components/Charts/WordCloud"
 
