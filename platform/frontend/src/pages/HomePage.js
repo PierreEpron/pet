@@ -16,13 +16,28 @@ import {getContents} from "../services/content.service"
 import IconButton from "../components/Button/IconButton"
 
 
-
 const columns = [
 
-    {id: 'examRef', label: 'Examen Ref',  extract:(row) => {return row.exam.ref}},
-    {id: 'examDate', label: 'Examen Date',  extract:(row) => {return row.exam.date}},
-    {id: 'examWording', label: 'Examen Wording', extract:(row) => {return row.exam.wording.word}},
-    {id: 'examRoom', label: 'Examen Room', extract:(row) => {return row.exam.room.ref}},
+    {
+        id: 'examRef', label: 'Examen Ref', extract: (row) => {
+            return row.exam.ref
+        }
+    },
+    {
+        id: 'examDate', label: 'Examen Date', extract: (row) => {
+            return row.exam.date
+        }
+    },
+    {
+        id: 'examWording', label: 'Examen Wording', extract: (row) => {
+            return row.exam.wording.word
+        }
+    },
+    {
+        id: 'examRoom', label: 'Examen Room', extract: (row) => {
+            return row.exam.room.ref
+        }
+    },
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -45,11 +60,11 @@ export default function StickyHeadTable() {
     React.useEffect(() => {
         if (data)
             setIsLoading(false)
-        if (refreshData){
+        if (refreshData) {
             setRefreshData(false)
-            getContents('/exam-reports/', {limit:rowsPerPage, offset:page * rowsPerPage, depth:3}, setData)
+            getContents('/exam-reports/', {limit: rowsPerPage, offset: page * rowsPerPage, depth: 3}, setData)
         }
-     }, [data, setData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
+    }, [data, setData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
 
 
     const handleChangePage = (event, newPage) => {
@@ -64,14 +79,14 @@ export default function StickyHeadTable() {
     }
 
     const handleDocumentClick = (documentId) => {
-        return (event) =>{
+        return (event) => {
             console.log(documentId)
-        window.location = "/document/" + documentId;
+            window.location = "/document/" + documentId;
         }
     }
 
     if (isLoading)
-       return (<div><Progress/></div>)
+        return (<div><Progress/></div>)
 
     return (
         <div className={classes.root}>
@@ -79,9 +94,9 @@ export default function StickyHeadTable() {
 
             <Container maxWidth="lg" className={classes.container}>
                 <TableContainer className={classes.container}>
-                    <Table stickyHeader aria-label="sticky table" >
-                        <TableHead >
-                            <TableRow >
+                    <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                            <TableRow>
                                 <TableCell><Checkbox/></TableCell>
                                 {columns.map((column) => (
                                     <TableCell
@@ -94,15 +109,15 @@ export default function StickyHeadTable() {
 
                                     </TableCell>))}
                                 <TableCell>Select</TableCell>
-                            </TableRow >
+                            </TableRow>
                         </TableHead>
 
-                        <TableBody >
+                        <TableBody>
 
                             {data.results.map((row) => {
                                 return (
 
-                                    <TableRow id={row.id} hover tabIndex={-1} key={row.id} >
+                                    <TableRow id={row.id} hover tabIndex={-1} key={row.id}>
                                         <TableCell><Checkbox/></TableCell>
 
                                         {columns.map((column) => {
@@ -116,7 +131,8 @@ export default function StickyHeadTable() {
                                                 </TableCell>
                                             );
                                         })}
-                                        <TableCell onClick = {handleDocumentClick(row.id)}>< IconButton> </IconButton></TableCell>
+                                        <TableCell
+                                            onClick={handleDocumentClick(row.id)}>< IconButton> </IconButton></TableCell>
 
                                     </TableRow>
 
