@@ -20,7 +20,7 @@ import Footer from "../components/Footer"
 import BoxCheck from '../components/BoxCheck'
 import AddRow from '../components/Button/AddRow'
 import Progress from "../components/CircularProgress/CircularProgress"
-import WordCloud from "../components/Charts/WordCloud"
+import CloudWord from "../components/Charts/WordCloud"
 
 import {getContents} from "../services/content.service"
 
@@ -172,7 +172,7 @@ export default function CollapsibleTable({match}) {
             </Grid>
             <Grid item xs={12} sm={6}>
               <AddRow/>
-              <WordCloud/>
+              <CloudWord/>
             </Grid>
 
           </Grid>
