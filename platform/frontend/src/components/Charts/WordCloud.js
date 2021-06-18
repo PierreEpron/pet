@@ -48,6 +48,7 @@ const customRenderer = (tag, size, color) => (
   </span>
 )
 
-export default () => (
+const CloudWord = () => (
   <TagCloud tags={data} minSize={1} maxSize={5} renderer={customRenderer} />
 )
+export default CloudWord;
