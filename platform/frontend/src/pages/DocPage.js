@@ -17,7 +17,7 @@ import Grid from '@material-ui/core/Grid';
 import TextArea from "../components/Text/TextArea"
 import Footer from "../components/Footer"
 import BoxCheck from '../components/BoxCheck'
-import AddRow from '../components/Button/AddRow'
+import FeaturesTable from '../components/Button/FeaturesTable'
 import Progress from "../components/CircularProgress/CircularProgress"
 import CloudWord from "../components/Charts/WordCloud"
 
@@ -170,7 +170,7 @@ export default function CollapsibleTable({match}) {
               <TextArea text={data.text}/>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <AddRow/>
+              <FeaturesTable/>
               <CloudWord/>
             </Grid>
 

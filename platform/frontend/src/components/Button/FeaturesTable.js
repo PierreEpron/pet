@@ -37,7 +37,7 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
   };
 
-export default function AddRow() {
+export default function FeaturesTable() {
 
 const { useState } = React;
 
