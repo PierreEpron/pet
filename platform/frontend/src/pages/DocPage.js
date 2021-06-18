@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -93,34 +92,34 @@ function Row(props) {
         <TableRow>
           <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
 
-              <Box margin={1}>
-                <Typography variant="h6" gutterBottom component="div">
-                  Another
-                </Typography>
-                <Table size="small" aria-label="purchases">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Date</TableCell>
-                      <TableCell>Source</TableCell>
-                      <TableCell>Valeur</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {row.Another.map((historyRow) => (
-                        <TableRow key={historyRow.Date}>
-                          <TableCell component="th" scope="row">
-                            <BoxCheck/>
-                            {historyRow.Date}
-                          </TableCell>
-                          <TableCell>
-                            {historyRow.Source}</TableCell>
-                          <TableCell>
-                            {historyRow.Valeur}</TableCell>
-                        </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Box>
+            <Box margin={1}>
+              <Typography variant="h6" gutterBottom component="div">
+                Another
+              </Typography>
+              <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Source</TableCell>
+                    <TableCell>Valeur</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {row.Another.map((historyRow) => (
+                      <TableRow key={historyRow.Date}>
+                        <TableCell component="th" scope="row">
+                          <BoxCheck/>
+                          {historyRow.Date}
+                        </TableCell>
+                        <TableCell>
+                          {historyRow.Source}</TableCell>
+                        <TableCell>
+                          {historyRow.Valeur}</TableCell>
+                      </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
 
           </TableCell>
         </TableRow>
@@ -144,9 +143,9 @@ Row.propTypes = {
 };
 
 
-export default function CollapsibleTable({match}) { 
+export default function CollapsibleTable({match}) {
   const classes = useStyles();
-  
+
   const [isLoading, setIsLoading] = React.useState(true);
   const [data, setData] = React.useState(null);
 
@@ -154,7 +153,7 @@ export default function CollapsibleTable({match}) {
     if (data)
       setIsLoading(false)
     else
-      getContents("/exam-reports/" + match.params.id + "/", {depth:2}, setData)
+      getContents("/exam-reports/" + match.params.id + "/", {depth: 2}, setData)
   }, [match, isLoading, data, setData, setIsLoading]);
 
 
