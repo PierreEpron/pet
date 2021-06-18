@@ -57,18 +57,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function createData(info, precision, résultat) {
-  return {
-    info,
-    precision,
-    résultat,
-    Another: [
-      {Date: '2020-01-05', Source: '11091700', Valeur: 10},
-      {Date: '2020-01-02', Source: 'Anonymouse', Valeur: 1},
-    ],
-  };
-}
-
 function Row(props) {
   const {row} = props;
   const [open, setOpen] = React.useState(false);
