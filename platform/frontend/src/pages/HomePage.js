@@ -13,12 +13,31 @@ import Footer from "../components/Footer"
 import Progress from "../components/CircularProgress/CircularProgress"
 import Checkbox from '@material-ui/core/Checkbox';
 import {getContents} from "../services/content.service"
+import IconButton from "../components/Button/IconButton"
+
 
 const columns = [
-    {id: 'examRef', label: 'Examen Ref',  extract:(row) => {return row.exam.ref}},
-    {id: 'examDate', label: 'Examen Date',  extract:(row) => {return row.exam.date}},
-    {id: 'examWording', label: 'Examen Wording', extract:(row) => {return row.exam.wording.word}},
-    {id: 'examRoom', label: 'Examen Room', extract:(row) => {return row.exam.room.ref}},
+
+    {
+        id: 'examRef', label: 'Examen Ref', extract: (row) => {
+            return row.exam.ref
+        }
+    },
+    {
+        id: 'examDate', label: 'Examen Date', extract: (row) => {
+            return row.exam.date
+        }
+    },
+    {
+        id: 'examWording', label: 'Examen Wording', extract: (row) => {
+            return row.exam.wording.word
+        }
+    },
+    {
+        id: 'examRoom', label: 'Examen Room', extract: (row) => {
+            return row.exam.room.ref
+        }
+    },
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -38,15 +57,14 @@ export default function StickyHeadTable() {
     const [isLoading, setIsLoading] = React.useState(true);
     const [refreshData, setRefreshData] = React.useState(true);
     const [data, setData] = React.useState(null);
-    const { onSelectAllClick,numSelected, rowCount } = React.useState();
     React.useEffect(() => {
         if (data)
             setIsLoading(false)
-        if (refreshData){
+        if (refreshData) {
             setRefreshData(false)
-            getContents('/exam-reports/', {limit:rowsPerPage, offset:page * rowsPerPage, depth:3}, setData)
+            getContents('/exam-reports/', {limit: rowsPerPage, offset: page * rowsPerPage, depth: 3}, setData)
         }
-     }, [data, setData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
+    }, [data, setData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
 
 
     const handleChangePage = (event, newPage) => {
@@ -60,12 +78,15 @@ export default function StickyHeadTable() {
         setRefreshData(true);
     }
 
-    const handleDocumentClick = (event) => {
-        window.location = "/document/" + event.target.parentElement.id;
+    const handleDocumentClick = (documentId) => {
+        return (event) => {
+            console.log(documentId)
+            window.location = "/document/" + documentId;
+        }
     }
 
     if (isLoading)
-       return (<div><Progress/></div>)
+        return (<div><Progress/></div>)
 
     return (
         <div className={classes.root}>
@@ -73,9 +94,10 @@ export default function StickyHeadTable() {
 
             <Container maxWidth="lg" className={classes.container}>
                 <TableContainer className={classes.container}>
-                    <Table stickyHeader aria-label="sticky table" >
-                        <TableHead >
-                            <TableRow >
+                    <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell><Checkbox/></TableCell>
                                 {columns.map((column) => (
                                     <TableCell
                                         key={column.id}
@@ -85,32 +107,35 @@ export default function StickyHeadTable() {
 
                                         {column.label}
 
-                                    </TableCell>
-                                ))}
-                            </TableRow >
+                                    </TableCell>))}
+                                <TableCell>Select</TableCell>
+                            </TableRow>
                         </TableHead>
 
-                        <TableBody >
+                        <TableBody>
 
                             {data.results.map((row) => {
                                 return (
 
-                                    <TableRow id={row.id} hover tabIndex={-1} key={row.id} onClick={handleDocumentClick}>
+                                    <TableRow id={row.id} hover tabIndex={-1} key={row.id}>
+                                        <TableCell><Checkbox/></TableCell>
 
                                         {columns.map((column) => {
+                                            console.log(row["id"])
                                             return (
-                                                <TableCell key={column.id} align={column.align} padding={columns.disablePadding ? 'none' : 'default'}>
+                                                <TableCell key={column.id} align={column.align}
+                                                           padding={row.disablePadding ? 'none' : 'default'}
+                                                >
                                                     {column.extract(row)}
-                                                    <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          />
+
                                                 </TableCell>
                                             );
                                         })}
+                                        <TableCell
+                                            onClick={handleDocumentClick(row.id)}>< IconButton> </IconButton></TableCell>
+
                                     </TableRow>
+
                                 );
                             })}
                         </TableBody>
