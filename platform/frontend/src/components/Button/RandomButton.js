@@ -17,6 +17,7 @@ export default function ContainedButtons() {
     <div className={classes.root}>
       <Button variant="contained" color="primary">
         Random
+      </Button>
     </div>
   );
 }
