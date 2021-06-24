@@ -35,3 +35,4 @@ class Exam(Content):
 class ExamReport(Content):
     text = models.TextField()
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    features = models.JSONField(null=True)

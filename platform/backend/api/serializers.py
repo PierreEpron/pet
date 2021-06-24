@@ -43,4 +43,4 @@ class ExamSerializer(ContentSerializer):
 class ExamReportSerializer(ContentSerializer):
     class Meta:
         model = ExamReport
-        fields = ['text', 'exam'] + ContentSerializer.FIELDS
+        fields = ['exam', 'text', 'features'] + ContentSerializer.FIELDS
