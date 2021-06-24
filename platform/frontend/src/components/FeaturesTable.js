@@ -52,7 +52,6 @@ export default function FeaturesTable() {
             )
         },
         {title: 'précision en(%)', field: 'preci', type: 'numeric'},
-        {title: 'résultat', field: 'result'},
     ]);
 
     const [data, setData] = useState([
@@ -70,52 +69,13 @@ export default function FeaturesTable() {
             options={{selection: true}}
             title="Résultat Modéle"
             icons={tableIcons}
-            // actions={[
-            //     {
-            //         hidden: true,
-            //         disable: true,
-            //     }
-            // ]}
             columns={columns}
             data={data}
-            // localization={{
-            //     header: {
-            //         actions: ''
-            //     }
-            // }}
-            // actions={{
-            //     disable: false,
-            // }}
             editable={{
-                // isEditable: (columns) => false, // real code uses some logic to make certain rows non editable
-                // isDeletable: (columns) => false,
-                // isEditableHidden: (columns) => false,
                 onRowAdd: newData =>
                     new Promise((resolve, reject) => {
                         setTimeout(() => {
                             setData([...data, newData]);
-
-                            resolve();
-                        }, 1000)
-                    }),
-                onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            const dataUpdate = [...data];
-                            const index = oldData.tableData.id;
-                            dataUpdate[index] = newData;
-                            setData([...dataUpdate]);
-
-                            resolve();
-                        }, 1000)
-                    }),
-                onRowDelete: oldData =>
-                    new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            const dataDelete = [...data];
-                            const index = oldData.tableData.id;
-                            dataDelete.splice(index, 1);
-                            setData([...dataDelete]);
 
                             resolve();
                         }, 1000)
