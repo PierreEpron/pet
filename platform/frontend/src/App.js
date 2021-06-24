@@ -7,7 +7,7 @@ import StatPage from "./pages/StatPage"
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import deepPurple from '@material-ui/core/colors/deepPurple';
 
 
 function App() {
@@ -18,6 +18,8 @@ function App() {
       createMuiTheme({
         palette: {
           type: prefersDarkMode ? 'dark' : 'light',
+            primary: deepPurple,
+    secondary: deepPurple,
         },
       }),
     [prefersDarkMode],
