@@ -57,6 +57,7 @@ export default function StickyHeadTable() {
     const [isLoading, setIsLoading] = React.useState(true);
     const [refreshData, setRefreshData] = React.useState(true);
     const [data, setData] = React.useState(null);
+
     React.useEffect(() => {
         if (data)
             setIsLoading(false)
@@ -121,7 +122,6 @@ export default function StickyHeadTable() {
                                         <TableCell><Checkbox/></TableCell>
 
                                         {columns.map((column) => {
-                                            console.log(row["id"])
                                             return (
                                                 <TableCell key={column.id} align={column.align}
                                                            padding={row.disablePadding ? 'none' : 'default'}
