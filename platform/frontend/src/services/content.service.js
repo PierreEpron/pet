@@ -20,4 +20,21 @@ function getContents(path, query, dataHandler) {
         })
 }
 
-export {getContents}
+function putContent(path, data, successHandler) {
+    axios.put(REACT_APP_API_URL + path, JSON.stringify(data))
+        .then((response) => {
+            successHandler(response)
+        })
+        .catch((error) => {
+            switch (error.response.status) {
+                case 401:
+                    onBadAuth()
+                    break
+                default:
+                    console.log(error)
+                    break               
+            }        
+        })  
+}
+
+export {getContents, putContent}
