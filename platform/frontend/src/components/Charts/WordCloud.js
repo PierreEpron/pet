@@ -41,7 +41,7 @@ const customRenderer = (tag, size, color) => (
             margin: '3px',
             padding: '3px',
             display: 'inline-block',
-            color: 'black',
+            color: 'withe',
         }}
     >
     {tag.value}
