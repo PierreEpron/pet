@@ -52,13 +52,15 @@ export default function FeaturesTable() {
             )
         },
         {title: 'précision en(%)', field: 'preci', type: 'numeric'},
-        {title: 'résultat', field: 'result'},
     ]);
 
     const [data, setData] = useState([
-        {id: 0, info: 'score de deauville', preci: 80, result: '5'},
+        {id: 0, info: 'score de deauville'},
         {id: 1, info: 'Traitement'},
-        {id: 2, info: 'Traitement', preci: 70, result: 'Chimio', parentId: 1},
+        {id: 2, info: 'Model A', parentId: 1},
+        {id: 3, info: 'Chimio', preci: 70,parentId: 2},
+        {id: 4, info: 'Model B', parentId: 1},
+        {id: 5, info: 'CyberKnife', preci: 70,parentId: 4},
 
     ]);
 
@@ -69,34 +71,11 @@ export default function FeaturesTable() {
             icons={tableIcons}
             columns={columns}
             data={data}
-
             editable={{
                 onRowAdd: newData =>
                     new Promise((resolve, reject) => {
                         setTimeout(() => {
                             setData([...data, newData]);
-
-                            resolve();
-                        }, 1000)
-                    }),
-                onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            const dataUpdate = [...data];
-                            const index = oldData.tableData.id;
-                            dataUpdate[index] = newData;
-                            setData([...dataUpdate]);
-
-                            resolve();
-                        }, 1000)
-                    }),
-                onRowDelete: oldData =>
-                    new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            const dataDelete = [...data];
-                            const index = oldData.tableData.id;
-                            dataDelete.splice(index, 1);
-                            setData([...dataDelete]);
 
                             resolve();
                         }, 1000)

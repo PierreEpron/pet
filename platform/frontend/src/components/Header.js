@@ -9,6 +9,7 @@ import ImportButton from "./Button/ImportButton";
 import StatsButton from "./Button/StatsButton";
 import ExportButton from "./Button/ExportButton";
 import ExitApp from "./Button/ExitApp"
+import RandomButton from "./Button/RandomButton"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -81,6 +82,7 @@ export default function SearchAppBar() {
                 <Typography className={classes.title} variant="h6" noWrap onClick={redirection}>
                     PetApp_Nancyclotep
                 </Typography>
+                <RandomButton/>
                 <ImportButton/>
                 <StatsButton/>
                 <ExportButton/>

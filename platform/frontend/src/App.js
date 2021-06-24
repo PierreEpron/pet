@@ -4,10 +4,30 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import HomePage from './pages/HomePage'
 import Docpage from "./pages/DocPage"
 import StatPage from "./pages/StatPage"
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import deepPurple from '@material-ui/core/colors/deepPurple';
+
 
 function App() {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  const theme = React.useMemo(
+    () =>
+      createMuiTheme({
+        palette: {
+          type: prefersDarkMode ? 'dark' : 'light',
+            primary: deepPurple,
+    secondary: deepPurple,
+        },
+      }),
+    [prefersDarkMode],
+  );
     return (
         <div className="App">
+            <ThemeProvider theme={theme}>
+            <CssBaseline/>
             <Router>
                 <Switch>
                     <Route path="/" exact component={SignIn}/>
@@ -17,6 +37,7 @@ function App() {
                     {/*<Route path="/pagestest" exact component={() => <PageTest />} />*/}
                 </Switch>
             </Router>
+            </ThemeProvider>
 
         </div>
     );

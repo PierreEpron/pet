@@ -45,6 +45,8 @@ const useStyles = makeStyles((theme) => ({
     container: {
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
+        paddingLeft:theme.spacing(8),
+        paddingRight: theme.spacing(8),
     },
     paper: {
         padding: theme.spacing(2),
@@ -152,12 +154,12 @@ export default function CollapsibleTable({match}) {
         <div>
             <Header/>
 
-            <Container maxWidth="lg" className={classes.container}>
+            <Container maxWidth="xl" className={classes.container}>
                 <Grid container spacing={6}>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={7}>
                         <TextArea text={data.text}/>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={5}>
                         <FeaturesTable/>
                         <CloudWord/>
                     </Grid>
