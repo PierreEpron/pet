@@ -15,6 +15,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import {putContent} from "../services/content.service"
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref}/>),
@@ -36,13 +37,38 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref}/>)
 };
 
-export default function FeaturesTable() {
+const FEATURE_NAMES = ['Traitement', 'Deauville']
 
-    const {useState} = React;
+const parseFeatures = (data) => {
+    var c = 0
+    const parsed = []
+    FEATURE_NAMES.forEach((element) => { 
+        parsed.push({id:c, span:element})
+        c++;
+    })
 
-    const [columns] = useState([
+    for(var fkey in data) {
+        for (var mkey in data[fkey]){
+            const model = data[fkey][mkey]
+            parsed.push({id:c, span:mkey, parentId:FEATURE_NAMES.indexOf(fkey)})
+            const parendId = c 
+            c++;
+            for (var vkey in model) {
+                const feature = data[fkey][mkey][vkey]
+                parsed.push({id:c, span:feature.span, acc:feature.acc, parentId:parendId})
+                c++;
+            }
+        }  
+    }
+    return parsed
+}
+
+export default function FeaturesTable(props) {
+
+
+    const [columns] = React.useState([
         {
-            title: 'information Extraite', field: 'info',
+            title: 'information Extraite', field: 'span',
             editComponent: props => (
                 <input
                     type="text"
@@ -51,18 +77,17 @@ export default function FeaturesTable() {
                 />
             )
         },
-        {title: 'précision en(%)', field: 'preci', type: 'numeric'},
+        {title: 'précision en(%)', field: 'acc', type: 'numeric'},
+        {
+            title: "label",
+            field: "label",
+            lookup: FEATURE_NAMES.reduce((obj, x) => {
+                obj[x] = x;
+                return obj;
+            }, {}),
+          },
     ]);
 
-    const [data, setData] = useState([
-        {id: 0, info: 'score de deauville'},
-        {id: 1, info: 'Traitement'},
-        {id: 2, info: 'Model A', parentId: 1},
-        {id: 3, info: 'Chimio', preci: 70,parentId: 2},
-        {id: 4, info: 'Model B', parentId: 1},
-        {id: 5, info: 'CyberKnife', preci: 70,parentId: 4},
-
-    ]);
 
     return (
         <MaterialTable
@@ -70,15 +95,26 @@ export default function FeaturesTable() {
             title="Résultat Modéle"
             icons={tableIcons}
             columns={columns}
-            data={data}
+            data={parseFeatures(props.features)}
             editable={{
                 onRowAdd: newData =>
                     new Promise((resolve, reject) => {
                         setTimeout(() => {
-                            setData([...data, newData]);
-
-                            resolve();
-                        }, 1000)
+                            var newFeatures = props.features
+                            const user = JSON.parse(localStorage.getItem("currentUser"))
+                            if (!newFeatures)
+                                newFeatures = {}
+                            if (!(newData.label in newFeatures))
+                                newFeatures[newData.label] = {}
+                            if (!(user.userName in newFeatures[newData.label]))
+                                newFeatures[newData.label][user.userName] = []
+                            newFeatures[newData.label][user.userName].push({span:newData.span, acc:newData.acc})
+                            putContent('/exam-reports/' + props.examId, {features:newFeatures}, 
+                            (response) => {
+                                resolve();
+                                props.setData(response.data)
+                            })
+                        }, 1000);
                     }),
             }}
             parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
