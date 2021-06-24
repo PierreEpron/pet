@@ -56,9 +56,12 @@ export default function FeaturesTable() {
     ]);
 
     const [data, setData] = useState([
-        {id: 0, info: 'score de deauville', preci: 80, result: '5'},
+        {id: 0, info: 'score de deauville'},
         {id: 1, info: 'Traitement'},
-        {id: 2, info: 'Traitement', preci: 70, result: 'Chimio', parentId: 1},
+        {id: 2, info: 'Model A', parentId: 1},
+        {id: 3, info: 'Chimio', preci: 70,parentId: 2},
+        {id: 4, info: 'Model B', parentId: 1},
+        {id: 5, info: 'CyberKnife', preci: 70,parentId: 4},
 
     ]);
 
