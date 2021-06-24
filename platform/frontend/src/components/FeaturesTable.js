@@ -67,10 +67,26 @@ export default function FeaturesTable() {
             options={{selection: true}}
             title="Résultat Modéle"
             icons={tableIcons}
+            // actions={[
+            //     {
+            //         hidden: true,
+            //         disable: true,
+            //     }
+            // ]}
             columns={columns}
             data={data}
-
+            // localization={{
+            //     header: {
+            //         actions: ''
+            //     }
+            // }}
+            // actions={{
+            //     disable: false,
+            // }}
             editable={{
+                // isEditable: (columns) => false, // real code uses some logic to make certain rows non editable
+                // isDeletable: (columns) => false,
+                // isEditableHidden: (columns) => false,
                 onRowAdd: newData =>
                     new Promise((resolve, reject) => {
                         setTimeout(() => {
