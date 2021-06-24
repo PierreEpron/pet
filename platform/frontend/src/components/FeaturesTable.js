@@ -37,12 +37,31 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref}/>)
 };
 
-const FEATURE_NAMES = ['T', 'D']
+const FEATURE_NAMES = ['Traitement', 'Deauville']
 
 const parseFeatures = (data) => {
-    return []
-}
+    var c = 0
+    const parsed = []
+    FEATURE_NAMES.forEach((element) => { 
+        parsed.push({id:c, span:element})
+        c++;
+    })
 
+    for(var fkey in data) {
+        for (var mkey in data[fkey]){
+            const model = data[fkey][mkey]
+            parsed.push({id:c, span:mkey, parentId:FEATURE_NAMES.indexOf(fkey)})
+            const parendId = c 
+            c++;
+            for (var vkey in model) {
+                const feature = data[fkey][mkey][vkey]
+                parsed.push({id:c, span:feature.span, acc:feature.acc, parentId:parendId})
+                c++;
+            }
+        }  
+    }
+    return parsed
+}
 
 export default function FeaturesTable(props) {
 
@@ -76,7 +95,7 @@ export default function FeaturesTable(props) {
             title="Résultat Modéle"
             icons={tableIcons}
             columns={columns}
-            data={parseFeatures(props.data)}
+            data={parseFeatures(props.features)}
             editable={{
                 onRowAdd: newData =>
                     new Promise((resolve, reject) => {
@@ -87,10 +106,14 @@ export default function FeaturesTable(props) {
                                 newFeatures = {}
                             if (!(newData.label in newFeatures))
                                 newFeatures[newData.label] = {}
-                            if (!(user.username in newFeatures[newData.label]))
-                                newFeatures[newData.label][user.username] = []
-                            newFeatures[newData.label][user.username].push({span:(0,0), acc:newData.acc})
-                            putContent('/exam-reports/' + props.examId, {features:newFeatures}, resolve)
+                            if (!(user.userName in newFeatures[newData.label]))
+                                newFeatures[newData.label][user.userName] = []
+                            newFeatures[newData.label][user.userName].push({span:newData.span, acc:newData.acc})
+                            putContent('/exam-reports/' + props.examId, {features:newFeatures}, 
+                            (response) => {
+                                resolve();
+                                props.setData(response.data)
+                            })
                         }, 1000);
                     }),
             }}

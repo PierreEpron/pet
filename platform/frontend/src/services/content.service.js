@@ -23,6 +23,7 @@ function getContents(path, query, dataHandler) {
 function putContent(path, data, successHandler) {
     axios.patch(REACT_APP_API_URL + path + '/', JSON.stringify(data),  {headers: getHeader(true)})
         .then((response) => {
+            console.log(response)
             successHandler(response)
         })
         .catch((error) => {
