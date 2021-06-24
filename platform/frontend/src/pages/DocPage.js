@@ -160,7 +160,7 @@ export default function CollapsibleTable({match}) {
                         <TextArea text={data.text}/>
                     </Grid>
                     <Grid item xs={12} sm={5}>
-                        <FeaturesTable/>
+                        <FeaturesTable examId={data.id} features={data.features}/>
                         <CloudWord/>
                     </Grid>
 

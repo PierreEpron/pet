@@ -15,6 +15,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import {putContent} from "../services/content.service"
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref}/>),
@@ -36,13 +37,19 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref}/>)
 };
 
-export default function FeaturesTable() {
+const FEATURE_NAMES = ['T', 'D']
 
-    const {useState} = React;
+const parseFeatures = (data) => {
+    return []
+}
 
-    const [columns] = useState([
+
+export default function FeaturesTable(props) {
+
+
+    const [columns] = React.useState([
         {
-            title: 'information Extraite', field: 'info',
+            title: 'information Extraite', field: 'span',
             editComponent: props => (
                 <input
                     type="text"
@@ -51,18 +58,17 @@ export default function FeaturesTable() {
                 />
             )
         },
-        {title: 'précision en(%)', field: 'preci', type: 'numeric'},
+        {title: 'précision en(%)', field: 'acc', type: 'numeric'},
+        {
+            title: "label",
+            field: "label",
+            lookup: FEATURE_NAMES.reduce((obj, x) => {
+                obj[x] = x;
+                return obj;
+            }, {}),
+          },
     ]);
 
-    const [data, setData] = useState([
-        {id: 0, info: 'score de deauville'},
-        {id: 1, info: 'Traitement'},
-        {id: 2, info: 'Model A', parentId: 1},
-        {id: 3, info: 'Chimio', preci: 70,parentId: 2},
-        {id: 4, info: 'Model B', parentId: 1},
-        {id: 5, info: 'CyberKnife', preci: 70,parentId: 4},
-
-    ]);
 
     return (
         <MaterialTable
@@ -70,15 +76,22 @@ export default function FeaturesTable() {
             title="Résultat Modéle"
             icons={tableIcons}
             columns={columns}
-            data={data}
+            data={parseFeatures(props.data)}
             editable={{
                 onRowAdd: newData =>
                     new Promise((resolve, reject) => {
                         setTimeout(() => {
-                            setData([...data, newData]);
-
-                            resolve();
-                        }, 1000)
+                            var newFeatures = props.features
+                            const user = JSON.parse(localStorage.getItem("currentUser"))
+                            if (!newFeatures)
+                                newFeatures = {}
+                            if (!(newData.label in newFeatures))
+                                newFeatures[newData.label] = {}
+                            if (!(user.username in newFeatures[newData.label]))
+                                newFeatures[newData.label][user.username] = []
+                            newFeatures[newData.label][user.username].push({span:(0,0), acc:newData.acc})
+                            putContent('/exam-reports/' + props.examId, {features:newFeatures}, resolve)
+                        }, 1000);
                     }),
             }}
             parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
