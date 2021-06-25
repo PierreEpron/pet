@@ -63,7 +63,7 @@ export default function ButtonAppBar() {
                         target="_blank"
                         href="https://github.com/Nancyclotep/devia"
                         variant="contained"
-                        color="secondary"
+                        color="primary"
                         size="large"
                         className={classes.WebButton}
                         startIcon={<GitHubIcon/>}
@@ -73,6 +73,7 @@ export default function ButtonAppBar() {
                     <Button
                         variant="contained"
                         size="large"
+                        color="primary"
                         className={classes.WebButton}
                         startIcon={<EmailIcon/>}
                     >

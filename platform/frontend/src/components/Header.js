@@ -8,8 +8,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import ImportButton from "./Button/ImportButton";
 import StatsButton from "./Button/StatsButton";
 import ExportButton from "./Button/ExportButton";
-import ExitApp from "./Button/ExitApp"
-import RandomButton from "./Button/RandomButton"
+import ExitApp from "./Button/ExitApp";
+import RandomButton from "./Button/RandomButton";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -70,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchAppBar() {
     const classes = useStyles();
 
+
     function redirection(e) {
         e.preventDefault()
         console.log("redirection")
@@ -77,7 +78,9 @@ export default function SearchAppBar() {
     }
 
     return (
+
         <AppBar position="static">
+
             <Toolbar>
                 <Typography className={classes.title} variant="h6" noWrap onClick={redirection}>
                     PetApp_Nancyclotep
@@ -102,6 +105,9 @@ export default function SearchAppBar() {
                 </div>
                 <ExitApp/>
             </Toolbar>
+
+
         </AppBar>
+
     );
 }
