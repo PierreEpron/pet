@@ -78,12 +78,13 @@ export default function SearchAppBar() {
     }
 
     return (
+
         <AppBar position="static">
+
             <Toolbar>
                 <Typography className={classes.title} variant="h6" noWrap onClick={redirection}>
                     PetApp_Nancyclotep
                 </Typography>
-                    {/*<SwitchDarkMode/>*/}
                 <RandomButton/>
                 <ImportButton/>
                 <StatsButton/>
@@ -104,6 +105,9 @@ export default function SearchAppBar() {
                 </div>
                 <ExitApp/>
             </Toolbar>
+
+
         </AppBar>
+
     );
 }

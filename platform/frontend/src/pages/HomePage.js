@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function StickyHeadTable() {
+export default function StickyHeadTable(props) {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -66,7 +66,6 @@ export default function StickyHeadTable() {
             getContents('/exam-reports/', {limit: rowsPerPage, offset: page * rowsPerPage, depth: 3}, setData)
         }
     }, [data, setData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
-
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage)
