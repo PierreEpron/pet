@@ -29,4 +29,5 @@ class SectionSplitterComponent:
         return doc
 
 def extract_sections(doc):
-    return 'sections', [{'start':section.start, 'end':section.end, 'label':section.label} for section in doc._.sections]
+    return 'sections', [{'start':section.start, 'end':section.end, 'label':section.label} for section in doc._.sections]      
+
