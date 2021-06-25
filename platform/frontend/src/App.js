@@ -13,17 +13,17 @@ import deepPurple from '@material-ui/core/colors/deepPurple';
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-  const theme = React.useMemo(
+    const theme = React.useMemo(
     () =>
       createMuiTheme({
         palette: {
           type: prefersDarkMode ? 'dark' : 'light',
             primary: deepPurple,
-    secondary: deepPurple,
+            secondary: deepPurple,
         },
       }),
     [prefersDarkMode],
-  );
+    );
     return (
         <div className="App">
             <ThemeProvider theme={theme}>
