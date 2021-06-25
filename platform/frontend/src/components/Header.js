@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -8,8 +8,12 @@ import SearchIcon from '@material-ui/icons/Search';
 import ImportButton from "./Button/ImportButton";
 import StatsButton from "./Button/StatsButton";
 import ExportButton from "./Button/ExportButton";
-import ExitApp from "./Button/ExitApp"
-import RandomButton from "./Button/RandomButton"
+import ExitApp from "./Button/ExitApp";
+import RandomButton from "./Button/RandomButton";
+// import SwitchDarkMode from "./Button/SwitchDarkMode";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import Switch from '@material-ui/core/Switch'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -70,6 +74,14 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchAppBar() {
     const classes = useStyles();
 
+    /*const [dark, setDark] = useState(false)
+
+    const theme = createMuiTheme({
+        palette: {
+            type: dark ? 'dark' : 'light',
+        },
+    })*/
+
     function redirection(e) {
         e.preventDefault()
         console.log("redirection")
@@ -77,11 +89,14 @@ export default function SearchAppBar() {
     }
 
     return (
+
         <AppBar position="static">
+            {/*<ThemeProvider theme={theme}>*/}
             <Toolbar>
                 <Typography className={classes.title} variant="h6" noWrap onClick={redirection}>
                     PetApp_Nancyclotep
                 </Typography>
+                {/*<Switch checked={dark} onChange={() => setDark(!dark)} />*/}
                 <RandomButton/>
                 <ImportButton/>
                 <StatsButton/>
@@ -102,6 +117,8 @@ export default function SearchAppBar() {
                 </div>
                 <ExitApp/>
             </Toolbar>
+                {/*</ThemeProvider>*/}
         </AppBar>
+
     );
 }
