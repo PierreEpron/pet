@@ -1,7 +1,8 @@
 class PipelineCtrl:
-    def __init__(self, version) -> None:
+    def __init__(self, version, force_update=False) -> None:
         self.name = self.__class__.__name__
         self.version = version
+        self.force_update=force_update
     
     def __call__(self, text) -> dict:
         return {}

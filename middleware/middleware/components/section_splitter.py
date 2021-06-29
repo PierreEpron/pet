@@ -13,7 +13,6 @@ class SectionSplitterComponent:
             Doc.set_extension("sections", default=[])
 
     def __call__(self, doc: Doc) -> Doc:
-        print('SectionSplitterComponent.__call__')
         start, end = 0, 0
         sections = []
         for k, v in self.patterns.items():
@@ -32,5 +31,5 @@ class SectionSplitterComponent:
         return doc
 
 def extract_sections(doc):
-    return 'sections', [{'start':section.start, 'end':section.end, 'label':section.label} for section in doc._.sections]      
+    return 'sections', [{'start':section.start_char, 'end':section.end_char, 'label':section.label_} for section in doc._.sections]      
 

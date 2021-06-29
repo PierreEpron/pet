@@ -139,6 +139,9 @@ export default function CollapsibleTable({match}) {
     const [isLoading, setIsLoading] = React.useState(true);
     const [data, setData] = React.useState(null);
 
+    const [highlight, setHighlight] = React.useState(null)
+
+
     React.useEffect(() => {
         if (data)
             setIsLoading(false)
@@ -157,10 +160,11 @@ export default function CollapsibleTable({match}) {
             <Container maxWidth="xl" className={classes.container}>
                 <Grid container spacing={6}>
                     <Grid item xs={12} sm={7}>
-                        <TextArea text={data.text}/>
+                        <TextArea text={data.text} highlight={highlight}/>
                     </Grid>
                     <Grid item xs={12} sm={5}>
-                        <FeaturesTable examId={data.id} features={data.features} setData={setData}/>
+                        <FeaturesTable examId={data.id} features={data.features} 
+                        text={data.text} setData={setData} setHighlight={setHighlight}/>
                         <CloudWord/>
                     </Grid>
 

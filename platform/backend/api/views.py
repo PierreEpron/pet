@@ -64,7 +64,7 @@ class ExamReportViewSet(ContentViewSet):
         res = requests.post('http://172.19.0.4:5000/apply',
             json.dumps({'text':exam_report.text, 'features':exam_report.features})
         )
-
+        
         exam_report = ExamReportViewSet.serializer_class(exam_report, context = {'request':request}, data={'features':res.json()}, partial=True)
         if exam_report.is_valid():
             exam_report.save()

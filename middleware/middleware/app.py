@@ -25,10 +25,10 @@ def apply():
         features = {}
 
     for model in MODELS:
-        if model.get_fullname() not in model_to_skips:
+        if model.force_update == True or model.get_fullname() not in model_to_skips:
             model(text, features)
 
-    # print(features)
+    print(features)
 
     return app.response_class(
             response= json.dumps(features),

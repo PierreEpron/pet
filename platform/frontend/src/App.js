@@ -9,6 +9,9 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}
 
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: light)');
