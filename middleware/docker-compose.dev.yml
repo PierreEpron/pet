@@ -1,0 +1,22 @@
+version: '3.8'
+
+services: 
+    middleware:
+        build: ./middleware
+        expose: 
+            - 5000
+        ports: 
+            - 5000:5000 
+        volumes: 
+            - ./middleware:/usr/src/middleware
+        environment: 
+            - FLASK_ENV=development
+            - FLASK_APP=app.py
+            - FLASK_DEBUG=1
+        networks:
+            - network-backend
+
+networks:
+    network-backend:
+        external:
+            name: platform_network-backend

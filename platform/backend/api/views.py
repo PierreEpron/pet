@@ -5,8 +5,10 @@ from rest_framework.serializers import Serializer
 from .models import ExamWording, ExamRoom, Exam, ExamReport
 from .serializers import ExamWordingSerializer, ExamRoomSerializer, ExamSerializer, ExamReportSerializer
 from rest_framework.response import Response
-import os
-
+import os, json
+import requests
+from helpers import correct_encoding
+from django.shortcuts import get_object_or_404
 
 class ContentViewSet(viewsets.ModelViewSet):
     FILTERSET_FIELDS = ['modified_by', 'created_by', 'created_date' , 'modified_date']
@@ -55,6 +57,21 @@ class ExamReportViewSet(ContentViewSet):
     serializer_class = ExamReportSerializer
     filterset_fields = ['text', 'exam'] + ContentViewSet.FILTERSET_FIELDS
 
+    def retrieve(self, request, pk=None):
+        
+        exam_report = get_object_or_404(ExamReportViewSet.queryset, pk=pk)
+
+        res = requests.post('http://172.19.0.4:5000/apply',
+            json.dumps({'text':exam_report.text, 'features':exam_report.features})
+        )
+        
+        exam_report = ExamReportViewSet.serializer_class(exam_report, context = {'request':request}, data={'features':res.json()}, partial=True)
+        if exam_report.is_valid():
+            exam_report.save()
+        else:
+            print(exam_report.errors)
+
+        return super().retrieve(self, request, pk)
 
 from rest_framework.decorators import api_view
 import pandas as pd
@@ -68,7 +85,7 @@ def parse_datetime(date, time):
 
 @api_view(['POST'])
 def upload(request):
-    data = pd.read_csv(request.data['csv'], sep='\t')
+    data = pd.read_csv(request.data['csv'], sep='\t', encoding='utf-8')
     for item in data.values:
         wording, _ = ExamWording.objects.get_or_create(word=item[2])
         room, _ = ExamRoom.objects.get_or_create(ref=item[3])
@@ -77,6 +94,6 @@ def upload(request):
             'wording':wording,
             'room':room
         })
-        ExamReport.objects.get_or_create(text=item[6], exam=exam)
+        ExamReport.objects.get_or_create(text=correct_encoding(item[6]), exam=exam)
 
     return Response({"message": "Hello, world!"})
