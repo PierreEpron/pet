@@ -1,11 +1,11 @@
 from re import I
 import spacy
 from .pipeline_ctrl import PipelineCtrl
-from ..components.section_splitter import extract_sections
+from components import section_splitter
 
 class Alpha(PipelineCtrl):
-    def __init__(self, version) -> None:
-        super().__init__(version)
+    def __init__(self) -> None:
+        super().__init__(version="0.1")
         self.sections_patterns = [
             ('intro', r'[\s\n\r]*contexte dans lequel l[’\']*(?:examen|étude) est réalisée? ?:?[\s\n\r]*'),
             ('ctx', r'[\s\n\r]*technique de l\'examen ?:?[\s\n\r]*'),
@@ -16,9 +16,9 @@ class Alpha(PipelineCtrl):
 
     def __call__(self, text, features) -> None:
         doc = self.nlp(text)
-        self.add_feature(features, extract_sections(doc))
+        self.add_feature(features, section_splitter.extract_sections(doc))
 
     def load_model(self) -> None:
         self.nlp = spacy.load("fr_dep_news_trf")
-        self.nlp.add_pipe("sections_split", config={"patterns": self.sections_patterns})
+        self.nlp.add_pipe("sections_splitter", config={"patterns": self.sections_patterns})
 

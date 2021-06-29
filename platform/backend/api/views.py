@@ -5,8 +5,8 @@ from rest_framework.serializers import Serializer
 from .models import ExamWording, ExamRoom, Exam, ExamReport
 from .serializers import ExamWordingSerializer, ExamRoomSerializer, ExamSerializer, ExamReportSerializer
 from rest_framework.response import Response
-import os
-
+import os, json
+import requests
 
 class ContentViewSet(viewsets.ModelViewSet):
     FILTERSET_FIELDS = ['modified_by', 'created_by', 'created_date' , 'modified_date']
@@ -55,6 +55,12 @@ class ExamReportViewSet(ContentViewSet):
     serializer_class = ExamReportSerializer
     filterset_fields = ['text', 'exam'] + ContentViewSet.FILTERSET_FIELDS
 
+    def retrieve(self, request, pk=None):
+        exam_report = super().retrieve(self, request, pk)
+        res = requests.post('http://172.19.0.4:5000/apply',
+            json.dumps({'text':exam_report.data['text'], 'features':exam_report.data['features']})
+        )
+        return exam_report
 
 from rest_framework.decorators import api_view
 import pandas as pd
