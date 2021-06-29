@@ -9,7 +9,8 @@ class PipelineCtrl:
     def get_fullname(self) -> str:
         return f'{self.name}_{self.version}'
 
-    def add_feature(self, features : dict, newFeatures : dict) -> None:  
+    def add_feature(self, features : dict, newFeatures : dict) -> None: 
+        # print(f'add_feature :\n*********\n{features}\n*********\n{newFeatures}\n*********')
         if features == None:
             return      
         fname, flist = newFeatures

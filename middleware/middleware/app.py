@@ -17,13 +17,20 @@ def apply():
     data = json.loads(request.data)
     text = data['text']
     features = data['features']
-    if isinstance(features, dict):
+
+    if isinstance(features, dict) and len(features) > 0:
         model_to_skips = set(functools.reduce(lambda a, b: a + b, [list(item.keys()) for item in features.values()]))
     else:
         model_to_skips = set()
+        features = {}
 
     for model in MODELS:
         if model.get_fullname() not in model_to_skips:
             model(text, features)
 
-    return jsonify(features)
+    # print(features)
+
+    return app.response_class(
+            response= json.dumps(features),
+            status=200,
+            mimetype='application/json')

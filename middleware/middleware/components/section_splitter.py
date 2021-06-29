@@ -13,15 +13,18 @@ class SectionSplitterComponent:
             Doc.set_extension("sections", default=[])
 
     def __call__(self, doc: Doc) -> Doc:
+        print('SectionSplitterComponent.__call__')
         start, end = 0, 0
         sections = []
         for k, v in self.patterns.items():
             match = v.search(doc.text)
             if match == None:
+                print(f'{k} : skip by match')
                 return doc
             end = match.span()[0]
             span = doc.char_span(start, end, label=k)
             if span == None:
+                print(f'{k} : skip by span')
                 return doc
             sections.append(span)
             start = match.span()[1]
