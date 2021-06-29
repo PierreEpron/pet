@@ -46,55 +46,45 @@ const featureNames = (features) => {
     return Object.keys(features)
 }
 
-const parseFeatures = (data, text) => {
-    var c = 0
-    const parsed = []
+export default React.memo(function FeaturesTable(props) {
 
-    const feature_names = featureNames(data)
-
-    feature_names.forEach((element) => { 
-        parsed.push({id:c, label:element.capitalize()})
-        c++;
-    })
-
-    for(var fkey in data) {
-        for (var mkey in data[fkey]){
-            const model = data[fkey][mkey]
-            parsed.push({id:c, label:mkey, parentId:feature_names.indexOf(fkey)})
-            const parendId = c 
+    const parseFeatures = (data) => {
+        var c = 0
+        const parsed = []
+    
+        const feature_names = featureNames(data)
+    
+        feature_names.forEach((element) => { 
+            parsed.push({id:c, label:element.capitalize()})
             c++;
-            for (var vkey in model) {
-                const feature = data[fkey][mkey][vkey]
-                let span = ""
-                if (feature.hasOwnProperty("start") && feature.hasOwnProperty("end")) {
-                    span = [feature.start, feature.end]
-                }
-                parsed.push({id:c, label:feature.label, span:span, parentId:parendId})
+        })
+    
+        for(var fkey in data) {
+            for (var mkey in data[fkey]){
+                const model = data[fkey][mkey]
+                parsed.push({id:c, label:mkey, parentId:feature_names.indexOf(fkey)})
+                const parendId = c 
                 c++;
-            }
-        }  
-    }
-    return parsed
-}
-
-export default function FeaturesTable(props) {
-
-    const tableRef = React.useRef();
-    const [oldData, setoldData] = React.useState(null)
-
-    React.useEffect(() => {
-        if(oldData) {
-            oldData.forEach((element, i) => {
-                const other = tableRef.current.props.data.find(other => element.id === other.id)
-                if (other)
-                    other.tableData.isTreeExpanded = element.tableData.isTreeExpanded
-            })
+                for (var vkey in model) {
+                    const feature = data[fkey][mkey][vkey]
+                    let span = ""
+                    if (feature.hasOwnProperty("start") && feature.hasOwnProperty("end")) {
+                        span = [feature.start, feature.end]
+                    }
+                    parsed.push({id:c, label:feature.label, span:span, parentId:parendId})
+                    c++;
+                }
+            }  
         }
-    }, [oldData]);
 
-    const handleMouseHover = (value) => {
-        setoldData(tableRef.current.props.data)
+        return parsed
+    }   
+
+    const handleMouseEnter = (value) => {
         props.setHighlight(value)
+    }
+    const handleMouseLeave= () => {
+        props.setHighlight(null)
     }
 
     const [columns] = React.useState([
@@ -117,20 +107,20 @@ export default function FeaturesTable(props) {
                 else 
                     preview = props.text.substring(start, end)
                 return (
-                    <span onMouseEnter={()=>handleMouseHover([start, end])}
-                          onMouseLeave={()=>handleMouseHover(null)}>({start}, {end}) "{preview}"`</span>
+                    <span onMouseEnter={()=>handleMouseEnter([start, end])}
+                          onMouseLeave={()=>handleMouseLeave(null)}>({start}, {end}) "{preview}"`</span>
                 ) }   
           },
     ]);
 
     return (
         <MaterialTable
-            tableRef={tableRef}
+            // tableRef={tableRef}
             options={{selection: true}}
             title="Résultats"
             icons={tableIcons}
             columns={columns}
-            data={parseFeatures(props.features, props.text)}
+            data={parseFeatures(props.features)}
             editable={{
                 onRowAdd: newData =>
                     new Promise((resolve, reject) => {
@@ -155,4 +145,4 @@ export default function FeaturesTable(props) {
             parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
         />
     )
-}
+})

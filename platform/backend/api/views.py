@@ -61,7 +61,7 @@ class ExamReportViewSet(ContentViewSet):
         
         exam_report = get_object_or_404(ExamReportViewSet.queryset, pk=pk)
 
-        res = requests.post('http://172.19.0.4:5000/apply',
+        res = requests.post('http://172.19.0.2:5000//apply',
             json.dumps({'text':exam_report.text, 'features':exam_report.features})
         )
         
