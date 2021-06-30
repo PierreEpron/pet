@@ -15,10 +15,6 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import {putContent} from "../services/content.service"
-
-
-
 
 const PREVIEW_MAX_LENGTH = 35
 
@@ -42,17 +38,16 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref}/>)
 };
 
-const featureNames = (features) => {
-    return Object.keys(features)
-}
-
 export default React.memo(function FeaturesTable(props) {
 
+    const { text, features, onHighlight, onAddFeature } = props;
+
+    // TODO : Refactorize
     const parseFeatures = (data) => {
         var c = 0
         const parsed = []
     
-        const feature_names = featureNames(data)
+        const feature_names = Object.keys(data)
     
         feature_names.forEach((element) => { 
             parsed.push({id:c, label:element.capitalize()})
@@ -81,10 +76,10 @@ export default React.memo(function FeaturesTable(props) {
     }   
 
     const handleMouseEnter = (value) => {
-        props.setHighlight(value)
+        onHighlight(value)
     }
     const handleMouseLeave= () => {
-        props.setHighlight(null)
+        onHighlight(null)
     }
 
     const [columns] = React.useState([
@@ -95,7 +90,7 @@ export default React.memo(function FeaturesTable(props) {
             title: "Span",
             field: "span",
             render: (rowData) => {
-                if (!rowData.hasOwnProperty("span"))
+                if (!rowData.hasOwnProperty("span") || rowData.span === '')
                     return (<span></span>)
 
                 const start = rowData.span[0]
@@ -103,9 +98,9 @@ export default React.memo(function FeaturesTable(props) {
 
                 let preview = ''
                 if (end - start > PREVIEW_MAX_LENGTH)
-                    preview = props.text.substring(start, start + PREVIEW_MAX_LENGTH) + " [...]"
+                    preview = text.substring(start, start + PREVIEW_MAX_LENGTH) + " [...]"
                 else 
-                    preview = props.text.substring(start, end)
+                    preview = text.substring(start, end)
                 return (
                     <span onMouseEnter={()=>handleMouseEnter([start, end])}
                           onMouseLeave={()=>handleMouseLeave(null)}>({start}, {end}) "{preview}"`</span>
@@ -114,35 +109,23 @@ export default React.memo(function FeaturesTable(props) {
     ]);
 
     return (
-        <MaterialTable
-            // tableRef={tableRef}
-            options={{selection: true}}
-            title="Résultats"
-            icons={tableIcons}
-            columns={columns}
-            data={parseFeatures(props.features)}
-            editable={{
-                onRowAdd: newData =>
-                    new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            var newFeatures = props.features
-                            const user = JSON.parse(localStorage.getItem("currentUser"))
-                            if (!newFeatures)
-                                newFeatures = {}
-                            if (!(newData.label in newFeatures))
-                                newFeatures[newData.label] = {}
-                            if (!(user.userName in newFeatures[newData.label]))
-                                newFeatures[newData.label][user.userName] = []
-                            newFeatures[newData.label][user.userName].push({span:newData.span, acc:newData.acc})
-                            putContent('/exam-reports/' + props.examId, {features:newFeatures}, 
-                            (response) => {
-                                resolve();
-                                props.setData(response.data)
-                            })
-                        }, 1000);
-                    }),
-            }}
-            parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
-        />
+        <div>
+            <MaterialTable
+                options={{selection: true}}
+                title="Résultats"
+                icons={tableIcons}
+                columns={columns}
+                data={parseFeatures(features)}
+                actions={[
+                    {
+                    icon: 'add',
+                    tooltip: 'Add Feature',
+                    isFreeAction: true,
+                    onClick: () => onAddFeature(true)
+                    }
+                ]}
+                parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
+            />
+        </div>
     )
 })

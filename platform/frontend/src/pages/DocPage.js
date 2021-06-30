@@ -22,6 +22,8 @@ import Progress from "../components/CircularProgress/CircularProgress"
 import CloudWord from "../components/Charts/WordCloud"
 
 import {getContents} from "../services/content.service"
+import FeatureForm from '../components/FeatureForm';
+
 
 const useRowStyles = makeStyles({
     root: {
@@ -140,7 +142,8 @@ export default function CollapsibleTable({match}) {
     const [data, setData] = React.useState(null);
 
     const [highlight, setHighlight] = React.useState(null)
-
+    const [newFeatureValue, setNewFeatureValue] = React.useState(false)
+    const [onEndSelection, setOnEndSelection] = React.useState(() => () => {})
 
     React.useEffect(() => {
         if (data)
@@ -148,6 +151,20 @@ export default function CollapsibleTable({match}) {
         else
             getContents("/exam-reports/" + match.params.id + "/", {depth: 2}, setData)
     }, [match, isLoading, data, setData, setIsLoading]);
+
+
+    const handleTextSelection = (span, onEndSelection) => {
+        setNewFeatureValue(span)
+        setOnEndSelection(() => () => onEndSelection())
+    }
+
+    const handleAddFeatureEnd = (data) => {
+        onEndSelection()
+        setNewFeatureValue(false)
+        console.log(data)
+        if (data)
+            setData(data);
+    }
 
 
     if (isLoading)
@@ -160,18 +177,18 @@ export default function CollapsibleTable({match}) {
             <Container maxWidth="xl" className={classes.container}>
                 <Grid container spacing={6}>
                     <Grid item xs={12} sm={7}>
-                        <TextArea text={data.text} highlight={highlight}/>
+                        <TextArea text={data.text} highlight={highlight} onSelectText={handleTextSelection} />
                     </Grid>
                     <Grid item xs={12} sm={5}>
-                        <FeaturesTable examId={data.id} features={data.features} 
-                        text={data.text} setData={setData} setHighlight={setHighlight}/>
+                        <FeaturesTable features={data.features} 
+                        text={data.text} onHighlight={setHighlight} onAddFeature={setNewFeatureValue}/>
                         <CloudWord/>
                     </Grid>
 
                 </Grid>
             </Container>
-
-
+            <FeatureForm newFeatureValue={newFeatureValue} onAddFeatureEnd={handleAddFeatureEnd} features={data.features}
+                featureNames={Object.keys(data.features)} examId={data.id}/>
             <Footer/>
         </div>
     );
