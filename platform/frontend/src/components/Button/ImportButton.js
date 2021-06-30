@@ -44,7 +44,7 @@ export default function UploadButtons() {
         formData.append("csv", file, file.name);
         upload(formData, () => {
             setLoading(false);
-            // window.location = window.location
+            window.location.reload();
         });
     }
 
