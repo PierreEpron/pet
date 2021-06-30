@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FeatureForm(props) {
     const classes = useStyles();
-    const { newFeatureValue, onAddFeatureEnd, featureNames, features, examId } = props;
+    const { newFeatureValue, onAddFeatureEnd, features, examId } = props;
 
     const [selectedFeatureName, setSelectedFeatureName] = React.useState('');
     const [labelValue, setLabelValue] = React.useState('');
@@ -109,7 +109,7 @@ export default function FeatureForm(props) {
 
     
     return (
-      <Dialog onClose={close} aria-labelledby="simple-dialog-title" open={isOpen()}>
+      <Dialog onClose={() => close()} aria-labelledby="simple-dialog-title" open={isOpen()}>
         <DialogTitle id="simple-dialog-title">Add Feature</DialogTitle>
         <DialogContent>
             <form className={classes.form} noValidate>
@@ -123,7 +123,7 @@ export default function FeatureForm(props) {
                         <MenuItem value="">
                             <em>None</em>
                         </MenuItem>
-                        {featureNames.map((element) => <MenuItem key={element} value={element}>{element}</MenuItem>)}
+                        {Object.keys(features).map((element) => <MenuItem key={element} value={element}>{element}</MenuItem>)}
                     </Select>
                     {selectedFeatureName === '' && <TextField value={featureNameValue} onChange={(e) => setFeatureNameValue(e.target.value)} required />}
                 </FormControl>
