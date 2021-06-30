@@ -149,3 +149,5 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     os.environ.get("FRONTEND_URL"),
 ]
+
+MIDDLEWARE_URL = os.environ.get("MIDDLEWARE_URL")

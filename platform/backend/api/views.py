@@ -9,6 +9,7 @@ import os, json
 import requests
 from helpers import correct_encoding
 from django.shortcuts import get_object_or_404
+from django.conf import settings
 
 class ContentViewSet(viewsets.ModelViewSet):
     FILTERSET_FIELDS = ['modified_by', 'created_by', 'created_date' , 'modified_date']
@@ -61,7 +62,7 @@ class ExamReportViewSet(ContentViewSet):
         
         exam_report = get_object_or_404(ExamReportViewSet.queryset, pk=pk)
 
-        res = requests.post('http://172.19.0.2:5000//apply',
+        res = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
             json.dumps({'text':exam_report.text, 'features':exam_report.features})
         )
         

@@ -14,7 +14,8 @@ services:
             - FLASK_APP=app.py
             - FLASK_DEBUG=1
         networks:
-            - network-backend
+            network-backend:
+                ipv4_address: 172.19.0.5
 
 networks:
     network-backend:
