@@ -16,8 +16,6 @@ class Alpha(PipelineCtrl):
 
     def __call__(self, text, features) -> None:
         doc = self.nlp(text)
-        print(self.nlp.pipe_names)
-        # print(doc._.sections)
         self.add_feature(features, section_splitter.extract_sections(doc))
 
     def load_model(self) -> None:
