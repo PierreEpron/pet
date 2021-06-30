@@ -52,7 +52,11 @@ export default function MaxHeightTextarea(props) {
       )
     } 
     else if (selectionSpan) {
-      const {start, end} = selectionSpan
+      let {start, end} = selectionSpan
+      if (start > end)
+        [start, end] = [end, start];
+
+      console.log(start + "," + end)
       return (
         <div>
           <span>{text.substring(0, start)}</span>
