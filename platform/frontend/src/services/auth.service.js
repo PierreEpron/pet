@@ -34,7 +34,7 @@ function onBadAuth() {
         axios.post(REACT_APP_API_URL + "/token/refresh/", JSON.stringify({refresh:user.refresh}), {headers: getHeader(false)})
             .then(function (response) {
                 localStorage.setItem('currentUser', JSON.stringify({
-                    userName:user.username,
+                    userName:user.userName,
                     access:response.data.access,
                     refresh:user.refresh
                 }));    
