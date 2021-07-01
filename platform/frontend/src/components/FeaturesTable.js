@@ -15,6 +15,8 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import { capitalize } from "@material-ui/core";
+
 
 const PREVIEW_MAX_LENGTH = 35
 
@@ -50,7 +52,7 @@ export default React.memo(function FeaturesTable(props) {
         const feature_names = Object.keys(data)
     
         feature_names.forEach((element) => { 
-            parsed.push({id:c, label:element.capitalize()})
+            parsed.push({id:c, label:capitalize(element)})
             c++;
         })
     
@@ -83,9 +85,7 @@ export default React.memo(function FeaturesTable(props) {
     }
 
     const [columns] = React.useState([
-        {
-            title: 'Label', field: 'label',
-        },
+        {title: 'Label', field: 'label',},
         {
             title: "Span",
             field: "span",
@@ -103,9 +103,8 @@ export default React.memo(function FeaturesTable(props) {
                     preview = text.substring(start, end)
                 return (
                     <span onMouseEnter={()=>handleMouseEnter([start, end])}
-                          onMouseLeave={()=>handleMouseLeave(null)}>({start}, {end}) "{preview}"`</span>
-                ) }   
-          },
+                          onMouseLeave={()=>handleMouseLeave(null)}>({start}, {end}) "{preview}"`</span>)
+            }}
     ]);
 
     return (

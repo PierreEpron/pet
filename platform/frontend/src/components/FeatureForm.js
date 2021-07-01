@@ -23,8 +23,7 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       minWidth: 120,
     }
-  }));
-
+}));
 
 export default function FeatureForm(props) {
     const classes = useStyles();
@@ -39,19 +38,16 @@ export default function FeatureForm(props) {
             return false
         return true
     } 
-
     const validLabel = (value) => {
         if (value === "")
             return false
         return true
     } 
-
+    
     const isOpen = () => {
         return Boolean(newFeatureValue)
     }
-
     const close = (data) => {
-        console.log("FeatureForm.close")
         onAddFeatureEnd(data);
         setSelectedFeatureName('')
         setLabelValue('')
@@ -78,10 +74,6 @@ export default function FeatureForm(props) {
             newFeature.start = newFeatureValue.start
             newFeature.end = newFeatureValue.end
         }
-
-        console.log("TextArea.updateFeatures : newFeatureValue ")
-        console.log(newFeature)
-        console.log(newFeatureValue)
 
         newFeatures[featureName][user.userName].push(newFeature)
 

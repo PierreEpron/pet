@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
 export default function MaxHeightTextarea(props) {
 
   const classes = useStyles();
@@ -30,7 +29,6 @@ export default function MaxHeightTextarea(props) {
   })
 
   const isSelectionPanelOpen = () => {
-    console.log("TextArea.isSelectionPanelOpen : " + Boolean(anchorEl))
     return Boolean(anchorEl);
   }
 
@@ -56,7 +54,6 @@ export default function MaxHeightTextarea(props) {
       if (start > end)
         [start, end] = [end, start];
 
-      console.log(start + "," + end)
       return (
         <div>
           <span>{text.substring(0, start)}</span>
@@ -77,23 +74,13 @@ export default function MaxHeightTextarea(props) {
     if (value === '') 
       return
 
-    const start = selection.anchorOffset
-    const end = selection.focusOffset
-
-    // TODO : Remove when sure there is not misaligned problems
-    const textValue = text.substring(start, end)
-    if (value !== textValue)
-      console.log('Error for : ' + value + '(html), ' + textValue + '(text)')
-
-    setSelectionSpan({start, end})
+    setSelectionSpan({start:selection.anchorOffset, end:selection.focusOffset})
   }
-
-  const parsed = parseText(text);
 
   return (
     <div>
       <Paper className={classes.root} onClick={handleTextSelection} >
-        {parsed}
+        {parseText(text)}
       </Paper>
       <Popover         
         onClose={handleClose}
