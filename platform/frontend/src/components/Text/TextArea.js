@@ -26,7 +26,7 @@ export default function MaxHeightTextarea(props) {
   React.useEffect(() => {
     if (anchorRef.current)
       setAnchorEl(anchorRef.current)
-  })
+  }, [selectionSpan, setAnchorEl])
 
   const isSelectionPanelOpen = () => {
     return Boolean(anchorEl);
