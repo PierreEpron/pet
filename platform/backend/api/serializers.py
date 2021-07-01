@@ -40,7 +40,67 @@ class ExamSerializer(ContentSerializer):
         model = Exam
         fields = ['ref', 'date', 'wording', 'room'] + ContentSerializer.FIELDS
 
+def valid_list_of_dict(value, error_msg, callback):
+    for v in value:
+        if not isinstance(v, dict):
+            raise serializers.ValidationError(error_msg)
+        callback(v)
+
+def valid_exist_type(value, newValue, obj, key, type):
+    if key not in value or not isinstance(value[key], type):
+        raise serializers.ValidationError(f"{obj}.{key} missing or should be a {type}.")
+    newValue[key] = value[key]
+
+def valid_feature(value):
+    newValue = {}
+    valid_exist_type(value, newValue, 'feature', 'name', str)
+    valid_exist_type(value, newValue, 'feature', 'sources', list)
+    value = newValue
+    valid_list_of_dict(value['sources'], 'sources should be a list of dict', valid_source)
+
+def valid_source(value):
+    newValue = {}
+    valid_exist_type(value, newValue, 'source', 'name', str)
+    valid_exist_type(value, newValue, 'source', 'type', str)
+    valid_exist_type(value, newValue, 'source', 'items', list)
+    value = newValue
+    valid_list_of_dict(value['items'], 'items should be a list of dict', valid_item)
+
+def valid_item(value):
+    newValue = {}
+
+    valid_exist_type(value, newValue, 'item', 'label', str)
+    
+    if 'start' in value and 'end' in value:
+        if not isinstance(value['start'], int):
+            raise serializers.ValidationError("item.start should be an int.")
+        if not isinstance(value['end'], int):
+            raise serializers.ValidationError("item.end should be an int.")
+
+        newValue['start'] = value['start']
+        newValue['end'] = value['end']
+
+    if 'probability' in value:
+        if not isinstance(value, float):
+            raise serializers.ValidationError("item.probability should be an float.")
+
+        newValue['probability'] = value['probability']
+
+    value = newValue
+
+
 class ExamReportSerializer(ContentSerializer):
     class Meta:
         model = ExamReport
         fields = ['exam', 'text', 'features'] + ContentSerializer.FIELDS
+
+    def validate_features(self, value):
+        """
+        Check and filter value of features.
+        """
+        if not isinstance(value, list):
+            raise serializers.ValidationError("Features should be a list.")
+
+        valid_list_of_dict(value, 'features should be a list of dict', valid_feature)
+                    
+        return value

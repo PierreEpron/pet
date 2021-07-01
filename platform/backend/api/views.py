@@ -62,15 +62,16 @@ class ExamReportViewSet(ContentViewSet):
         
         exam_report = get_object_or_404(ExamReportViewSet.queryset, pk=pk)
 
-        res = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
+        newFeatures = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
             json.dumps({'text':exam_report.text, 'features':exam_report.features})
-        )
-        
-        exam_report = ExamReportViewSet.serializer_class(exam_report, context = {'request':request}, data={'features':res.json()}, partial=True)
-        if exam_report.is_valid():
-            exam_report.save()
-        else:
-            print(exam_report.errors)
+        ).json()
+
+        if newFeatures != exam_report.features:
+            exam_report = ExamReportViewSet.serializer_class(exam_report, context = {'request':request}, data={'features':newFeatures}, partial=True)
+            if exam_report.is_valid():
+                exam_report.save()
+            else:
+                print(exam_report.errors)
 
         return super().retrieve(self, request, pk)
 

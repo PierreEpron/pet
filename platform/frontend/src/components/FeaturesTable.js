@@ -44,35 +44,25 @@ export default React.memo(function FeaturesTable(props) {
 
     const { text, features, onHighlight, onAddFeature } = props;
 
-    // TODO : Refactorize
     const parseFeatures = (data) => {
-        var c = 0
-        const parsed = []
-    
-        const feature_names = Object.keys(data)
-    
-        feature_names.forEach((element) => { 
-            parsed.push({id:c, label:capitalize(element)})
-            c++;
-        })
-    
-        for(var fkey in data) {
-            for (var mkey in data[fkey]){
-                const model = data[fkey][mkey]
-                parsed.push({id:c, label:mkey, parentId:feature_names.indexOf(fkey)})
-                const parendId = c 
+        const parsed = [];
+        let c = 0;
+        data.forEach((feature) => {
+            const currentFeature = {id:c, label:capitalize(feature.name)};
+            parsed.push(currentFeature);
+            feature.sources.forEach((source) => {
                 c++;
-                for (var vkey in model) {
-                    const feature = data[fkey][mkey][vkey]
-                    let span = ""
-                    if (feature.hasOwnProperty("start") && feature.hasOwnProperty("end")) {
-                        span = [feature.start, feature.end]
-                    }
-                    parsed.push({id:c, label:feature.label, span:span, parentId:parendId})
+                const currentSource = {id:c, label:source.name, parentId:currentFeature.id};
+                parsed.push(currentSource);
+                source.items.forEach((item) => {
                     c++;
-                }
-            }  
-        }
+                    const span = (item.hasOwnProperty("start") && item.hasOwnProperty("end")) ? [item.start, item.end] : '' 
+                    const probability = item.hasOwnProperty('probability') ? item.probability : ''
+                    parsed.push({id:c, label:item.label, span, probability, parentId:currentSource.id})
+                });
+            });
+            c++;
+        });
 
         return parsed
     }   
@@ -85,7 +75,7 @@ export default React.memo(function FeaturesTable(props) {
     }
 
     const [columns] = React.useState([
-        {title: 'Label', field: 'label',},
+        {title: 'Label', field: 'label'},
         {
             title: "Span",
             field: "span",
@@ -103,8 +93,9 @@ export default React.memo(function FeaturesTable(props) {
                     preview = text.substring(start, end)
                 return (
                     <span onMouseEnter={()=>handleMouseEnter([start, end])}
-                          onMouseLeave={()=>handleMouseLeave(null)}>({start}, {end}) "{preview}"`</span>)
-            }}
+                          onMouseLeave={()=>handleMouseLeave(null)}>({start}, {end}) "{preview}"`</span>)}
+        },
+        {title: 'Probability', field: 'probability'},
     ]);
 
     return (

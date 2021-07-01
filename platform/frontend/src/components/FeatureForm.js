@@ -57,30 +57,35 @@ export default function FeatureForm(props) {
     const updateFeatures = (featureName, label) => {
 
         const user = JSON.parse(localStorage.getItem("currentUser"))
-        const newFeature = {label}
 
         let newFeatures = features
-
         if (!newFeatures)
-            newFeatures = {}
+            newFeatures = []
 
-        if (!(featureName in newFeatures))
-            newFeatures[featureName] = {}
+        let feature = newFeatures.find(element => element.name === featureName);
+        if (!feature) {
+            feature = {name:featureName, sources:[]}
+            newFeatures.push(feature)
+        }
+        
+        let source = feature.sources.find(element => element.name === user.userName)
+        if (!source) {
+            source = {name:user.userName, type:'user', items:[]}
+            feature.sources.push(source)
+        }
 
-        if (!(user.userName in newFeatures[featureName]))
-            newFeatures[featureName][user.userName] = []
-
+        const newFeature = {label}
         if (newFeatureValue instanceof Object) {
             newFeature.start = newFeatureValue.start
             newFeature.end = newFeatureValue.end
         }
-
-        newFeatures[featureName][user.userName].push(newFeature)
+        source.items.push(newFeature)
 
         putContent('/exam-reports/' + examId, {features:newFeatures}, 
-        (response) => {
-            close(response.data);
-        })
+            (response) => {
+                close(response.data);
+            }
+        )
     }
 
     const handleConfirm = () => {
@@ -115,7 +120,7 @@ export default function FeatureForm(props) {
                         <MenuItem value="">
                             <em>None</em>
                         </MenuItem>
-                        {Object.keys(features).map((element) => <MenuItem key={element} value={element}>{element}</MenuItem>)}
+                        {features.map((element) => <MenuItem key={element.name} value={element.name}>{element.name  }</MenuItem>)}
                     </Select>
                     {selectedFeatureName === '' && <TextField value={featureNameValue} onChange={(e) => setFeatureNameValue(e.target.value)} required />}
                 </FormControl>
