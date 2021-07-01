@@ -18,15 +18,19 @@ def apply():
     text = data['text']
     features = data['features']
 
-    if isinstance(features, dict) and len(features) > 0:
-        model_to_skips = set(functools.reduce(lambda a, b: a + b, [list(item.keys()) for item in features.values()]))
+    if isinstance(features, list) and len(features) > 0:
+        model_to_skips = set(functools.reduce(lambda a, b: a + b, [item['name'] for item in features]))
     else:
         model_to_skips = set()
-        features = {}
+        features = []
+
+    print(features)
 
     for model in MODELS:
         if model.force_update == True or model.get_fullname() not in model_to_skips:
             model(text, features)
+
+    print(features)
 
     return app.response_class(
             response= json.dumps(features),

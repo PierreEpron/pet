@@ -5,7 +5,7 @@ from components import section_splitter
 
 class Alpha(PipelineCtrl):
     def __init__(self) -> None:
-        super().__init__(version="0.1", force_update=False)
+        super().__init__(version="0.1", force_update=True)
         self.sections_patterns = [
             ('intro', r'[\s\n\r]*contexte dans lequel l[’\']*(?:examen|étude) est réalisée? ?:?[\s\n\r]*'),
             ('ctx', r'[\s\n\r]*technique de l\'examen ?:?[\s\n\r]*'),
