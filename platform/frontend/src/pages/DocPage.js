@@ -82,8 +82,8 @@ export default function CollapsibleTable({match}) {
                         <TextArea text={data.text} highlight={highlight} onSelectText={handleTextSelection} />
                     </Grid>
                     <Grid item xs={12} sm={5}>
-                        <FeaturesTable features={data.features} 
-                        text={data.text} onHighlight={setHighlight} onAddFeature={setNewFeatureValue}/>
+                        <FeaturesTable examId={data.id} features={data.features} 
+                        text={data.text} onHighlight={setHighlight} onAddFeature={setNewFeatureValue} onDeleteFeature={setData}/>
                         <CloudWord/>
                     </Grid>
 
