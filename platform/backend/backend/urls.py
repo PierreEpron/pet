@@ -2,7 +2,7 @@ from django.urls import include, path
 from rest_framework import routers
 from authentification import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from api.views import ExamWordingViewSet, ExamRoomViewSet, ExamViewSet, ExamReportViewSet, upload
+from api.views import ExamWordingViewSet, ExamRoomViewSet, ExamViewSet, ExamReportViewSet, upload, apply_queue
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -20,4 +20,5 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/upload/', upload, name='upload_csv'),
+    path('api/apply-queue/', apply_queue, name='apply_queue'),
 ]

@@ -2,7 +2,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from numpy.core.fromnumeric import put
 from rest_framework import viewsets, permissions
 from rest_framework.serializers import Serializer
-from .models import ExamWording, ExamRoom, Exam, ExamReport
+from .models import ExamReportToApply, ExamWording, ExamRoom, Exam, ExamReport
 from .serializers import ExamWordingSerializer, ExamRoomSerializer, ExamSerializer, ExamReportSerializer
 from rest_framework.response import Response
 import os, json
@@ -50,6 +50,23 @@ class ExamViewSet(ContentViewSet):
     serializer_class = ExamSerializer
     filterset_fields = ['ref', 'date', 'wording', 'room'] + ContentViewSet.FILTERSET_FIELDS
 
+def update_features(request, pk):
+    report = get_object_or_404(ExamReportViewSet.queryset, pk=pk)
+
+    newFeatures = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
+                json.dumps({'text':report.text, 'features':report.features})
+            ).json()
+
+    if newFeatures != report.features:
+        report = ExamReportViewSet.serializer_class(report, 
+            context = {'request':request}, data={'features':newFeatures}, partial=True)
+
+        if report.is_valid():
+            report.save()
+            ExamReportToApply.objects.filter(report=pk).delete()
+        else:
+            print(report.errors)
+
 class ExamReportViewSet(ContentViewSet):
     """
     API endpoint that allows ExamReport to be viewed or edited.
@@ -60,18 +77,7 @@ class ExamReportViewSet(ContentViewSet):
 
     def retrieve(self, request, pk=None):
         
-        exam_report = get_object_or_404(ExamReportViewSet.queryset, pk=pk)
-
-        newFeatures = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
-            json.dumps({'text':exam_report.text, 'features':exam_report.features})
-        ).json()
-
-        if newFeatures != exam_report.features:
-            exam_report = ExamReportViewSet.serializer_class(exam_report, context = {'request':request}, data={'features':newFeatures}, partial=True)
-            if exam_report.is_valid():
-                exam_report.save()
-            else:
-                print(exam_report.errors)
+        update_features(request, pk)
 
         return super().retrieve(self, request, pk)
 
@@ -96,6 +102,15 @@ def upload(request):
             'wording':wording,
             'room':room
         })
-        ExamReport.objects.get_or_create(text=correct_encoding(item[6]), exam=exam)
+        
+        report, is_new = ExamReport.objects.get_or_create(text=correct_encoding(item[6]), exam=exam)
+        if is_new:
+            ExamReportToApply.objects.get_or_create(report=report)
+    return Response()
 
-    return Response({"message": "Hello, world!"})
+@api_view(['POST'])
+def apply_queue(request):
+    c = ExamReportToApply.objects.count()
+    if c > 0 :
+        update_features(request, ExamReportToApply.objects.first().report)
+    return Response({'queue':{'count':c}})

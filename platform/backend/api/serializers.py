@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ExamWording, ExamRoom, Exam, ExamReport
+from .models import ExamWording, ExamRoom, Exam, ExamReport, ExamReportToApply
 
 class ContentSerializer(serializers.ModelSerializer):
     FIELDS = ['id', 'modified_by', 'created_by', 'created_date' , 'modified_date']
@@ -88,7 +88,6 @@ def valid_item(value):
 
     value = newValue
 
-
 class ExamReportSerializer(ContentSerializer):
     class Meta:
         model = ExamReport
@@ -104,3 +103,8 @@ class ExamReportSerializer(ContentSerializer):
         valid_list_of_dict(value, 'features should be a list of dict', valid_feature)
                     
         return value
+
+class ExamReportToApplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamReportToApply
+        fields = ['report']
