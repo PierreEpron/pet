@@ -55,7 +55,9 @@ def update_features(request, pk):
 
     newFeatures = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
                 json.dumps({'text':report.text, 'features':report.features})
-            ).json()
+            )
+    print(newFeatures)
+    newFeatures = newFeatures.json()
 
     if newFeatures != report.features:
         report = ExamReportViewSet.serializer_class(report, 
@@ -108,9 +110,9 @@ def upload(request):
             ExamReportToApply.objects.get_or_create(report=report)
     return Response()
 
-@api_view(['POST'])
+@api_view(['GET'])
 def apply_queue(request):
     c = ExamReportToApply.objects.count()
     if c > 0 :
-        update_features(request, ExamReportToApply.objects.first().report)
+        update_features(request, ExamReportToApply.objects.first().report.id)
     return Response({'queue':{'count':c}})
