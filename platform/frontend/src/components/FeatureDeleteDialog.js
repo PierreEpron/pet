@@ -25,9 +25,9 @@ export default function FeatureDeleteDialog(props) {
             newFeatures = element.onDelete(newFeatures)
         })
 
-        putContent('/exam-reports/' + examId, {features:newFeatures}, 
-            (response) => {
-                onClose(response.data);
+        putContent('/exam-reports/' + examId + '/', {features:newFeatures}, 
+            (data) => {
+                onClose(data);
             }
         )
     }

@@ -1,17 +1,9 @@
 import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
-import {green} from '@material-ui/core/colors';
 import {getContents} from "../services/content.service"
 
-const useStyles = makeStyles((theme) => ({
-
-}));
-
-export default function ApplyQueueFeedBack(props) {
-    const classes = useStyles();
-    
+export default function ApplyQueueFeedBack(props) {    
     const [queueCount, setQueueCount] = React.useState(localStorage.getItem('queueCount'));
 
     const handleApplySuccess = (data) => {

@@ -56,7 +56,6 @@ def update_features(request, pk):
     newFeatures = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
                 json.dumps({'text':report.text, 'features':report.features})
             )
-    print(newFeatures)
     newFeatures = newFeatures.json()
 
     if newFeatures != report.features:
