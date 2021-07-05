@@ -3,7 +3,7 @@ from src.pipelines.alpha import Alpha
 import pandas as pd
 import random
 
-N = 10
+N = 1
 PIPELINE = Alpha()
 DF = pd.read_csv('../../../devia_1.csv', sep='\t', encoding='utf-8')
 FEATURES = []
@@ -23,4 +23,7 @@ print(f"Total time for {N} : {t}, Mean time : {t/N}")
 PIPELINE(DF["COMPTE_RENDU"][random.randint(0, len(DF)-1)], FEATURES)
 print(FEATURES)
 
+print(PIPELINE.nlp.pipe_names)
 PIPELINE.save_model('models')
+PIPELINE.load_model('models')
+print(PIPELINE.nlp.pipe_names)
