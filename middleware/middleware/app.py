@@ -1,11 +1,10 @@
 from flask import Flask
-from pipelines.alpha import Alpha
+from src.pipelines.alpha import Alpha
 from flask import request
 from flask_cors import CORS
 
 import functools
 import json
-from flask import jsonify
 
 MODELS = [Alpha()]
 
@@ -32,3 +31,4 @@ def apply():
             response= json.dumps(features),
             status=200,
             mimetype='application/json')
+            
