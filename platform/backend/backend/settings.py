@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "azerty")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", default=0))
+DEBUG = os.environ.get("DEBUG", default=0) == 1
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(" ")
 # Application definition
@@ -146,8 +146,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
-CORS_ALLOWED_ORIGINS = [
-    os.environ.get("FRONTEND_URL"),
-]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 MIDDLEWARE_URL = os.environ.get("MIDDLEWARE_URL")
