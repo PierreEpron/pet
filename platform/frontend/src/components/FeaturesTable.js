@@ -130,7 +130,6 @@ export default React.memo(function FeaturesTable(props) {
     ]);
 
     return (
-<<<<<<< Updated upstream
         <div>
             <MaterialTable
                 options={{selection: true}}
@@ -155,24 +154,5 @@ export default React.memo(function FeaturesTable(props) {
             />
             <FeatureDeleteDialog examId={examId} features={features} toDelete={toDelete} onClose={handDeleteFeatureEnd} />
         </div>
-=======
-        <MaterialTable
-            // tableRef={tableRef}
-            options={{selection: true}}
-            title="Résultats"
-            icons={tableIcons}
-            columns={columns}
-            data={parseFeatures(props.features)}
-            actions={[
-                {
-                  icon: 'add',
-                  tooltip: 'Add User',
-                  isFreeAction: true,
-                  onClick: (event) => alert("You want to add a new row")
-                }
-              ]}
-            parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
-        />
->>>>>>> Stashed changes
     )
 })
