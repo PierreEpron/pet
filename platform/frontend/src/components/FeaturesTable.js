@@ -15,10 +15,8 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import {putContent} from "../services/content.service"
-
-
-
+import { capitalize } from '@material-ui/core';
+import FeatureDeleteDialog from './FeatureDeleteDialog'
 
 const PREVIEW_MAX_LENGTH = 35
 
@@ -42,60 +40,78 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref}/>)
 };
 
-const featureNames = (features) => {
-    return Object.keys(features)
-}
-
 export default React.memo(function FeaturesTable(props) {
 
+    const { examId, text, features, onHighlight, onAddFeature, onDeleteFeature } = props;
+    const [toDelete, setToDelete] = React.useState(null)
+
     const parseFeatures = (data) => {
-        var c = 0
-        const parsed = []
-    
-        const feature_names = featureNames(data)
-    
-        feature_names.forEach((element) => { 
-            parsed.push({id:c, label:element.capitalize()})
-            c++;
-        })
-    
-        for(var fkey in data) {
-            for (var mkey in data[fkey]){
-                const model = data[fkey][mkey]
-                parsed.push({id:c, label:mkey, parentId:feature_names.indexOf(fkey)})
-                const parendId = c 
+        const parsed = [];
+        let c = 0;
+        data.forEach((feature) => {
+            const currentFeature = {id:c, label:capitalize(feature.name), onDelete:(data) => data};
+            parsed.push(currentFeature);
+            feature.sources.forEach((source) => {
                 c++;
-                for (var vkey in model) {
-                    const feature = data[fkey][mkey][vkey]
-                    let span = ""
-                    if (feature.hasOwnProperty("start") && feature.hasOwnProperty("end")) {
-                        span = [feature.start, feature.end]
-                    }
-                    parsed.push({id:c, label:feature.label, span:span, parentId:parendId})
+                const currentSource = {id:c, label:source.name, parentId:currentFeature.id, onDelete:(data) => data};
+                parsed.push(currentSource);
+                source.items.forEach((item) => {
                     c++;
-                }
-            }  
-        }
+                    const span = (item.hasOwnProperty("start") && item.hasOwnProperty("end")) ? [item.start, item.end] : '' 
+                    const probability = item.hasOwnProperty('probability') ? item.probability : ''
+                    const currentItem = {
+                        id:c, label:item.label, span, probability, 
+                        parentId:currentSource.id
+                    }
+                    parsed.push(currentItem)
+                    
+                    const userOnDelete = (data) => {
+                        let newData = data
+                        source.items = source.items.filter((value, index, arr) => {
+                            return value !== item
+                        })
+                        if (source.items.length === 0) {
+                            feature.sources = feature.sources.filter((value, index, arr) => {
+                                return value !== source
+                            })
+                            if (feature.sources.length === 0) {
+                                newData = newData.filter((value, index, arr) => {
+                                    return value !== feature
+                                })
+                            }
+                        }
+                        return newData
+                    }
+                    currentItem.onDelete = source.type === 'user' ? userOnDelete : (data) => data
+
+                });
+            });
+            c++;
+        });
 
         return parsed
     }   
 
     const handleMouseEnter = (value) => {
-        props.setHighlight(value)
+        onHighlight(value)
     }
-    const handleMouseLeave= () => {
-        props.setHighlight(null)
+    const handleMouseLeave = () => {
+        onHighlight(null)
+    }
+    
+    const handDeleteFeatureEnd = (data) => {
+        setToDelete(null)
+        if (data)
+            onDeleteFeature(data)
     }
 
     const [columns] = React.useState([
-        {
-            title: 'Label', field: 'label',
-        },
+        {title: 'Label', field: 'label'},
         {
             title: "Span",
             field: "span",
             render: (rowData) => {
-                if (!rowData.hasOwnProperty("span"))
+                if (!rowData.hasOwnProperty("span") || rowData.span === '')
                     return (<span></span>)
 
                 const start = rowData.span[0]
@@ -103,46 +119,40 @@ export default React.memo(function FeaturesTable(props) {
 
                 let preview = ''
                 if (end - start > PREVIEW_MAX_LENGTH)
-                    preview = props.text.substring(start, start + PREVIEW_MAX_LENGTH) + " [...]"
+                    preview = text.substring(start, start + PREVIEW_MAX_LENGTH) + " [...]"
                 else 
-                    preview = props.text.substring(start, end)
+                    preview = text.substring(start, end)
                 return (
                     <span onMouseEnter={()=>handleMouseEnter([start, end])}
-                          onMouseLeave={()=>handleMouseLeave(null)}>({start}, {end}) "{preview}"`</span>
-                ) }   
-          },
+                          onMouseLeave={()=>handleMouseLeave(null)}>({start}, {end}) "{preview}"`</span>)}
+        },
+        {title: 'Probability', field: 'probability'},
     ]);
 
     return (
-        <MaterialTable
-            // tableRef={tableRef}
-            options={{selection: true}}
-            title="Résultats"
-            icons={tableIcons}
-            columns={columns}
-            data={parseFeatures(props.features)}
-            editable={{
-                onRowAdd: newData =>
-                    new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            var newFeatures = props.features
-                            const user = JSON.parse(localStorage.getItem("currentUser"))
-                            if (!newFeatures)
-                                newFeatures = {}
-                            if (!(newData.label in newFeatures))
-                                newFeatures[newData.label] = {}
-                            if (!(user.userName in newFeatures[newData.label]))
-                                newFeatures[newData.label][user.userName] = []
-                            newFeatures[newData.label][user.userName].push({span:newData.span, acc:newData.acc})
-                            putContent('/exam-reports/' + props.examId, {features:newFeatures}, 
-                            (response) => {
-                                resolve();
-                                props.setData(response.data)
-                            })
-                        }, 1000);
-                    }),
-            }}
-            parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
-        />
+        <div>
+            <MaterialTable
+                options={{selection: true}}
+                title="Résultats"
+                icons={tableIcons}
+                columns={columns}
+                data={parseFeatures(features)}
+                actions={[
+                    {
+                        icon: 'add',
+                        tooltip: 'Add Feature',
+                        isFreeAction: true,
+                        onClick: () => onAddFeature(true)
+                    },
+                    {
+                        icon: 'delete',
+                        tooltip: 'Delete Feature',
+                        onClick: (e, rows) => setToDelete(rows)
+                    }
+                ]}
+                parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
+            />
+            <FeatureDeleteDialog examId={examId} features={features} toDelete={toDelete} onClose={handDeleteFeatureEnd} />
+        </div>
     )
 })

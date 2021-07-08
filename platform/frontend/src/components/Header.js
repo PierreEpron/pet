@@ -10,6 +10,7 @@ import StatsButton from "./Button/StatsButton";
 import ExportButton from "./Button/ExportButton";
 import ExitApp from "./Button/ExitApp";
 import RandomButton from "./Button/RandomButton";
+import ApplyQueueFeedBack from "./ApplyQueueFeedBack";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -85,6 +86,7 @@ export default function SearchAppBar() {
                 <Typography className={classes.title} variant="h6" noWrap onClick={redirection}>
                     PetApp_Nancyclotep
                 </Typography>
+                <ApplyQueueFeedBack/>
                 <RandomButton/>
                 <ImportButton/>
                 <StatsButton/>

@@ -1,12 +1,9 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-
-import {upload} from '../../services/upload.service';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-
 import {green} from '@material-ui/core/colors';
+import {postContent} from '../../services/content.service'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -42,10 +39,10 @@ export default function UploadButtons() {
         const file = event.target.files[0]
         const formData = new FormData()
         formData.append("csv", file, file.name);
-        upload(formData, () => {
+        postContent('/upload/', formData, (data) => {
             setLoading(false);
-            // window.location = window.location
-        });
+            window.location.reload();
+        }, false);
     }
 
     return (

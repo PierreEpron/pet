@@ -28,16 +28,17 @@ function login(user, msgHandler) {
 }
 
 function onBadAuth() {
+    const oldLocation = window.location
     const user = JSON.parse(localStorage.getItem("currentUser"))
     if (user)
         axios.post(REACT_APP_API_URL + "/token/refresh/", JSON.stringify({refresh:user.refresh}), {headers: getHeader(false)})
             .then(function (response) {
                 localStorage.setItem('currentUser', JSON.stringify({
-                    userName:user.username,
+                    userName:user.userName,
                     access:response.data.access,
                     refresh:user.refresh
                 }));    
-                window.location = HOME_URL
+                window.location = oldLocation
             })
             .catch(function (error) {
                 clearCurrentUser()
