@@ -15,7 +15,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import {getContents} from "../services/content.service"
 import IconButton from "../components/Button/IconButton"
 
-
 const columns = [
 
     {
@@ -58,12 +57,14 @@ export default function StickyHeadTable(props) {
     const [refreshData, setRefreshData] = React.useState(true);
     const [data, setData] = React.useState(null);
 
+    const [hasSelectAll, setHasSelectAll] = React.useState(false);
+
     React.useEffect(() => {
         if (data)
             setIsLoading(false)
         if (refreshData) {
             setRefreshData(false)
-            getContents('/exam-reports/', {limit: rowsPerPage, offset: page * rowsPerPage, depth: 3}, setData)
+            getContents('/exam-reports/', {limit: rowsPerPage, offset: page * rowsPerPage, depth: 3}, handleLoadedData)
         }
     }, [data, setData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
 
@@ -76,13 +77,42 @@ export default function StickyHeadTable(props) {
         setRowsPerPage(event.target.value);
         setPage(0);
         setRefreshData(true);
-    }
+    };
 
     const handleDocumentClick = (documentId) => {
         return (event) => {
             console.log(documentId)
             window.location = "/document/" + documentId;
         }
+    };
+
+    const updateAllSelection = (data, value) => {
+        const newData = data;
+        newData.results = newData.results.map((item) => {
+            item['isSelected'] = value;
+            return item 
+        });
+        return newData
+    }
+
+    const handleLoadedData = (data) => {
+        setData(updateAllSelection(data, false))
+        setHasSelectAll(false)
+    };
+
+    const handleSelectedAll = (event) => {
+        setHasSelectAll(event.target.checked)
+        setData(updateAllSelection(data, event.target.checked))
+    };
+
+    const handleSelect = (event, row) => {
+        const newData = data
+        newData.results = newData.results.map((item) => {
+            if (item.id === row.id)
+                item.isSelected=event.target.checked
+            return item
+        })
+        setData({...newData})
     }
 
     if (isLoading)
@@ -91,57 +121,49 @@ export default function StickyHeadTable(props) {
     return (
         <div className={classes.root}>
             <Header/>
-
             <Container maxWidth="lg" className={classes.container}>
-                <TableContainer className={classes.container}>
+                <TableContainer className={classes.container}>  
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
-                                <TableCell><Checkbox/></TableCell>
+                                <TableCell><Checkbox checked={hasSelectAll} onChange={handleSelectedAll}/></TableCell>
                                 {columns.map((column) => (
                                     <TableCell
                                         key={column.id}
                                         align={column.align}
                                         style={{minWidth: column.minWidth}}
                                     >
-
                                         {column.label}
-
                                     </TableCell>))}
                                 <TableCell>Select</TableCell>
                             </TableRow>
                         </TableHead>
 
                         <TableBody>
-
                             {data.results.map((row) => {
                                 return (
-
                                     <TableRow id={row.id} hover tabIndex={-1} key={row.id}>
-                                        <TableCell><Checkbox/></TableCell>
-
+                                        <TableCell>
+                                            <Checkbox checked={row.isSelected} onChange={(event) => handleSelect(event, row)}/>
+                                        </TableCell>
                                         {columns.map((column) => {
                                             return (
                                                 <TableCell key={column.id} align={column.align}
                                                            padding={row.disablePadding ? 'none' : 'default'}
                                                 >
                                                     {column.extract(row)}
-
                                                 </TableCell>
                                             );
                                         })}
                                         <TableCell
-                                            onClick={handleDocumentClick(row.id)}>< IconButton> </IconButton></TableCell>
-
+                                            onClick={handleDocumentClick(row.id)}>< IconButton></IconButton></TableCell>
                                     </TableRow>
-
                                 );
                             })}
                         </TableBody>
                     </Table>
 
                 </TableContainer>
-
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 50, 100]}
                     component="div"
