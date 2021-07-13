@@ -149,7 +149,7 @@ export default function StickyHeadTable(props) {
                                         {columns.map((column) => {
                                             return (
                                                 <TableCell key={column.id} align={column.align}
-                                                           padding={row.disablePadding ? 'none' : 'default'}
+                                                           padding={row.disablePadding ? 'none' : 'normal'}
                                                 >
                                                     {column.extract(row)}
                                                 </TableCell>
@@ -170,8 +170,8 @@ export default function StickyHeadTable(props) {
                     count={data.count}
                     rowsPerPage={rowsPerPage}
                     page={page}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Container>
 
