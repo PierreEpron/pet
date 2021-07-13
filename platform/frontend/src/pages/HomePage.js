@@ -106,13 +106,8 @@ export default function StickyHeadTable(props) {
     };
 
     const handleSelect = (event, row) => {
-        const newData = data
-        newData.results = newData.results.map((item) => {
-            if (item.id === row.id)
-                item.isSelected=event.target.checked
-            return item
-        })
-        setData({...newData})
+        row.isSelected=event.target.checked
+        setData({...data})
     }
 
     if (isLoading)
