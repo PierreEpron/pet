@@ -9,11 +9,13 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Header from "../components/Header";
 import Container from '@material-ui/core/Container';
-import Footer from "../components/Footer"
-import Progress from "../components/CircularProgress/CircularProgress"
+import Footer from "../components/Footer";
+import Progress from "../components/CircularProgress/CircularProgress";
 import Checkbox from '@material-ui/core/Checkbox';
-import {getContents} from "../services/content.service"
-import IconButton from "../components/Button/IconButton"
+import {getContents, deleteContent} from "../services/content.service";
+import ForwardIconButton from "../components/Button/ForwardIconButton";
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const columns = [
 
@@ -59,6 +61,11 @@ export default function StickyHeadTable(props) {
 
     const [hasSelectAll, setHasSelectAll] = React.useState(false);
 
+    const handleLoadedData = React.useCallback((data) => {
+        setData(updateAllSelection(data, false))
+        setHasSelectAll(false)
+    }, [setData]);
+
     React.useEffect(() => {
         if (data)
             setIsLoading(false)
@@ -66,7 +73,7 @@ export default function StickyHeadTable(props) {
             setRefreshData(false)
             getContents('/exam-reports/', {limit: rowsPerPage, offset: page * rowsPerPage, depth: 3}, handleLoadedData)
         }
-    }, [data, setData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
+    }, [data, handleLoadedData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage)
@@ -93,11 +100,6 @@ export default function StickyHeadTable(props) {
             return item 
         });
         return newData
-    }
-
-    const handleLoadedData = (data) => {
-        setData(updateAllSelection(data, false))
-        setHasSelectAll(false)
     };
 
     const handleSelectedAll = (event) => {
@@ -108,7 +110,14 @@ export default function StickyHeadTable(props) {
     const handleSelect = (event, row) => {
         row.isSelected=event.target.checked
         setData({...data})
-    }
+    };
+
+    const handleDeleteDocument = (event) => {
+        data.results.forEach((item) => {
+            if (item.isSelected === true)
+                deleteContent('/exam-reports/' + item.id + '/', (data) => {setRefreshData(true)})
+        });
+    };
 
     if (isLoading)
         return (<div><Progress/></div>)
@@ -130,7 +139,11 @@ export default function StickyHeadTable(props) {
                                     >
                                         {column.label}
                                     </TableCell>))}
-                                <TableCell>Select</TableCell>
+                                <TableCell onClick={handleDeleteDocument}>
+                                    <IconButton color="primary" aria-label="Delete Selected Documents">
+                                        <DeleteIcon ></DeleteIcon>
+                                    </IconButton>
+                                </TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -151,7 +164,7 @@ export default function StickyHeadTable(props) {
                                             );
                                         })}
                                         <TableCell
-                                            onClick={handleDocumentClick(row.id)}>< IconButton></IconButton></TableCell>
+                                            onClick={handleDocumentClick(row.id)}><ForwardIconButton></ForwardIconButton></TableCell>
                                     </TableRow>
                                 );
                             })}
