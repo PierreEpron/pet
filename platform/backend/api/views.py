@@ -1,9 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from numpy.core.fromnumeric import put
 from rest_framework import viewsets, permissions
-from rest_framework.serializers import Serializer
-from .models import ExamReportToApply, ExamWording, ExamRoom, Exam, ExamReport
-from .serializers import ExamWordingSerializer, ExamRoomSerializer, ExamSerializer, ExamReportSerializer
+from .models import Document, DocumentToApply
+from .serializers import DocumentSerializer
 from rest_framework.response import Response
 import os, json
 import requests
@@ -24,34 +22,9 @@ class ContentViewSet(viewsets.ModelViewSet):
 
         return super().get_serializer(*args, **kwargs)
 
-class ExamWordingViewSet(ContentViewSet):
-    """
-    API endpoint that allows ExamWording to be viewed or edited.
-    """
-    queryset = ExamWording.objects.all().order_by('-modified_date')
-    serializer_class = ExamWordingSerializer
-
-    filterset_fields = ['word'] + ContentViewSet.FILTERSET_FIELDS
-
-class ExamRoomViewSet(ContentViewSet):
-    """
-    API endpoint that allows ExamRoom to be viewed or edited.
-    """
-    queryset = ExamRoom.objects.all().order_by('-modified_date')
-    serializer_class = ExamRoomSerializer
-
-    filterset_fields = ['ref'] + ContentViewSet.FILTERSET_FIELDS
-
-class ExamViewSet(ContentViewSet):
-    """
-    API endpoint that allows Exam to be viewed or edited.
-    """
-    queryset = Exam.objects.all().order_by('-modified_date')
-    serializer_class = ExamSerializer
-    filterset_fields = ['ref', 'date', 'wording', 'room'] + ContentViewSet.FILTERSET_FIELDS
 
 def update_features(request, pk):
-    report = get_object_or_404(ExamReportViewSet.queryset, pk=pk)
+    report = get_object_or_404(DocumentViewSet.queryset, pk=pk)
 
     newFeatures = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
                 json.dumps({'text':report.text, 'features':report.features})
@@ -59,22 +32,22 @@ def update_features(request, pk):
     newFeatures = newFeatures.json()
 
     if newFeatures != report.features:
-        report = ExamReportViewSet.serializer_class(report, 
+        report = DocumentViewSet.serializer_class(report, 
             context = {'request':request}, data={'features':newFeatures}, partial=True)
 
         if report.is_valid():
             report.save()
-            ExamReportToApply.objects.filter(report=pk).delete()
+            DocumentToApply.objects.filter(report=pk).delete()
         else:
             print(report.errors)
 
-class ExamReportViewSet(ContentViewSet):
+class DocumentViewSet(ContentViewSet):
     """
-    API endpoint that allows ExamReport to be viewed or edited.
+    API endpoint that allows Document to be viewed or edited.
     """
-    queryset = ExamReport.objects.all().order_by('-modified_date')
-    serializer_class = ExamReportSerializer
-    filterset_fields = ['text', 'exam'] + ContentViewSet.FILTERSET_FIELDS
+    queryset = Document.objects.all().order_by('-modified_date')
+    serializer_class = DocumentSerializer
+    filterset_fields = ['text'] + ContentViewSet.FILTERSET_FIELDS
 
     def retrieve(self, request, pk=None):
         
@@ -96,22 +69,22 @@ def parse_datetime(date, time):
 def upload(request):
     data = pd.read_csv(request.data['csv'], sep='\t', encoding='utf-8')
     for item in data.values:
-        wording, _ = ExamWording.objects.get_or_create(word=item[2])
-        room, _ = ExamRoom.objects.get_or_create(ref=item[3])
-        exam, _ = Exam.objects.get_or_create(ref=item[0], defaults={
-            'date':parse_datetime(item[4], item[5]),
-            'wording':wording,
-            'room':room
-        })
-        
-        report, is_new = ExamReport.objects.get_or_create(text=correct_encoding(item[6]), exam=exam)
+        # wording, _ = ExamWording.objects.get_or_create(word=item[2])
+        # room, _ = ExamRoom.objects.get_or_create(ref=item[3])
+        # exam, _ = Exam.objects.get_or_create(ref=item[0], defaults={
+        #     'date':parse_datetime(item[4], item[5]),
+        #     'wording':wording,
+        #     'room':room
+        # })
+        report, is_new = Document.objects.get_or_create(text=correct_encoding(item[6]))
         if is_new:
-            ExamReportToApply.objects.get_or_create(report=report)
+            DocumentToApply.objects.get_or_create(report=report)
+
     return Response()
 
 @api_view(['GET'])
 def apply_queue(request):
-    c = ExamReportToApply.objects.count()
+    c = DocumentToApply.objects.count()
     if c > 0 :
-        update_features(request, ExamReportToApply.objects.first().report.id)
+        update_features(request, DocumentToApply.objects.first().report.id)
     return Response({'queue':{'count':c}})

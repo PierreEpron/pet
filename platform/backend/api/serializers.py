@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ExamWording, ExamRoom, Exam, ExamReport, ExamReportToApply
+from .models import Document, DocumentToApply
 
 class ContentSerializer(serializers.ModelSerializer):
     FIELDS = ['id', 'modified_by', 'created_by', 'created_date' , 'modified_date']
@@ -24,21 +24,6 @@ class ContentSerializer(serializers.ModelSerializer):
         else:
             validated_data['modified_by'] = user
         return super().update(instance, validated_data)
-
-class ExamWordingSerializer(ContentSerializer):
-    class Meta:
-        model = ExamWording
-        fields = ['word'] + ContentSerializer.FIELDS
-
-class ExamRoomSerializer(ContentSerializer):
-    class Meta:
-        model = ExamRoom
-        fields = ['ref'] + ContentSerializer.FIELDS
-
-class ExamSerializer(ContentSerializer):
-    class Meta:
-        model = Exam
-        fields = ['ref', 'date', 'wording', 'room'] + ContentSerializer.FIELDS
 
 def valid_list_of_dict(value, error_msg, callback):
     for v in value:
@@ -88,10 +73,10 @@ def valid_item(value):
 
     value = newValue
 
-class ExamReportSerializer(ContentSerializer):
+class DocumentSerializer(ContentSerializer):
     class Meta:
-        model = ExamReport
-        fields = ['exam', 'text', 'features'] + ContentSerializer.FIELDS
+        model = Document
+        fields = ['text', 'features'] + ContentSerializer.FIELDS
 
     def validate_features(self, value):
         """
@@ -104,7 +89,7 @@ class ExamReportSerializer(ContentSerializer):
                     
         return value
 
-class ExamReportToApplySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ExamReportToApply
-        fields = ['report']
+# class DocumentToApplySerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = DocumentToApply
+#         fields = ['report']

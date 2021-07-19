@@ -81,7 +81,7 @@ export default function FeatureForm(props) {
         }
         source.items.push(newFeature)
 
-        putContent('/exam-reports/' + examId + '/', {features:newFeatures}, 
+        putContent('/documents/' + examId + '/', {features:newFeatures}, 
             (data) => {
                 close(data);
             }

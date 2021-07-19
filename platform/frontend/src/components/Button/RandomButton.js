@@ -26,7 +26,7 @@ export default function ContainedButtons() {
 
 
   const handleClick = () => {
-    getContents('/exam-reports/',{}, setData)
+    getContents('/documents/',{}, setData)
   }
 
   return (

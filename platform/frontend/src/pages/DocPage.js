@@ -54,7 +54,7 @@ export default function CollapsibleTable({match}) {
         if (data)
             setIsLoading(false)
         else
-            getContents("/exam-reports/" + match.params.id + "/", {depth: 2}, setData)
+            getContents("/documents/" + match.params.id + "/", {depth: 2}, setData)
     }, [match, isLoading, data, setData, setIsLoading]);
 
     const handleTextSelection = (span, onEndSelection) => {

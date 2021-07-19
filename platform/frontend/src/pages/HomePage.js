@@ -20,25 +20,20 @@ import DeleteIcon from '@material-ui/icons/Delete';
 const columns = [
 
     {
-        id: 'examRef', label: 'Examen Ref', extract: (row) => {
-            return row.exam.ref
+        id: 'documentId', label: 'Document Id', extract: (row) => {
+            return row.id;
         }
     },
     {
-        id: 'examDate', label: 'Examen Date', extract: (row) => {
-            return row.exam.date
+        id: 'modifiedDate', label: 'Last Modification', extract: (row) => {
+            return new Date(row.modified_date).toLocaleString("en-EN");
         }
     },
     {
-        id: 'examWording', label: 'Examen Wording', extract: (row) => {
-            return row.exam.wording.word
+        id: 'createdBy', label: 'Created By', extract: (row) => {
+            return row.created_by;
         }
-    },
-    {
-        id: 'examRoom', label: 'Examen Room', extract: (row) => {
-            return row.exam.room.ref
-        }
-    },
+    }
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -71,7 +66,7 @@ export default function StickyHeadTable(props) {
             setIsLoading(false)
         if (refreshData) {
             setRefreshData(false)
-            getContents('/exam-reports/', {limit: rowsPerPage, offset: page * rowsPerPage, depth: 3}, handleLoadedData)
+            getContents('/documents/', {limit: rowsPerPage, offset: page * rowsPerPage, depth: 3}, handleLoadedData)
         }
     }, [data, handleLoadedData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
 
@@ -115,7 +110,7 @@ export default function StickyHeadTable(props) {
     const handleDeleteDocument = (event) => {
         data.results.forEach((item) => {
             if (item.isSelected === true)
-                deleteContent('/exam-reports/' + item.id + '/', (data) => {setRefreshData(true)})
+                deleteContent('/documents/' + item.id + '/', (data) => {setRefreshData(true)})
         });
     };
 
