@@ -16,6 +16,6 @@ OU
 ```
 pour windows
 docker-compose -f docker-compose.dev.yml up --build
-pour linux
+pour linuxcd
 sudo docker-compose -f docker-compose.dev.yml up --build
 ``

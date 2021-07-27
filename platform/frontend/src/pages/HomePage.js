@@ -18,10 +18,14 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 const columns = [
-
     {
-        id: 'documentId', label: 'Document Id', extract: (row) => {
-            return row.id;
+        id: 'title', label: 'Title', extract: (row) => {
+            return row.title;
+        }
+    },
+    {
+        id: 'createdBy', label: 'Created By', extract: (row) => {
+            return row.created_by.username;
         }
     },
     {
@@ -29,11 +33,7 @@ const columns = [
             return new Date(row.modified_date).toLocaleString("en-EN");
         }
     },
-    {
-        id: 'createdBy', label: 'Created By', extract: (row) => {
-            return row.created_by;
-        }
-    }
+
 ];
 
 const useStyles = makeStyles((theme) => ({

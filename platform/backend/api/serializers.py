@@ -76,7 +76,7 @@ def valid_item(value):
 class DocumentSerializer(ContentSerializer):
     class Meta:
         model = Document
-        fields = ['text', 'features'] + ContentSerializer.FIELDS
+        fields = ['title', 'text', 'features'] + ContentSerializer.FIELDS
 
     def validate_features(self, value):
         """
@@ -89,7 +89,3 @@ class DocumentSerializer(ContentSerializer):
                     
         return value
 
-# class DocumentToApplySerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = DocumentToApply
-#         fields = ['report']

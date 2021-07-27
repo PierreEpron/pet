@@ -15,8 +15,9 @@ class Content(models.Model):
         abstract = True
 
 class Document(Content):
+    title = models.TextField()
     text = models.TextField()
     features = models.JSONField(null=True)
 
 class DocumentToApply(models.Model):
-    report = models.OneToOneField(Document, on_delete=models.CASCADE)
+    document = models.OneToOneField(Document, on_delete=models.CASCADE)

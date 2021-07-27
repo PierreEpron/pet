@@ -22,24 +22,23 @@ class ContentViewSet(viewsets.ModelViewSet):
 
         return super().get_serializer(*args, **kwargs)
 
-
 def update_features(request, pk):
-    report = get_object_or_404(DocumentViewSet.queryset, pk=pk)
+    document = get_object_or_404(DocumentViewSet.queryset, pk=pk)
 
     newFeatures = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
-                json.dumps({'text':report.text, 'features':report.features})
+                json.dumps({'text':document.text, 'features':document.features})
             )
     newFeatures = newFeatures.json()
 
-    if newFeatures != report.features:
-        report = DocumentViewSet.serializer_class(report, 
+    if newFeatures != document.features:
+        document = DocumentViewSet.serializer_class(document, 
             context = {'request':request}, data={'features':newFeatures}, partial=True)
 
-        if report.is_valid():
-            report.save()
-            DocumentToApply.objects.filter(report=pk).delete()
+        if document.is_valid():
+            document.save()
+            DocumentToApply.objects.filter(document=pk).delete()
         else:
-            print(report.errors)
+            print(document.errors)
 
 class DocumentViewSet(ContentViewSet):
     """
@@ -68,23 +67,33 @@ def parse_datetime(date, time):
 @api_view(['POST'])
 def upload(request):
     data = pd.read_csv(request.data['csv'], sep='\t', encoding='utf-8')
-    for item in data.values:
-        # wording, _ = ExamWording.objects.get_or_create(word=item[2])
-        # room, _ = ExamRoom.objects.get_or_create(ref=item[3])
-        # exam, _ = Exam.objects.get_or_create(ref=item[0], defaults={
-        #     'date':parse_datetime(item[4], item[5]),
-        #     'wording':wording,
-        #     'room':room
-        # })
-        report, is_new = Document.objects.get_or_create(text=correct_encoding(item[6]))
-        if is_new:
-            DocumentToApply.objects.get_or_create(report=report)
 
+    for item in data.values:
+
+        if not Document.objects.filter(title=item[0], text=correct_encoding(item[6])):
+            document = DocumentSerializer(context = {'request':request}, data=
+            {
+                'title':item[0],
+                'text':item[6],
+                'created_by': request.user, 
+                'features': [{'name':'meta', 
+                    'sources': [{
+                        'name': request.user.username,
+                        'type': 'model',
+                        'items': []
+                    }]
+                }]
+            })
+            if document.is_valid():
+                DocumentToApply.objects.get_or_create(document=document.save())
+            else:
+                print(document.errors)
+                
     return Response()
 
 @api_view(['GET'])
 def apply_queue(request):
     c = DocumentToApply.objects.count()
     if c > 0 :
-        update_features(request, DocumentToApply.objects.first().report.id)
+        update_features(request, DocumentToApply.objects.first().document.id)
     return Response({'queue':{'count':c}})
