@@ -21,12 +21,12 @@ export default function ContainedButtons() {
 
   React.useEffect(() => {
     if (data)
-      window.location = "/document/" + getRandomInt(data.count);
+      window.location = "/document/" + data.id;
     }, [data]);
 
 
   const handleClick = () => {
-    getContents('/documents/',{}, setData)
+    getContents('/random/', {}, setData)
   }
 
   return (
