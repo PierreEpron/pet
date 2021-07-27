@@ -9,35 +9,31 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Header from "../components/Header";
 import Container from '@material-ui/core/Container';
-import Footer from "../components/Footer"
-import Progress from "../components/CircularProgress/CircularProgress"
+import Footer from "../components/Footer";
+import Progress from "../components/CircularProgress/CircularProgress";
 import Checkbox from '@material-ui/core/Checkbox';
-import {getContents} from "../services/content.service"
-import IconButton from "../components/Button/IconButton"
-
+import {getContents, deleteContent} from "../services/content.service";
+import ForwardIconButton from "../components/Button/ForwardIconButton";
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const columns = [
+    {
+        id: 'title', label: 'Title', extract: (row) => {
+            return row.title;
+        }
+    },
+    {
+        id: 'createdBy', label: 'Created By', extract: (row) => {
+            return row.created_by.username;
+        }
+    },
+    {
+        id: 'modifiedDate', label: 'Last Modification', extract: (row) => {
+            return new Date(row.modified_date).toLocaleString("en-EN");
+        }
+    },
 
-    {
-        id: 'examRef', label: 'Examen Ref', extract: (row) => {
-            return row.exam.ref
-        }
-    },
-    {
-        id: 'examDate', label: 'Examen Date', extract: (row) => {
-            return row.exam.date
-        }
-    },
-    {
-        id: 'examWording', label: 'Examen Wording', extract: (row) => {
-            return row.exam.wording.word
-        }
-    },
-    {
-        id: 'examRoom', label: 'Examen Room', extract: (row) => {
-            return row.exam.room.ref
-        }
-    },
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -58,14 +54,21 @@ export default function StickyHeadTable(props) {
     const [refreshData, setRefreshData] = React.useState(true);
     const [data, setData] = React.useState(null);
 
+    const [hasSelectAll, setHasSelectAll] = React.useState(false);
+
+    const handleLoadedData = React.useCallback((data) => {
+        setData(updateAllSelection(data, false))
+        setHasSelectAll(false)
+    }, [setData]);
+
     React.useEffect(() => {
         if (data)
             setIsLoading(false)
         if (refreshData) {
             setRefreshData(false)
-            getContents('/exam-reports/', {limit: rowsPerPage, offset: page * rowsPerPage, depth: 3}, setData)
+            getContents('/documents/', {limit: rowsPerPage, offset: page * rowsPerPage, depth: 3}, handleLoadedData)
         }
-    }, [data, setData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
+    }, [data, handleLoadedData, refreshData, setRefreshData, rowsPerPage, page, setIsLoading]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage)
@@ -76,14 +79,40 @@ export default function StickyHeadTable(props) {
         setRowsPerPage(event.target.value);
         setPage(0);
         setRefreshData(true);
-    }
+    };
 
     const handleDocumentClick = (documentId) => {
         return (event) => {
             console.log(documentId)
             window.location = "/document/" + documentId;
         }
-    }
+    };
+
+    const updateAllSelection = (data, value) => {
+        const newData = data;
+        newData.results = newData.results.map((item) => {
+            item['isSelected'] = value;
+            return item 
+        });
+        return newData
+    };
+
+    const handleSelectedAll = (event) => {
+        setHasSelectAll(event.target.checked)
+        setData(updateAllSelection(data, event.target.checked))
+    };
+
+    const handleSelect = (event, row) => {
+        row.isSelected=event.target.checked
+        setData({...data})
+    };
+
+    const handleDeleteDocument = (event) => {
+        data.results.forEach((item) => {
+            if (item.isSelected === true)
+                deleteContent('/documents/' + item.id + '/', (data) => {setRefreshData(true)})
+        });
+    };
 
     if (isLoading)
         return (<div><Progress/></div>)
@@ -91,65 +120,61 @@ export default function StickyHeadTable(props) {
     return (
         <div className={classes.root}>
             <Header/>
-
             <Container maxWidth="lg" className={classes.container}>
-                <TableContainer className={classes.container}>
+                <TableContainer className={classes.container}>  
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
-                                <TableCell><Checkbox/></TableCell>
+                                <TableCell><Checkbox checked={hasSelectAll} onChange={handleSelectedAll}/></TableCell>
                                 {columns.map((column) => (
                                     <TableCell
                                         key={column.id}
                                         align={column.align}
                                         style={{minWidth: column.minWidth}}
                                     >
-
                                         {column.label}
-
                                     </TableCell>))}
-                                <TableCell>Select</TableCell>
+                                <TableCell onClick={handleDeleteDocument}>
+                                    <IconButton color="primary" aria-label="Delete Selected Documents">
+                                        <DeleteIcon ></DeleteIcon>
+                                    </IconButton>
+                                </TableCell>
                             </TableRow>
                         </TableHead>
 
                         <TableBody>
-
                             {data.results.map((row) => {
                                 return (
-
                                     <TableRow id={row.id} hover tabIndex={-1} key={row.id}>
-                                        <TableCell><Checkbox/></TableCell>
-
+                                        <TableCell>
+                                            <Checkbox checked={row.isSelected} onChange={(event) => handleSelect(event, row)}/>
+                                        </TableCell>
                                         {columns.map((column) => {
                                             return (
                                                 <TableCell key={column.id} align={column.align}
-                                                           padding={row.disablePadding ? 'none' : 'default'}
+                                                           padding={row.disablePadding ? 'none' : 'normal'}
                                                 >
                                                     {column.extract(row)}
-
                                                 </TableCell>
                                             );
                                         })}
                                         <TableCell
-                                            onClick={handleDocumentClick(row.id)}>< IconButton> </IconButton></TableCell>
-
+                                            onClick={handleDocumentClick(row.id)}><ForwardIconButton></ForwardIconButton></TableCell>
                                     </TableRow>
-
                                 );
                             })}
                         </TableBody>
                     </Table>
 
                 </TableContainer>
-
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 50, 100]}
                     component="div"
                     count={data.count}
                     rowsPerPage={rowsPerPage}
                     page={page}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Container>
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
 import {getContents} from "../services/content.service"
 
 export default function ApplyQueueFeedBack(props) {    

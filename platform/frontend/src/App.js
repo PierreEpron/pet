@@ -5,14 +5,14 @@ import HomePage from './pages/HomePage'
 import Docpage from "./pages/DocPage"
 import StatPage from "./pages/StatPage"
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme , ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: light)');
     const theme = React.useMemo(() =>
-      createMuiTheme({
+    createTheme ({
         palette: {
           type: prefersDarkMode ? 'light' : 'dark',
             primary: deepPurple,
