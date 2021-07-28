@@ -11,10 +11,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
 export default function ContainedButtons() {
   const classes = useStyles();
   const [data, setData] = React.useState(null);
