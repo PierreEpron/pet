@@ -89,7 +89,11 @@ def upload(request):
                     'sources': [{
                         'name': request.user.username,
                         'type': 'model',
-                        'items': []
+                        'items': [
+                            {'label':'exam_wording', 'value':item[2]},
+                            {'label':'exam_room', 'value':item[3]},
+                            {'label':'exam_date', 'value':str(parse_datetime(item[4], item[5]))}
+                        ]
                     }]
                 }]
             })
