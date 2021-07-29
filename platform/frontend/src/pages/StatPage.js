@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Chart from '../components/Charts/Chart';
 import Header from "../components/Header";
-import Deposits from "../components/Charts/Deposits";
+import PieCharts from "../components/Charts/PieCharts";
 import BarChart from "../components/Charts/BarChart"
 import Footer from "../components/Footer"
 
@@ -59,7 +59,7 @@ export default function Dashboard() {
                         {/*Recent Deposits*/}
                         <Grid xs={6} sm={6}>
                             <Paper className={fixedHeightPaper}>
-                                <Deposits/>
+                                <PieCharts/>
                             </Paper>
                         </Grid>
                         {/*Bar Chart*/}
