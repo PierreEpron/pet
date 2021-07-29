@@ -10,6 +10,7 @@ import Header from "../components/Header";
 import PieCharts from "../components/Charts/PieCharts";
 import BarChart from "../components/Charts/BarChart"
 import Footer from "../components/Footer"
+import ObjectWordCloud from "../components/Charts/ObjectWordCloud"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -66,6 +67,11 @@ export default function Dashboard() {
                         <Grid xs={6} sm={6}>
                             <Paper className={fixedHeightPaper}>
                                 <BarChart/>
+                            </Paper>
+                        </Grid>
+                        <Grid xs={12}>
+                            <Paper className={fixedHeightPaper}>
+                                <ObjectWordCloud/>
                             </Paper>
                         </Grid>
                     </Grid>
