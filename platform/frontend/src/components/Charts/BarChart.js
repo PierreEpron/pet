@@ -3,46 +3,39 @@ import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxi
 
 const data = [
     {
-        name: 'Page A',
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
+        name: '0 - 18',
+        homme: 10,
+        femme: 5,
     },
     {
-        name: 'Page B',
-        uv: 3000,
-        pv: 1398,
-        amt: 2210,
+        name: '18 - 25',
+        homme: 21,
+        femme: 22,
     },
     {
-        name: 'Page C',
-        uv: 2000,
-        pv: 9800,
-        amt: 2290,
+        name: '25 - 35',
+        homme: 23,
+        femme: 40,
     },
     {
-        name: 'Page D',
-        uv: 2780,
-        pv: 3908,
-        amt: 2000,
+        name: '35 - 45',
+        homme: 50,
+        femme: 22,
     },
     {
-        name: 'Page E',
-        uv: 1890,
-        pv: 4800,
-        amt: 2181,
+        name: '45 - 55',
+        homme: 42,
+        femme: 56,
     },
     {
-        name: 'Page F',
-        uv: 2390,
-        pv: 3800,
-        amt: 2500,
+        name: '55 - 65',
+        homme: 10,
+        femme: 25,
     },
     {
-        name: 'Page G',
-        uv: 3490,
-        pv: 4300,
-        amt: 2100,
+        name: '65 et plus',
+        homme: 70,
+        femme: 55,
     },
 ];
 
@@ -68,9 +61,8 @@ export default class Example extends PureComponent {
                     <YAxis/>
                     <Tooltip/>
                     <Legend/>
-                    <Bar dataKey="pv" stackId="a" fill="#8884d8"/>
-                    <Bar dataKey="amt" stackId="a" fill="#82ca9d"/>
-                    <Bar dataKey="uv" fill="#ffc658"/>
+                    <Bar dataKey="homme" stackId="a" fill="#8884d8"/>
+                    <Bar dataKey="femme" stackId="a" fill="#82ca9d"/>
                 </BarChart>
             </ResponsiveContainer>
         );
