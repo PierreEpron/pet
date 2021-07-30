@@ -3,5 +3,6 @@
     "ctx":"[\\s\\n\\r]*technique de l\\'examen ?:?[\\s\\n\\r]*",
     "tech":"[\\s\\n\\r]*[a-zA-Z0-9,/\\'\\-éà ]*(, on observe :|apporte les informations suivantes ?:?| (mettent|on met) en évidence :)[\\s\\n\\r]*",
     "obs":"[\\s\\n\\r]*(en )*conclusion ?:?[\\s\\n\\r]*",
-    "ccl":"[\\s\\n\\r]*$"
+    "ccl":"[\\s\\n\\r]*$",
+    "split_words": "(\\w+(-\\w+)*)"
 }
