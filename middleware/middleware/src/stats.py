@@ -23,7 +23,8 @@ def word_list_freq(text, filter=basic_filter()):
     """
     word_list = WORD_SPLIT_PATTERN.finditer(text.lower())
     word_freq = []
-    filtered_sentence = [w.group(0) for w in word_list if filter(w.group(0)) ]
-    for w in filtered_sentence:
-        word_freq.append(filtered_sentence.count(w))
-    return list(zip(filtered_sentence, word_freq))
+    filtered_words= [w.group(0) for w in word_list if filter(w.group(0))]
+    unique_words= set(filtered_words)
+    for w in unique_words:
+        word_freq.append(filtered_words.count(w))
+    return [{"value":word,"count":freq} for word, freq in zip(unique_words, word_freq)]
