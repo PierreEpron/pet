@@ -19,5 +19,5 @@ services:
 
 networks:
     network-backend:
-        external:
-            name: platform_network-backend
+        name: platform_network-backend
+        external: true
