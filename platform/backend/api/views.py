@@ -1,5 +1,6 @@
+from django.http.response import JsonResponse
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from .models import Document, DocumentToApply
 from .serializers import DocumentSerializer
 from rest_framework.response import Response
@@ -8,6 +9,11 @@ import requests
 from helpers import correct_encoding
 from django.shortcuts import get_object_or_404
 from django.conf import settings
+from rest_framework.decorators import api_view
+import pandas as pd
+from datetime import datetime
+from django.utils import timezone
+
 
 class ContentViewSet(viewsets.ModelViewSet):
     FILTERSET_FIELDS = ['modified_by', 'created_by', 'created_date' , 'modified_date']
@@ -54,10 +60,13 @@ class DocumentViewSet(ContentViewSet):
 
         return super().retrieve(self, request, pk)
 
-from rest_framework.decorators import api_view
-import pandas as pd
-from datetime import datetime
-from django.utils import timezone
+@api_view(['GET'])
+def random_document(request):
+    queryset = Document.objects.order_by("?")
+    if not queryset:        
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return JsonResponse({'id':queryset.first().id})
 
 def parse_datetime(date, time):
     date = date.split('/')
@@ -80,7 +89,11 @@ def upload(request):
                     'sources': [{
                         'name': request.user.username,
                         'type': 'model',
-                        'items': []
+                        'items': [
+                            {'label':'exam_wording', 'value':item[2]},
+                            {'label':'exam_room', 'value':item[3]},
+                            {'label':'exam_date', 'value':str(parse_datetime(item[4], item[5]))}
+                        ]
                     }]
                 }]
             })

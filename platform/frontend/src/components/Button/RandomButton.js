@@ -11,22 +11,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
 export default function ContainedButtons() {
   const classes = useStyles();
   const [data, setData] = React.useState(null);
 
   React.useEffect(() => {
     if (data)
-      window.location = "/document/" + getRandomInt(data.count);
+      window.location = "/document/" + data.id;
     }, [data]);
 
 
   const handleClick = () => {
-    getContents('/documents/',{}, setData)
+    getContents('/random/', {}, setData)
   }
 
   return (

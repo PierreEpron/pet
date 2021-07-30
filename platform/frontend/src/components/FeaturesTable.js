@@ -57,7 +57,8 @@ export default React.memo(function FeaturesTable(props) {
                 parsed.push(currentSource);
                 source.items.forEach((item) => {
                     c++;
-                    const span = (item.hasOwnProperty("start") && item.hasOwnProperty("end")) ? [item.start, item.end] : '' 
+                    let span = (item.hasOwnProperty("start") && item.hasOwnProperty("end")) ? [item.start, item.end] : '' 
+                    span = (span === '' && item.hasOwnProperty("value")) ? item.value : span 
                     const probability = item.hasOwnProperty('probability') ? item.probability : ''
                     const currentItem = {
                         id:c, label:item.label, span, probability, 
@@ -108,11 +109,15 @@ export default React.memo(function FeaturesTable(props) {
     const [columns] = React.useState([
         {title: 'Label', field: 'label'},
         {
-            title: "Span",
+            title: "Span/Value",
             field: "span",
             render: (rowData) => {
+                
                 if (!rowData.hasOwnProperty("span") || rowData.span === '')
                     return (<span></span>)
+
+                if (typeof rowData.span === 'string')
+                    return (<span>{rowData.span}</span>)
 
                 const start = rowData.span[0]
                 const end = rowData.span[1]

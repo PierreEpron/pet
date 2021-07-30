@@ -52,5 +52,10 @@ services:
 networks:
   network-backend:
     name: platform_network-backend
+    ipam:
+        driver: default
+        config:
+          - subnet: 172.19.0.0/24
+
   network-frontend:
     name: platform_network-frontend
