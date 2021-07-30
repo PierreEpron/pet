@@ -1,6 +1,7 @@
 import React from 'react'
 import {TagCloud} from 'react-tagcloud'
 
+/*
 const data = [
     {value: 'jQuery', count: 25},
     {value: 'MongoDB', count: 18},
@@ -21,6 +22,10 @@ const data = [
     {value: 'Flow', count: 30},
     {value: 'NPM', count: 11},
 ]
+*/
+
+
+
 
 /* CSS:
 @keyframes blinker {
@@ -48,7 +53,7 @@ const customRenderer = (tag, size, color) => (
   </span>
 )
 
-const CloudWord = () => (
-    <TagCloud tags={data} minSize={1} maxSize={5} renderer={customRenderer}/>
+const CloudWord = (props) => (
+    <TagCloud tags={props.data.filter(tag => tag.count >= props.minCount )} minSize={2} maxSize={7} renderer={customRenderer}/>
 )
 export default CloudWord;
