@@ -1,26 +1,42 @@
 import React from 'react';
 import SignIn from "./components/SignIn";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Pages1 from "./pages/Pages1"
-import Pages2 from "./pages/Pages2"
-import Pages3 from "./pages/Pages3"
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import HomePage from './pages/HomePage'
+import Docpage from "./pages/DocPage"
+import StatPage from "./pages/StatPage"
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { createTheme , ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import deepPurple from '@material-ui/core/colors/deepPurple';
 
 function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route path="/" exact component={() => <SignIn />} />
-            <Route path="/pages1" exact component={() => <Pages1 />} />
-            <Route path="/pages2" exact component={() => <Pages2 />} />
-            <Route path="/pages3" exact component={() => <Pages3 />} />
-            {/*<Route path="/pagestest" exact component={() => <PageTest />} />*/}
-        </Switch>
-      </Router>
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: light)');
+    const theme = React.useMemo(() =>
+    createTheme ({
+        palette: {
+          type: prefersDarkMode ? 'light' : 'dark',
+            primary: deepPurple,
+            secondary: deepPurple,
+        },
+      }),
+      [prefersDarkMode],
+    );
 
-    </div>
-  );
+    return (
+        <div className="App">
+            <ThemeProvider theme={theme}>
+            <CssBaseline/>
+            <Router>
+                <Switch>
+                    <Route path="/" exact component={SignIn}/>
+                    <Route path="/HomePage" exact component={HomePage}/>
+                    <Route path="/document/:id" exact component={Docpage}/>
+                    <Route path="/StatPage" exact component={StatPage}/>
+                </Switch>
+            </Router>
+            </ThemeProvider>
+        </div>
+    );
 }
-
 
 export default App;
