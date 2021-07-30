@@ -1,8 +1,8 @@
 from pathlib import Path
-import json
+import os, json
 from spacy import displacy
 
-PATTERNS = json.loads(Path('src/regex.json').read_text(encoding='utf-8'))
+PATTERNS = json.loads(Path(os.path.join(os.path.dirname(__file__), 'regex.json')).read_text(encoding='utf-8'))
 
 def get_patterns(pattern_keys):
     return {k:v for k, v in PATTERNS.items() if k in pattern_keys}
