@@ -2,6 +2,7 @@ from flask import Flask
 from src.pipelines.alpha import Alpha
 from flask import request
 from flask_cors import CORS
+from src.stats import word_list_freq
 
 import functools
 import json
@@ -26,9 +27,10 @@ def apply():
     for model in MODELS:
         if model.force_update == True or model.get_fullname() not in model_to_skips:
             model(text, features)
-
+    
+    word_frequencies = word_list_freq(text)
     return app.response_class(
-            response= json.dumps(features),
+            response= json.dumps({'features':features,'word_frequencies':word_frequencies}),
             status=200,
             mimetype='application/json')
             
