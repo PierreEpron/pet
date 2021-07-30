@@ -31,20 +31,22 @@ class ContentViewSet(viewsets.ModelViewSet):
 def update_features(request, pk):
     document = get_object_or_404(DocumentViewSet.queryset, pk=pk)
 
-    newFeatures = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
+    data = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
                 json.dumps({'text':document.text, 'features':document.features})
             )
-    newFeatures = newFeatures.json()
+    data = data.json()
+    new_features = data['features']
+    stats = {'word_frequencies':data['word_frequencies']}
 
-    if newFeatures != document.features:
-        document = DocumentViewSet.serializer_class(document, 
-            context = {'request':request}, data={'features':newFeatures}, partial=True)
 
-        if document.is_valid():
-            document.save()
-            DocumentToApply.objects.filter(document=pk).delete()
-        else:
-            print(document.errors)
+    document = DocumentViewSet.serializer_class(document,
+        context = {'request':request}, data={'features':new_features, 'stats':stats}, partial=True)
+
+    if document.is_valid():
+        document.save()
+        DocumentToApply.objects.filter(document=pk).delete()
+    else:
+        print(document.errors)
 
 class DocumentViewSet(ContentViewSet):
     """

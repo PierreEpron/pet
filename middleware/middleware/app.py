@@ -28,9 +28,9 @@ def apply():
         if model.force_update == True or model.get_fullname() not in model_to_skips:
             model(text, features)
     
-    print(word_list_freq(text))
+    word_frequencies = word_list_freq(text)
     return app.response_class(
-            response= json.dumps(features),
+            response= json.dumps({'features':features,'word_frequencies':word_frequencies}),
             status=200,
             mimetype='application/json')
             
