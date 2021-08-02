@@ -66,8 +66,8 @@ def valid_item(value):
         newValue['end'] = value['end']
 
     if 'probability' in value:
-        if not isinstance(value, float):
-            raise serializers.ValidationError("item.probability should be an float.")
+        # if not isinstance(value, float):
+        #     raise serializers.ValidationError("item.probability should be an float.")
 
         newValue['probability'] = value['probability']
 
