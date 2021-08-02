@@ -1,5 +1,6 @@
 from flask import Flask
 from src.pipelines.alpha import Alpha
+from src.pipelines.dim import Dim
 from flask import request
 from flask_cors import CORS
 from src.stats import word_list_freq
@@ -7,7 +8,7 @@ from src.stats import word_list_freq
 import functools
 import json
 
-MODELS = [Alpha()]
+MODELS = [Alpha(), Dim()]
 
 app = Flask(__name__)
 CORS(app)
