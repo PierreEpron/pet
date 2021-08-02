@@ -4,6 +4,8 @@ from spacy import displacy
 
 PATTERNS = json.loads(Path(os.path.join(os.path.dirname(__file__), 'regex.json')).read_text(encoding='utf-8'))
 
+DIM_KEYWORDS= json.loads(Path(os.path.join(os.path.dirname(__file__), 'dim_keywords.json')).read_text(encoding='utf-8'))
+
 def get_patterns(pattern_keys):
     return {k:v for k, v in PATTERNS.items() if k in pattern_keys}
 
@@ -30,3 +32,4 @@ def ner_html(path, docs, manual=False, options={}):
 def read_jsonl(path, encoding='utf-8'):
     path = Path(path) if isinstance(path, str) else path
     return [json.loads(line) for line in path.read_text(encoding=encoding).strip().split('\n')]
+
