@@ -20,7 +20,10 @@ python3 manage.py create_admin \
 
 # python3 manage.py collectstatic --noinput
 
-
 # python3 manage.py review_db 
 
-python3 manage.py runserver 0.0.0.0:8000
+if [ ${DEBUG} = 0]
+    python3 manage.py runserver 0.0.0.0:8000
+then
+    gunicorn backend.wsgi
+fi
