@@ -7,5 +7,6 @@
     "split_words": "(\\w+(-\\w+)*)",
     "suvmax":"\\s*s\\s*u\\s*v(\\s*m\\s*a\\s*x)*\\s*=*\\s*([0-9,]+)\\s*(v\\s*e\\s*r\\s*s\\s*u\\s*s|v\\s*s)*\\s*([0-9,]+)*",
     "medobj_size":"([0-9,]+)\\s*(x\\s*([0-9,]+)\\s*)*mm",
-    "gender":"([a-z\\.]+)\\sxxxx\\sxxxx"
+    "gender":"([a-z\\.]+)\\sxxxx\\sxxxx",
+    "age":"xxxx\\s\\([0-9]+\\sans*\\)"
 }
