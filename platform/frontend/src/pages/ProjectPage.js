@@ -14,6 +14,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import ProjectEditor from "../components/ProjectEditor";
+import FormGroup from '@material-ui/core/FormGroup';
+
 
 
 
@@ -56,7 +58,7 @@ export default function Dashboard() {
     // const [open, setOpen] = React.useState(true);
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-    const [selectedProject, setSelectedProject] =  React.useState ('')
+    const [selectedProject, setSelectedProject] =  React.useState (-1)
 
     
 
@@ -64,33 +66,34 @@ export default function Dashboard() {
 
         <div>
             <Header/>
+            <div className={classes.appBarSpacer}/>
             <main className={classes.content}>
-                <div className={classes.appBarSpacer}/>
                 <Container maxWidth="lg" className={classes.container}>
 
                     <form className={classes.form} noValidate>
-                        <FormControl className={classes.formControl}> 
-                            <Button variant="contained" color="primary">New project</Button>
-                        </FormControl>                       
-                        <FormControl className={classes.formControl}> 
-                            <InputLabel id="projet-select-label">Projects</InputLabel>
-                            <Select
-                                labelId="projet-select-label"
-                                value={selectedProject}
-                                onChange={(e) => setSelectedProject(e.target.value)}
-                                >
-                                <MenuItem disabled value="">
-                                    <em>Placeholder</em>
-                                </MenuItem>
-                                {projects.map((element, i) => <MenuItem key={element.name} value={i}>{element.name  }</MenuItem>)}
-                            </Select>
-                           
-                        </FormControl>
-                        {selectedProject !=='' && <ProjectEditor projectData={projects[selectedProject]}/>}
+                        <FormGroup row>
+                            <FormControl className={classes.formControl}> 
+                                <Button variant="contained" color="primary">New project</Button>
+                            </FormControl>
+                            <FormControl className={classes.formControl}>
+                                <Select
+                                    labelId="projet-select-label"
+                                    value={selectedProject}
+                                    onChange={(e) => setSelectedProject(e.target.value)}
+                                    >
+                                    <MenuItem value={-1}>
+                                        <em>Projects</em>
+                                    </MenuItem>
+                                    {projects.map((element, i) => <MenuItem key={element.name} value={i}>{element.name  }</MenuItem>)}
+                                </Select>
+                            </FormControl>
+                        </FormGroup>
+                        {selectedProject !== -1 && <ProjectEditor projectData={projects[selectedProject]}/>}
                         
                     </form>
                 </Container>
             </main>
+            <div className={classes.appBarSpacer}/>
             <Footer/>
         </div>
     );
