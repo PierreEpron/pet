@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import HomePage from './pages/HomePage'
 import Docpage from "./pages/DocPage"
 import StatPage from "./pages/StatPage"
+import ProjectPage from "./pages/ProjectPage"
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { createTheme , ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -32,6 +33,8 @@ function App() {
                     <Route path="/HomePage" exact component={HomePage}/>
                     <Route path="/document/:id" exact component={Docpage}/>
                     <Route path="/StatPage" exact component={StatPage}/>
+                    <Route path="/projects" exact component={ProjectPage}/>
+
                 </Switch>
             </Router>
             </ThemeProvider>
