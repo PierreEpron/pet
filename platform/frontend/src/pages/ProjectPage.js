@@ -15,6 +15,11 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import ProjectEditor from "../components/ProjectEditor";
 import FormGroup from '@material-ui/core/FormGroup';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import TextField from '@material-ui/core/TextField';
 
 
 
@@ -22,31 +27,9 @@ import FormGroup from '@material-ui/core/FormGroup';
 const projects = [{name: 'PET', nbDocument: 10}, {name: 'DIM', nbDocument: 10}]
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        // display: 'flex',
-    },
-    appBarSpacer: theme.mixins.toolbar,
-    // // content: {
-    // //     flexGrow: 1,
-    // //     height: '100vh',
-    // //     overflow: 'auto',
-    // //     paddingRight: 24,
-    // // },
-    // container: {
-    //     paddingTop: theme.spacing(4),
-    //     paddingBottom: theme.spacing(4),
-    // },
-    // paper: {
-    //     padding: theme.spacing(2),
-    //     display: 'flex',
-    //     overflow: 'auto',
-    //     flexDirection: 'column',
-    // },
     
-    // form: {
-    //     // display: 'flex',
-    //     // flexDirection: 'column',
-    //   },
+    appBarSpacer: theme.mixins.toolbar,
+   
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
@@ -59,7 +42,22 @@ export default function Dashboard() {
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     const [selectedProject, setSelectedProject] =  React.useState (-1)
+    const [newProject, setNewProject] =  React.useState (false)
+    const [projectName, setProjectName] =  React.useState ('')
 
+
+    const handleConfirm = () => {
+        setNewProject(false)
+    }
+
+    const handleCancel = () => {
+        setNewProject(false)
+    }
+
+    const handleOpen = () => {
+        setProjectName('')
+        setNewProject(true)
+    }
     
 
     return (
@@ -73,7 +71,9 @@ export default function Dashboard() {
                     <form className={classes.form} noValidate>
                         <FormGroup row>
                             <FormControl className={classes.formControl}> 
-                                <Button variant="contained" color="primary">New project</Button>
+                                <Button variant="contained" color="primary" onClick= {handleOpen}>
+                                    New project
+                                </Button>
                             </FormControl>
                             <FormControl className={classes.formControl}>
                                 <Select
@@ -94,6 +94,20 @@ export default function Dashboard() {
                 </Container>
             </main>
             <div className={classes.appBarSpacer}/>
+            <Dialog onClose={handleCancel} aria-labelledby="dialog-title" open={newProject}>
+                <DialogTitle id="dialog-title">Add Project</DialogTitle>
+                <DialogContent>
+                    <TextField value={projectName} onChange={(e) => setProjectName(e.target.value)} required label="Project name"/>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleConfirm} color="primary">
+                    Confirm
+                </Button>
+                <Button onClick={handleCancel} color="primary" autoFocus>
+                    Cancel
+                </Button>
+                </DialogActions>
+            </Dialog>
             <Footer/>
         </div>
     );
