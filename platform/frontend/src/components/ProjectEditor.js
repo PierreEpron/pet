@@ -21,8 +21,14 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         position: 'absolute',
         right: '32px',
-
-}}));
+    },
+    paper: {
+        padding: theme.spacing(2)
+    },
+    projectTitle: {
+        marginTop: '6px'
+    },
+}));
 
 export default function ProjectEditor(props) {
     const classes = useStyles();
@@ -30,9 +36,9 @@ export default function ProjectEditor(props) {
     const {projectData} = props
     console.log(projectData)
     return (
-        <Paper>
+        <Paper className= {classes.paper}>
             <FormGroup row>
-                <Typography>
+                <Typography className= {classes.projectTitle} variant='h5'>
                     {projectData.name} ({projectData.nbDocument} documents)
                 </Typography>
                 <IconButton className ={classes.deleteButton} color="primary" aria-label="Delete Project">

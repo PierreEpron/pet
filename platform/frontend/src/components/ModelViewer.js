@@ -7,14 +7,20 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Switch from '@material-ui/core/Switch';  
 import FormControlLabel from '@material-ui/core/FormControlLabel'; 
 
+const useStyles = makeStyles((theme) => ({
+     paper: {
+        padding: theme.spacing(2)
+    }
+}));
+
 export default function ModelViewer(props) {
-    // const classes = useStyles();
+    const classes = useStyles();
     const {modelData} = props;
     const [modelState, setModelState] = React.useState(modelData.state);
     
     console.log(modelData)
     return (
-        <Paper>
+        <Paper className= {classes.paper}>
             <Typography>
                 {modelData.name}
             </Typography>
