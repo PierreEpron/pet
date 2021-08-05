@@ -6,10 +6,13 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Switch from '@material-ui/core/Switch';  
 import FormControlLabel from '@material-ui/core/FormControlLabel'; 
+import FormGroup from '@material-ui/core/FormGroup';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
      paper: {
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
+        marginTop: theme.spacing(2)
     }
 }));
 
@@ -21,23 +24,32 @@ export default function ModelViewer(props) {
     console.log(modelData)
     return (
         <Paper className= {classes.paper}>
-            <Typography>
-                {modelData.name}
-            </Typography>
-            <FormControlLabel
-                control={
-                    <Switch
-                        checked={modelState}
-                        onChange={(e) => setModelState(e.target.checked)}
-                        name="modelState"
-                        color="primary"
-                         />
-                }
-                label="Active"
-            />
-            <Typography>
-                {modelData.desc}
-            </Typography>
+            <Grid container direction= "row">
+                <Grid item xs={2}>
+                    <FormGroup>
+                        <Typography variant="h6">
+                            {modelData.name}
+                        </Typography>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={modelState}
+                                    onChange={(e) => setModelState(e.target.checked)}
+                                    name="modelState"
+                                    color="primary"
+                                    />
+                            }
+                            
+                            
+                        />
+                    </FormGroup>
+                </Grid>
+                <Grid item xs={10}>
+                    <Typography>
+                        {modelData.desc}
+                    </Typography>
+                </Grid>
+            </Grid>
         </Paper>
         )
 }
