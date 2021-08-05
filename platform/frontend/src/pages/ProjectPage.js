@@ -20,11 +20,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
+import Progress from "../components/CircularProgress/CircularProgress";
+import {getContents, postContent} from "../services/content.service";
 
 
 
 
-const projects = [{name: 'PET', nbDocument: 10}, {name: 'DIM', nbDocument: 10}]
 
 const useStyles = makeStyles((theme) => ({
     
@@ -44,9 +45,24 @@ export default function Dashboard() {
     const [selectedProject, setSelectedProject] =  React.useState (-1)
     const [newProject, setNewProject] =  React.useState (false)
     const [projectName, setProjectName] =  React.useState ('')
+    const [data, setData] =  React.useState (null)
+    const [isLoading, setIsLoading] =  React.useState (true)
+
+    React.useEffect(() => {
+        if (data)
+            setIsLoading(false)
+        else {
+            setIsLoading(true)
+            getContents('/projects/', {depth: 3}, setData)
+        }
+    }, [data, setData, setIsLoading]);
 
 
     const handleConfirm = () => {
+        if (projectName==='')
+            return;
+        postContent('/projects/', {name: projectName, active_models: []}, (data) => window.location.reload())
+        
         setNewProject(false)
     }
 
@@ -59,6 +75,8 @@ export default function Dashboard() {
         setNewProject(true)
     }
     
+    if (isLoading)
+        return (<div><Progress/></div>)
 
     return (
 
@@ -84,11 +102,11 @@ export default function Dashboard() {
                                     <MenuItem value={-1}>
                                         <em>Projects</em>
                                     </MenuItem>
-                                    {projects.map((element, i) => <MenuItem key={element.name} value={i}>{element.name  }</MenuItem>)}
+                                    {data.results.map((element, i) => <MenuItem key={element.name} value={i}>{element.name  }</MenuItem>)}
                                 </Select>
                             </FormControl>
                         </FormGroup>
-                        {selectedProject !== -1 && <ProjectEditor projectData={projects[selectedProject]}/>}
+                        {selectedProject !== -1 && <ProjectEditor projectData={data.results[selectedProject]}/>}
                         
                     </form>
                 </Container>
