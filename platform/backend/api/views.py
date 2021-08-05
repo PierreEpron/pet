@@ -1,8 +1,8 @@
 from django.http.response import JsonResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, status
-from .models import Document, DocumentToApply
-from .serializers import DocumentSerializer
+from .models import Document, DocumentToApply, Project
+from .serializers import DocumentSerializer, ProjectSerializer
 from rest_framework.response import Response
 import os, json
 import requests
@@ -61,6 +61,15 @@ class DocumentViewSet(ContentViewSet):
         update_features(request, pk)
 
         return super().retrieve(self, request, pk)
+
+class ProjectViewSet(ContentViewSet):
+    """
+    API endpoint that allows Project to be viewed or edited.
+    """
+    queryset = Project.objects.all().order_by('-created_date')
+    serializer_class = ProjectSerializer
+    filterset_fields = ['name'] + ContentViewSet.FILTERSET_FIELDS
+
 
 @api_view(['GET'])
 def random_document(request):
