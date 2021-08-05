@@ -2,12 +2,13 @@ from django.urls import include, path
 from rest_framework import routers
 from authentification import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from api.views import DocumentViewSet, upload, random_document, apply_queue
+from api.views import DocumentViewSet, ProjectViewSet, upload, random_document, apply_queue
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'api/documents', DocumentViewSet)
+router.register(r'api/projects', ProjectViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
