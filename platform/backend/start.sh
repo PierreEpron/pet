@@ -2,8 +2,9 @@
 
 python3 manage.py wait_for_db
 
-if [ ${RESET_DB} = 1 ]
+if [ ${RESET_DB} = "1" ]
 then
+    echo "RESET DATABASE"
     python manage.py reset_db --noinput
 fi
 
@@ -19,11 +20,13 @@ python3 manage.py create_admin \
 --noinput \
 
 # python3 manage.py collectstatic --noinput
-
 # python3 manage.py review_db 
 
-if [ ${DEBUG} = 0]
-    python3 manage.py runserver 0.0.0.0:8000
+if [ ${DEBUG} = "1" ]
 then
-    gunicorn backend.wsgi
+    echo "START DEV"
+    python3 manage.py runserver 0.0.0.0:8000
+else
+    echo "START PROD"
+    gunicorn --bind 0.0.0.0:8000 backend.wsgi
 fi
