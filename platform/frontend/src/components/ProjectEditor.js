@@ -7,6 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ModelViewer from './ModelViewer';
 import Button from '@material-ui/core/Button';
 import FormGroup from '@material-ui/core/FormGroup';
+import Grid from '@material-ui/core/Grid';
 
 
 
@@ -28,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
     projectTitle: {
         marginTop: '6px'
     },
+    controlButtons: {
+        marginTop: theme.spacing(2)
+    }
+    
 }));
 
 export default function ProjectEditor(props) {
@@ -46,8 +51,15 @@ export default function ProjectEditor(props) {
                 </IconButton>
             </FormGroup>
             {models.map((element, i) => <ModelViewer modelData = {models[i]}></ModelViewer>)}
-            <Button variant="contained" color="secondary">Cancel</Button>
-            <Button variant="contained" color="primary">Save</Button>
+            <Grid className= {classes.controlButtons} container direction="row" justifyContent="flex-end" spacing= {2}> 
+                <Grid item >
+                    <Button variant="contained" color="secondary">Cancel</Button>
+                </Grid>
+
+                <Grid item >
+                    <Button variant="contained" color="primary">Save</Button>
+                </Grid>
+            </Grid>
 
 
         </Paper>
