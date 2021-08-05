@@ -9,15 +9,15 @@ def create_regex_matcher_component(nlp: Language, name: str, patterns: dict):
 
 class RegexMatcherComponent:
     def __init__(self, nlp: Language, patterns: dict):
-        print(patterns)
         self.patterns = {k:self.load_patterns(get_patterns(v)) for k, v in patterns.items()}
         if not Doc.has_extension("regex_matchs"):
             Doc.set_extension("regex_matchs", default={})
 
     def __call__(self, doc: Doc) -> Doc:
         for k, v in self.patterns.items():
+            doc._.regex_matchs[k] = []
             for label, pattern in v.items():
-                doc._.regex_matchs[k] = [{'start':match.start(0), 'end':match.end(0), 'label':label} for match in pattern.finditer(doc.text)]
+                doc._.regex_matchs[k] += [{'start':match.start(0), 'end':match.end(0), 'label':label} for match in pattern.finditer(doc.text)]
         return doc
 
     def to_disk(self, path, exclude=tuple()):
