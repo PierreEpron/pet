@@ -22,3 +22,7 @@ class Document(Content):
 
 class DocumentToApply(models.Model):
     document = models.OneToOneField(Document, on_delete=models.CASCADE)
+
+class Project(Content):
+    name = models.TextField()
+    active_models = models.JSONField(null=True)
