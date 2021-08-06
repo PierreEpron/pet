@@ -1,18 +1,12 @@
 import React from 'react';
-import clsx from 'clsx';
 import {makeStyles} from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Header from "../components/Header";
 import Footer from "../components/Footer"
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
 import ProjectEditor from "../components/ProjectEditor";
 import FormGroup from '@material-ui/core/FormGroup';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -22,9 +16,6 @@ import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
 import Progress from "../components/CircularProgress/CircularProgress";
 import {getContents, postContent} from "../services/content.service";
-
-
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,8 +30,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
     const classes = useStyles();
-    // const [open, setOpen] = React.useState(true);
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     const [selectedProject, setSelectedProject] =  React.useState (-1)
     const [newProject, setNewProject] =  React.useState (false)
@@ -97,12 +86,15 @@ export default function Dashboard() {
                                 <Select
                                     labelId="projet-select-label"
                                     value={selectedProject}
-                                    onChange={(e) => setSelectedProject(e.target.value)}
+                                    onChange={(e) => {
+                                        setSelectedProject(e.target.value)
+                                        getContents('/projects/', {depth: 3}, setData)
+                                    }}
                                     >
                                     <MenuItem value={-1}>
                                         <em>Projects</em>
                                     </MenuItem>
-                                    {data.results.map((element, i) => <MenuItem key={element.name} value={i}>{element.name  }</MenuItem>)}
+                                    {data.results.map((element, i) => <MenuItem key={"projects-name" + element.name} value={i}>{element.name  }</MenuItem>)}
                                 </Select>
                             </FormControl>
                         </FormGroup>

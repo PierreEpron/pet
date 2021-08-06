@@ -33,30 +33,30 @@ const useStyles = makeStyles((theme) => ({
 export default function ProjectEditor(props) {
     const classes = useStyles();
 
+    const {projectData} = props
+
     const [modelInfo, setModelInfo] =  React.useState (null)
     const [isLoading, setIsLoading] =  React.useState (true)
     const [showAlert, setShowAlert] =  React.useState (false)
 
-    const {projectData} = props
+    const [activeModels, setActiveModels] =  React.useState (null)
 
-    const updateModelInfo = React.useCallback((data) => {
-        const newData = data.map((element) => {
-            const name = element.name
-            const desc = element.desc
-            const state = projectData.active_models.includes(name)
-            return {name, desc, state}
-        })
-        setModelInfo(newData)
-    }, [projectData, setModelInfo]);
+    const parseModelInfo = (value) => {
+        const name = value.name
+        const desc = value.desc
+        const state = activeModels.includes(name)
+        return {name, desc, state}
+    };
 
     React.useEffect(() => {
+        setActiveModels(projectData.active_models)
         if (modelInfo)
             setIsLoading(false)
         else {
             setIsLoading(true)
-            getContents('/models-info/', {}, updateModelInfo)
+            getContents('/models-info/', {}, setModelInfo)
         }
-    }, [modelInfo, updateModelInfo, setIsLoading]);
+    }, [projectData, modelInfo, setModelInfo, setIsLoading]);
 
     const handleSave = () => {
         projectData.active_models = []
@@ -64,10 +64,10 @@ export default function ProjectEditor(props) {
             if (element.state === true)
                 projectData.active_models.push(element.name)
         })
-        // console.log(projectData)
+        
         putContent(
             '/projects/' + projectData.id + "/", 
-            {active_models:projectData.active_models}, 
+            {active_models:activeModels}, 
             (data) => setShowAlert(true)
         )
     }
@@ -79,8 +79,13 @@ export default function ProjectEditor(props) {
 
     const updateModelState = (modelId) => {
         return (value) => {
-            modelInfo[modelId].state = value;
-            setModelInfo([...modelInfo]);
+            if (value) {
+                activeModels.push(modelInfo[modelId].name)
+                setActiveModels([...activeModels]);
+            } 
+            else {
+                setActiveModels(activeModels.filter((v) => v !== modelInfo[modelId].name))
+            }
         }
     }
     
@@ -98,9 +103,9 @@ export default function ProjectEditor(props) {
                 </IconButton>
             </FormGroup>
             {modelInfo.map((element, i) => {
-                console.log(modelInfo)
                 return <ModelViewer 
-                    modelData = {modelInfo[i]} 
+                    key = {"model-info-"+i}
+                    modelData = {parseModelInfo(modelInfo[i])}
                     onModelStateChange={updateModelState(i)}/>
                 })}
             <Grid className= {classes.controlButtons} container direction="row" justifyContent="flex-end" spacing= {2}> 

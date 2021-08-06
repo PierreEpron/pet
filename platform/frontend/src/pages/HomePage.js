@@ -88,7 +88,6 @@ export default function StickyHeadTable(props) {
 
     const handleDocumentClick = (documentId) => {
         return (event) => {
-            console.log(documentId)
             window.location = "/document/" + documentId;
         }
     };

@@ -2,8 +2,6 @@ import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Switch from '@material-ui/core/Switch';  
 import FormControlLabel from '@material-ui/core/FormControlLabel'; 
 import FormGroup from '@material-ui/core/FormGroup';
@@ -21,7 +19,6 @@ export default function ModelViewer(props) {
     const {modelData, onModelStateChange} = props;
     // const [modelState, setModelState] = React.useState(modelData.state);
     
-    console.log(modelData)
     return (
         <Paper className= {classes.paper}>
             <Grid container direction= "row">

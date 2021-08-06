@@ -32,7 +32,11 @@ def update_features(request, pk):
     document = get_object_or_404(DocumentViewSet.queryset, pk=pk)
 
     data = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
-                json.dumps({'text':document.text, 'features':document.features})
+                json.dumps({
+                    'text':document.text, 
+                    'features':document.features, 
+                    'active_models':document.project.active_models
+                })
             )
     data = data.json()
     new_features = data['features']
@@ -94,7 +98,6 @@ def parse_datetime(date, time):
 def upload(request):
     data = pd.read_csv(request.data['csv'], sep='\t', encoding='utf-8')
     project = get_object_or_404(Project, id=request.data['projectId'])
-    print(project)
     for item in data.values:
         title, text, meta = '', '', []
 
