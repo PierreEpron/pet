@@ -93,29 +93,37 @@ def parse_datetime(date, time):
 @api_view(['POST'])
 def upload(request):
     data = pd.read_csv(request.data['csv'], sep='\t', encoding='utf-8')
-
+    project = get_object_or_404(Project, id=request.data['projectId'])
+    print(project)
     for item in data.values:
+        title, text, meta = '', '', []
 
-        if not Document.objects.filter(title=item[0], text=correct_encoding(item[6])):
-            document = DocumentSerializer(context = {'request':request}, data=
-            {
-                'title':item[0],
-                'text':item[6],
-                'created_by': request.user, 
-                'features': [{'name':'meta', 
-                    'sources': [{
-                        'name': request.user.username,
-                        'type': 'model',
-                        'items': [
-                            {'label':'exam_wording', 'value':item[2]},
-                            {'label':'exam_room', 'value':item[3]},
-                            {'label':'exam_date', 'value':str(parse_datetime(item[4], item[5]))}
-                        ]
+        if len(data.values[0]) == 2:
+            title = item[0]
+            text = correct_encoding(item[1])
+        else:
+            title = item[0]
+            text = item[6]
+            meta = [
+                {'label':'exam_wording', 'value':item[2]},
+                {'label':'exam_room', 'value':item[3]},
+                {'label':'exam_date', 'value':str(parse_datetime(item[4], item[5]))}
+            ]
+        if not Document.objects.filter(title=title, text=text):
+            document = DocumentSerializer(context = {'request':request}, data= {
+                    'title':title,
+                    'text':text,
+                    'created_by': request.user, 
+                    'features': [{'name':'meta', 
+                        'sources': [{
+                            'name': request.user.username,
+                            'type': 'model',
+                            'items': meta
+                        }]
                     }]
-                }]
-            })
+                })
             if document.is_valid():
-                DocumentToApply.objects.get_or_create(document=document.save())
+                DocumentToApply.objects.get_or_create(document=document.save(project=project))
             else:
                 print(document.errors)
                 
