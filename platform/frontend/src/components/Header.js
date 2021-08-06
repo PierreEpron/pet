@@ -74,7 +74,6 @@ export default function SearchAppBar() {
 
     function redirection(e) {
         e.preventDefault()
-        console.log("redirection")
         window.location = "/HomePage"
     }
 

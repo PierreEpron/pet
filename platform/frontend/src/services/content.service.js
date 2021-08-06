@@ -9,7 +9,6 @@ const errorHandler = (error) => {
             onBadAuth()
             break
         default:
-            console.log(error)
             break             
     }   
 }

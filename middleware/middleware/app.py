@@ -18,6 +18,8 @@ def apply():
     data = json.loads(request.data)
     text = data['text']
     features = data['features']
+    active_models = data['active_models']
+
 
     if isinstance(features, list) and len(features) > 0:
         model_to_skips = set(functools.reduce(lambda a, b: a + b, [item['name'] for item in features]))
@@ -26,7 +28,7 @@ def apply():
         features = []
 
     for model in MODELS:
-        if model.force_update == True or model.get_fullname() not in model_to_skips:
+        if model.name in active_models and (model.force_update == True or model.get_fullname() not in model_to_skips):
             model(text, features)
     
     word_frequencies = word_list_freq(text)

@@ -8,9 +8,9 @@ import ModelViewer from './ModelViewer';
 import Button from '@material-ui/core/Button';
 import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
-import {getContents, postContent} from "../services/content.service";
+import {getContents, putContent} from "../services/content.service";
 import Progress from "../components/CircularProgress/CircularProgress";
-
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
     deleteButton: {
@@ -33,30 +33,62 @@ const useStyles = makeStyles((theme) => ({
 export default function ProjectEditor(props) {
     const classes = useStyles();
 
-    const [modelInfo, setModelInfo] =  React.useState (null)
-    const [isLoading, setIsLoading] =  React.useState (true)
-
     const {projectData} = props
 
-    const updateModelInfo = React.useCallback((data) => {
-        const newData = data.map((element) => {
-            const name = element.name
-            const desc = element.desc
-            const state = projectData.active_models.includes(name)
-            return {name, desc, state}
-        })
-        setModelInfo(newData)
-    }, [setModelInfo]);
+    const [modelInfo, setModelInfo] =  React.useState (null)
+    const [isLoading, setIsLoading] =  React.useState (true)
+    const [showAlert, setShowAlert] =  React.useState (false)
+
+    const [activeModels, setActiveModels] =  React.useState (null)
+
+    const parseModelInfo = (value) => {
+        const name = value.name
+        const desc = value.desc
+        const state = activeModels.includes(name)
+        return {name, desc, state}
+    };
 
     React.useEffect(() => {
+        setActiveModels(projectData.active_models)
         if (modelInfo)
             setIsLoading(false)
         else {
             setIsLoading(true)
-            getContents('/models-info/', {}, updateModelInfo)
+            getContents('/models-info/', {}, setModelInfo)
         }
-    }, [modelInfo, updateModelInfo, setIsLoading]);
+    }, [projectData, modelInfo, setModelInfo, setIsLoading]);
 
+    const handleSave = () => {
+        projectData.active_models = []
+        modelInfo.forEach((element) => {
+            if (element.state === true)
+                projectData.active_models.push(element.name)
+        })
+        
+        putContent(
+            '/projects/' + projectData.id + "/", 
+            {active_models:activeModels}, 
+            (data) => setShowAlert(true)
+        )
+    }
+
+    const handleCancel = () => {
+        setIsLoading(true)
+        setModelInfo(null)
+    }
+
+    const updateModelState = (modelId) => {
+        return (value) => {
+            if (value) {
+                activeModels.push(modelInfo[modelId].name)
+                setActiveModels([...activeModels]);
+            } 
+            else {
+                setActiveModels(activeModels.filter((v) => v !== modelInfo[modelId].name))
+            }
+        }
+    }
+    
     if (isLoading)
         return (<div><Progress/></div>)
 
@@ -70,18 +102,22 @@ export default function ProjectEditor(props) {
                     <DeleteIcon ></DeleteIcon>
                 </IconButton>
             </FormGroup>
-            {modelInfo.map((element, i) => <ModelViewer modelData = {modelInfo[i]}></ModelViewer>)}
+            {modelInfo.map((element, i) => {
+                return <ModelViewer 
+                    key = {"model-info-"+i}
+                    modelData = {parseModelInfo(modelInfo[i])}
+                    onModelStateChange={updateModelState(i)}/>
+                })}
             <Grid className= {classes.controlButtons} container direction="row" justifyContent="flex-end" spacing= {2}> 
                 <Grid item >
-                    <Button variant="contained" color="secondary">Cancel</Button>
+                    <Button onClick={handleCancel} variant="contained" color="secondary">Cancel</Button>
                 </Grid>
 
                 <Grid item >
-                    <Button variant="contained" color="primary">Save</Button>
+                    <Button onClick={handleSave} variant="contained" color="primary">Save</Button>
                 </Grid>
             </Grid>
-
-
+            {showAlert && <Alert onClose={() => {setShowAlert(false)}}>Save has been made !</Alert>}
         </Paper>
         )
 }
