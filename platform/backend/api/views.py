@@ -70,6 +70,12 @@ class ProjectViewSet(ContentViewSet):
     serializer_class = ProjectSerializer
     filterset_fields = ['name'] + ContentViewSet.FILTERSET_FIELDS
 
+@api_view(['GET'])
+def models_info(request):
+    data = requests.get(f'{settings.MIDDLEWARE_URL}/models-info')
+    data = data.json()
+    return Response(data)
+    
 
 @api_view(['GET'])
 def random_document(request):
