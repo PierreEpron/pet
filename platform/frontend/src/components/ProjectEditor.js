@@ -47,7 +47,7 @@ export default function ProjectEditor(props) {
             return {name, desc, state}
         })
         setModelInfo(newData)
-    }, [setModelInfo]);
+    }, [projectData, setModelInfo]);
 
     React.useEffect(() => {
         if (modelInfo)
