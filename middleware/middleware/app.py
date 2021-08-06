@@ -38,7 +38,7 @@ def apply():
 @app.route('/models-info', methods=['GET'])
 def models_info():
     return app.response_class(
-            response= json.dumps([model.name for model in MODELS]),
+            response= json.dumps([{"name": model.name, "desc": model.desc} for model in MODELS]),
             status=200,
             mimetype='application/json')
             
