@@ -57,6 +57,15 @@ export default function ProjectEditor(props) {
         }
     }, [modelInfo, updateModelInfo, setIsLoading]);
 
+    const handleSave = () => {
+
+    }
+
+    const handleCancel = () => {
+        setIsLoading(true)
+        setModelInfo(null)
+    }
+    
     if (isLoading)
         return (<div><Progress/></div>)
 
@@ -73,11 +82,11 @@ export default function ProjectEditor(props) {
             {modelInfo.map((element, i) => <ModelViewer modelData = {modelInfo[i]}></ModelViewer>)}
             <Grid className= {classes.controlButtons} container direction="row" justifyContent="flex-end" spacing= {2}> 
                 <Grid item >
-                    <Button variant="contained" color="secondary">Cancel</Button>
+                    <Button onClick={handleCancel} variant="contained" color="secondary">Cancel</Button>
                 </Grid>
 
                 <Grid item >
-                    <Button variant="contained" color="primary">Save</Button>
+                    <Button onClick={handleSave} variant="contained" color="primary">Save</Button>
                 </Grid>
             </Grid>
 
