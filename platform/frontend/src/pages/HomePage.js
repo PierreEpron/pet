@@ -24,6 +24,11 @@ const columns = [
         }
     },
     {
+        id: 'project', label: 'Project', extract: (row) => {
+            return row.project.name;
+        }
+    },
+    {
         id: 'createdBy', label: 'Created By', extract: (row) => {
             return row.created_by.username;
         }
