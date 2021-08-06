@@ -34,4 +34,11 @@ def apply():
             response= json.dumps({'features':features,'word_frequencies':word_frequencies}),
             status=200,
             mimetype='application/json')
+
+@app.route('/models-info', methods=['GET'])
+def models_info():
+    return app.response_class(
+            response= json.dumps([{"name": model.name, "desc": model.desc} for model in MODELS]),
+            status=200,
+            mimetype='application/json')
             

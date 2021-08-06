@@ -3,6 +3,7 @@ class PipelineCtrl:
         self.name = self.__class__.__name__
         self.version = version
         self.force_update=force_update
+        self.desc= ""
     
     def __call__(self, text) -> dict:
         return {}
