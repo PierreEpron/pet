@@ -74,7 +74,7 @@ export default function Dashboard() {
         setProjectName('')
         setNewProject(true)
     }
-    
+        
     if (isLoading)
         return (<div><Progress/></div>)
 

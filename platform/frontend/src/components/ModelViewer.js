@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ModelViewer(props) {
     const classes = useStyles();
-    const {modelData} = props;
-    const [modelState, setModelState] = React.useState(modelData.state);
+    const {modelData, onModelStateChange} = props;
+    // const [modelState, setModelState] = React.useState(modelData.state);
     
     console.log(modelData)
     return (
@@ -33,14 +33,12 @@ export default function ModelViewer(props) {
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={modelState}
-                                    onChange={(e) => setModelState(e.target.checked)}
+                                    checked={modelData.state}
+                                    onChange={(e) => onModelStateChange(e.target.checked)}
                                     name="modelState"
                                     color="primary"
                                     />
                             }
-                            
-                            
                         />
                     </FormGroup>
                 </Grid>

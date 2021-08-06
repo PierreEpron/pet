@@ -8,9 +8,9 @@ import ModelViewer from './ModelViewer';
 import Button from '@material-ui/core/Button';
 import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
-import {getContents, postContent} from "../services/content.service";
+import {getContents, putContent} from "../services/content.service";
 import Progress from "../components/CircularProgress/CircularProgress";
-
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
     deleteButton: {
@@ -35,6 +35,7 @@ export default function ProjectEditor(props) {
 
     const [modelInfo, setModelInfo] =  React.useState (null)
     const [isLoading, setIsLoading] =  React.useState (true)
+    const [showAlert, setShowAlert] =  React.useState (false)
 
     const {projectData} = props
 
@@ -58,12 +59,29 @@ export default function ProjectEditor(props) {
     }, [modelInfo, updateModelInfo, setIsLoading]);
 
     const handleSave = () => {
-
+        projectData.active_models = []
+        modelInfo.forEach((element) => {
+            if (element.state === true)
+                projectData.active_models.push(element.name)
+        })
+        // console.log(projectData)
+        putContent(
+            '/projects/' + projectData.id + "/", 
+            {active_models:projectData.active_models}, 
+            (data) => setShowAlert(true)
+        )
     }
 
     const handleCancel = () => {
         setIsLoading(true)
         setModelInfo(null)
+    }
+
+    const updateModelState = (modelId) => {
+        return (value) => {
+            modelInfo[modelId].state = value;
+            setModelInfo([...modelInfo]);
+        }
     }
     
     if (isLoading)
@@ -79,7 +97,12 @@ export default function ProjectEditor(props) {
                     <DeleteIcon ></DeleteIcon>
                 </IconButton>
             </FormGroup>
-            {modelInfo.map((element, i) => <ModelViewer modelData = {modelInfo[i]}></ModelViewer>)}
+            {modelInfo.map((element, i) => {
+                console.log(modelInfo)
+                return <ModelViewer 
+                    modelData = {modelInfo[i]} 
+                    onModelStateChange={updateModelState(i)}/>
+                })}
             <Grid className= {classes.controlButtons} container direction="row" justifyContent="flex-end" spacing= {2}> 
                 <Grid item >
                     <Button onClick={handleCancel} variant="contained" color="secondary">Cancel</Button>
@@ -89,8 +112,7 @@ export default function ProjectEditor(props) {
                     <Button onClick={handleSave} variant="contained" color="primary">Save</Button>
                 </Grid>
             </Grid>
-
-
+            {showAlert && <Alert onClose={() => {setShowAlert(false)}}>Save has been made !</Alert>}
         </Paper>
         )
 }
