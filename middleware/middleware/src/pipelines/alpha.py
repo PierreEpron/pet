@@ -1,7 +1,7 @@
 from pathlib import Path
 import spacy
 from thinc.api import Config
-from .pipeline_ctrl import PipelineCtrl
+from src.pipeline_ctrl import PipelineCtrl
 from src.components import section_splitter
 from src.components import regex_matcher
 from src.helpers import extract_sents
