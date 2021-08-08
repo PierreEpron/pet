@@ -14,9 +14,6 @@ import ApplyQueueFeedBack from "./components/ApplyQueueFeedBack";
 
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        height: '10vh',
-    },
     menuButton: {
         marginRight: theme.spacing(2),
     },
@@ -78,9 +75,7 @@ export default function SearchAppBar() {
     }
 
     return (
-
-        <AppBar className={classes.root} position="static">
-
+        <AppBar position="static">
             <Toolbar>
                 <Typography className={classes.title} variant="h6" noWrap onClick={redirection}>
                     Pet Project App
@@ -90,7 +85,6 @@ export default function SearchAppBar() {
                 <ProjectButton/>
                 <RandomButton/>
                 <StatsButton/>
-
                 <div className={classes.search}>
                     <div className={classes.searchIcon}>
                         <SearchIcon/>
@@ -106,9 +100,6 @@ export default function SearchAppBar() {
                 </div>
                 <ExitApp/>
             </Toolbar>
-
-
         </AppBar>
-
     );
 }
