@@ -83,7 +83,7 @@ export default function SearchAppBar() {
 
             <Toolbar>
                 <Typography className={classes.title} variant="h6" noWrap onClick={redirection}>
-                    PetApp_Nancyclotep
+                    Pet Project App
                 </Typography>
                 <ApplyQueueFeedBack/>
                 <RandomButton/>
