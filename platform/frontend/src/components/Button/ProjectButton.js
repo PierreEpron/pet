@@ -12,16 +12,16 @@ const useStyles = makeStyles((theme) => ({
 
 function redirection(e) {
     e.preventDefault()
-    window.location = "/pages1"
+    window.location = "/projects"
 }
 
 
-export default function ContainedButtons() {
+export default function ProjectButton() {
     const classes = useStyles();
     return (
         <div className={classes.root}>
             <Button variant="contained" color="primary" onClick={redirection}>
-                Acceuil
+                Projects
             </Button>
         </div>
     );

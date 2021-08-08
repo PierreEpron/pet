@@ -7,7 +7,7 @@ import {alpha, makeStyles} from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import ImportButton from "./components/Button/ImportButton";
 import StatsButton from "./components/Button/StatsButton";
-import ExportButton from "./components/Button/ExportButton";
+import ProjectButton from "./components/Button/ProjectButton";
 import ExitApp from "./components/Button/ExitApp";
 import RandomButton from "./components/Button/RandomButton";
 import ApplyQueueFeedBack from "./components/ApplyQueueFeedBack";
@@ -15,7 +15,7 @@ import ApplyQueueFeedBack from "./components/ApplyQueueFeedBack";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        maxHeight: '10vh',
+        height: '10vh',
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -86,10 +86,10 @@ export default function SearchAppBar() {
                     Pet Project App
                 </Typography>
                 <ApplyQueueFeedBack/>
-                <RandomButton/>
                 <ImportButton/>
+                <ProjectButton/>
+                <RandomButton/>
                 <StatsButton/>
-                <ExportButton/>
 
                 <div className={classes.search}>
                     <div className={classes.searchIcon}>
