@@ -15,7 +15,7 @@ import ApplyQueueFeedBack from "./ApplyQueueFeedBack";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
+        maxHeight: '10vh',
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -79,7 +79,7 @@ export default function SearchAppBar() {
 
     return (
 
-        <AppBar position="static">
+        <AppBar className={classes.root} position="static">
 
             <Toolbar>
                 <Typography className={classes.title} variant="h6" noWrap onClick={redirection}>
