@@ -1,10 +1,8 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import Header from "../components/Header";
 import Container from "@material-ui/core/Container";
 import Grid from '@material-ui/core/Grid';
 import TextArea from "../components/Text/TextArea"
-import Footer from "../components/Footer"
 import FeaturesTable from '../components/FeaturesTable'
 import Progress from "../components/CircularProgress/CircularProgress"
 import CloudWord from "../components/Charts/WordCloud"
@@ -59,8 +57,6 @@ export default function CollapsibleTable({match}) {
 
     return (
         <div>
-            <Header/>
-
             <Container className={classes.container} maxWidth="xl" >
                 <Grid container spacing={6}>
                     <Grid className={classes.panel} item xs={12} sm={7}>
@@ -74,7 +70,6 @@ export default function CollapsibleTable({match}) {
                 </Grid>
             </Container>
             <FeatureForm newFeatureValue={newFeatureValue} onAddFeatureEnd={handleAddFeatureEnd} features={data.features} examId={data.id}/>
-            <Footer/>
         </div>
     );
 }

@@ -6,10 +6,8 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Chart from '../components/Charts/Chart';
-import Header from "../components/Header";
 import PieCharts from "../components/Charts/PieCharts";
 import BarChart from "../components/Charts/BarChart"
-import Footer from "../components/Footer"
 import ObjectWordCloud from "../components/Charts/ObjectWordCloud"
 
 const useStyles = makeStyles((theme) => ({
@@ -44,10 +42,7 @@ export default function Dashboard() {
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
-
-        <div>
-            <Header/>
-            <main className={classes.content}>
+        <main className={classes.content}>
                 <div className={classes.appBarSpacer}/>
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={2}>
@@ -80,7 +75,5 @@ export default function Dashboard() {
                     </Box>
                 </Container>
             </main>
-            <Footer/>
-        </div>
     );
 }
