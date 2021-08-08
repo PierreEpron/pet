@@ -15,7 +15,7 @@ import ApplyQueueFeedBack from "./components/ApplyQueueFeedBack";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        maxHeight: '10vh',
+        height: '10vh',
     },
     menuButton: {
         marginRight: theme.spacing(2),

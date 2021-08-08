@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: theme.spacing(8),
     },
     panel : {
-        maxHeight:'78vh',
+        height:'78vh',
         overflowY: 'auto'
     }
 }));

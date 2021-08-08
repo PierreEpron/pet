@@ -24,7 +24,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        maxHeight:'12vh'
+        height:'12vh'
     },
     WebButton: {
         marginRight: theme.spacing(2),
