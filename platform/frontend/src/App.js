@@ -1,6 +1,8 @@
 import React from 'react';
 import SignIn from "./components/SignIn";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer"
 import HomePage from './pages/HomePage'
 import Docpage from "./pages/DocPage"
 import StatPage from "./pages/StatPage"
@@ -27,6 +29,7 @@ function App() {
         <div className="App">
             <ThemeProvider theme={theme}>
             <CssBaseline/>
+            {window.location.pathname !== '/' && <Header/>}
             <Router>
                 <Switch>
                     <Route path="/" exact component={SignIn}/>
@@ -34,9 +37,9 @@ function App() {
                     <Route path="/document/:id" exact component={Docpage}/>
                     <Route path="/StatPage" exact component={StatPage}/>
                     <Route path="/projects" exact component={ProjectPage}/>
-
                 </Switch>
             </Router>
+            {window.location.pathname !== '/' && <Footer/>}
             </ThemeProvider>
         </div>
     );

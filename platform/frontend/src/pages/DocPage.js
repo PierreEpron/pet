@@ -1,10 +1,8 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import Header from "../components/Header";
 import Container from "@material-ui/core/Container";
 import Grid from '@material-ui/core/Grid';
 import TextArea from "../components/Text/TextArea"
-import Footer from "../components/Footer"
 import FeaturesTable from '../components/FeaturesTable'
 import Progress from "../components/CircularProgress/CircularProgress"
 import CloudWord from "../components/Charts/WordCloud"
@@ -13,31 +11,16 @@ import {getContents} from "../services/content.service"
 import FeatureForm from '../components/FeatureForm';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-    },
-    // appBarSpacer: theme.mixins.toolbar,
-    // content: {
-    //   flexGrow: 1,
-    //   height: '100vh',
-    //   overflow: 'auto',
-    //   paddingRight: 24,
-    // },
     container: {
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
         paddingLeft:theme.spacing(8),
         paddingRight: theme.spacing(8),
     },
-    paper: {
-        padding: theme.spacing(2),
-        display: 'flex',
-        overflow: 'auto',
-        flexDirection: 'column',
-    },
-    fixedHeight: {
-        height: 240,
-    },
+    panel : {
+        maxHeight:'78vh',
+        overflowY: 'auto'
+    }
 }));
 
 export default function CollapsibleTable({match}) {
@@ -74,23 +57,19 @@ export default function CollapsibleTable({match}) {
 
     return (
         <div>
-            <Header/>
-
-            <Container maxWidth="xl" className={classes.container}>
+            <Container className={classes.container} maxWidth="xl" >
                 <Grid container spacing={6}>
-                    <Grid item xs={12} sm={7}>
+                    <Grid className={classes.panel} item xs={12} sm={7}>
                         <TextArea text={data.text} highlight={highlight} onSelectText={handleTextSelection} />
                     </Grid>
-                    <Grid item xs={12} sm={5}>
+                    <Grid className={classes.panel} item xs={12} sm={5}>
                         <FeaturesTable examId={data.id} features={data.features} 
                         text={data.text} onHighlight={setHighlight} onAddFeature={setNewFeatureValue} onDeleteFeature={setData}/>
                         <CloudWord data={data.stats.word_frequencies} minCount={2}/>
                     </Grid>
-
                 </Grid>
             </Container>
             <FeatureForm newFeatureValue={newFeatureValue} onAddFeatureEnd={handleAddFeatureEnd} features={data.features} examId={data.id}/>
-            <Footer/>
         </div>
     );
 }

@@ -5,17 +5,17 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import {alpha, makeStyles} from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import ImportButton from "./Button/ImportButton";
-import StatsButton from "./Button/StatsButton";
-import ExportButton from "./Button/ExportButton";
-import ExitApp from "./Button/ExitApp";
-import RandomButton from "./Button/RandomButton";
-import ApplyQueueFeedBack from "./ApplyQueueFeedBack";
+import ImportButton from "./components/Button/ImportButton";
+import StatsButton from "./components/Button/StatsButton";
+import ExportButton from "./components/Button/ExportButton";
+import ExitApp from "./components/Button/ExitApp";
+import RandomButton from "./components/Button/RandomButton";
+import ApplyQueueFeedBack from "./components/ApplyQueueFeedBack";
 
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
+        maxHeight: '10vh',
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -79,11 +79,11 @@ export default function SearchAppBar() {
 
     return (
 
-        <AppBar position="static">
+        <AppBar className={classes.root} position="static">
 
             <Toolbar>
                 <Typography className={classes.title} variant="h6" noWrap onClick={redirection}>
-                    PetApp_Nancyclotep
+                    Pet Project App
                 </Typography>
                 <ApplyQueueFeedBack/>
                 <RandomButton/>
