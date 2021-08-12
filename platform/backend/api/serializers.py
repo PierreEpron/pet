@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Document, DocumentToApply
+from .models import Document, Project
 
 class ContentSerializer(serializers.ModelSerializer):
     FIELDS = ['id', 'modified_by', 'created_by', 'created_date' , 'modified_date']
@@ -76,7 +76,7 @@ def valid_item(value):
 class DocumentSerializer(ContentSerializer):
     class Meta:
         model = Document
-        fields = ['title', 'text', 'features','stats'] + ContentSerializer.FIELDS
+        fields = ['title', 'text', 'features', 'stats', 'project'] + ContentSerializer.FIELDS
 
     def validate_features(self, value):
         """
@@ -88,4 +88,9 @@ class DocumentSerializer(ContentSerializer):
         valid_list_of_dict(value, 'features should be a list of dict', valid_feature)
                     
         return value
+
+class ProjectSerializer(ContentSerializer):
+    class Meta:
+        model = Project
+        fields = ['name', 'active_models'] + ContentSerializer.FIELDS
 

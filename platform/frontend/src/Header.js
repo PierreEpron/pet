@@ -5,18 +5,15 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import {alpha, makeStyles} from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import ImportButton from "./Button/ImportButton";
-import StatsButton from "./Button/StatsButton";
-import ExportButton from "./Button/ExportButton";
-import ExitApp from "./Button/ExitApp";
-import RandomButton from "./Button/RandomButton";
-import ApplyQueueFeedBack from "./ApplyQueueFeedBack";
+import ImportButton from "./components/Button/ImportButton";
+import StatsButton from "./components/Button/StatsButton";
+import ProjectButton from "./components/Button/ProjectButton";
+import ExitApp from "./components/Button/ExitApp";
+import RandomButton from "./components/Button/RandomButton";
+import ApplyQueueFeedBack from "./components/ApplyQueueFeedBack";
 
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
     menuButton: {
         marginRight: theme.spacing(2),
     },
@@ -74,24 +71,20 @@ export default function SearchAppBar() {
 
     function redirection(e) {
         e.preventDefault()
-        console.log("redirection")
         window.location = "/HomePage"
     }
 
     return (
-
         <AppBar position="static">
-
             <Toolbar>
                 <Typography className={classes.title} variant="h6" noWrap onClick={redirection}>
-                    PetApp_Nancyclotep
+                    Pet Project App
                 </Typography>
                 <ApplyQueueFeedBack/>
-                <RandomButton/>
                 <ImportButton/>
+                <ProjectButton/>
+                <RandomButton/>
                 <StatsButton/>
-                <ExportButton/>
-
                 <div className={classes.search}>
                     <div className={classes.searchIcon}>
                         <SearchIcon/>
@@ -107,9 +100,6 @@ export default function SearchAppBar() {
                 </div>
                 <ExitApp/>
             </Toolbar>
-
-
         </AppBar>
-
     );
 }

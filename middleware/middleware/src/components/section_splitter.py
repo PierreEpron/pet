@@ -23,6 +23,9 @@ class SectionSplitterComponent:
                 print(f'{k} : skip by match')
                 return doc
             end = match.span()[0]
+            if start > end:
+                print(f'{k} : skip by start > end')
+                return doc
             span = doc.char_span(start, end, label=k)
             if span == None:
                 print(f'{k} : skip by span')

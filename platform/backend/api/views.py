@@ -1,8 +1,8 @@
 from django.http.response import JsonResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, status
-from .models import Document, DocumentToApply
-from .serializers import DocumentSerializer
+from .models import Document, DocumentToApply, Project
+from .serializers import DocumentSerializer, ProjectSerializer
 from rest_framework.response import Response
 import os, json
 import requests
@@ -32,7 +32,11 @@ def update_features(request, pk):
     document = get_object_or_404(DocumentViewSet.queryset, pk=pk)
 
     data = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
-                json.dumps({'text':document.text, 'features':document.features})
+                json.dumps({
+                    'text':document.text, 
+                    'features':document.features, 
+                    'active_models':document.project.active_models
+                })
             )
     data = data.json()
     new_features = data['features']
@@ -62,6 +66,21 @@ class DocumentViewSet(ContentViewSet):
 
         return super().retrieve(self, request, pk)
 
+class ProjectViewSet(ContentViewSet):
+    """
+    API endpoint that allows Project to be viewed or edited.
+    """
+    queryset = Project.objects.all().order_by('-created_date')
+    serializer_class = ProjectSerializer
+    filterset_fields = ['name'] + ContentViewSet.FILTERSET_FIELDS
+
+@api_view(['GET'])
+def models_info(request):
+    data = requests.get(f'{settings.MIDDLEWARE_URL}/models-info')
+    data = data.json()
+    return Response(data)
+    
+
 @api_view(['GET'])
 def random_document(request):
     queryset = Document.objects.order_by("?")
@@ -78,29 +97,36 @@ def parse_datetime(date, time):
 @api_view(['POST'])
 def upload(request):
     data = pd.read_csv(request.data['csv'], sep='\t', encoding='utf-8')
-
+    project = get_object_or_404(Project, id=request.data['projectId'])
     for item in data.values:
+        title, text, meta = '', '', []
 
-        if not Document.objects.filter(title=item[0], text=correct_encoding(item[6])):
-            document = DocumentSerializer(context = {'request':request}, data=
-            {
-                'title':item[0],
-                'text':item[6],
-                'created_by': request.user, 
-                'features': [{'name':'meta', 
-                    'sources': [{
-                        'name': request.user.username,
-                        'type': 'model',
-                        'items': [
-                            {'label':'exam_wording', 'value':item[2]},
-                            {'label':'exam_room', 'value':item[3]},
-                            {'label':'exam_date', 'value':str(parse_datetime(item[4], item[5]))}
-                        ]
+        if len(data.values[0]) == 2:
+            title = item[0]
+            text = correct_encoding(item[1])
+        else:
+            title = item[0]
+            text = item[6]
+            meta = [
+                {'label':'exam_wording', 'value':item[2]},
+                {'label':'exam_room', 'value':item[3]},
+                {'label':'exam_date', 'value':str(parse_datetime(item[4], item[5]))}
+            ]
+        if not Document.objects.filter(title=title, text=text):
+            document = DocumentSerializer(context = {'request':request}, data= {
+                    'title':title,
+                    'text':text,
+                    'created_by': request.user, 
+                    'features': [{'name':'meta', 
+                        'sources': [{
+                            'name': request.user.username,
+                            'type': 'model',
+                            'items': meta
+                        }]
                     }]
-                }]
-            })
+                })
             if document.is_valid():
-                DocumentToApply.objects.get_or_create(document=document.save())
+                DocumentToApply.objects.get_or_create(document=document.save(project=project))
             else:
                 print(document.errors)
                 

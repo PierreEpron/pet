@@ -21,7 +21,6 @@ function login(user, msgHandler) {
                     msgHandler('Bad Email or Password.')
                     break
                 default:
-                    console.log(error)
                     break
             }
         })
