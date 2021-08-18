@@ -126,7 +126,8 @@ def upload(request):
                     }]
                 })
             if document.is_valid():
-                DocumentToApply.objects.get_or_create(document=document.save(project=project))
+                document.save(project=project)
+                # DocumentToApply.objects.get_or_create(document=)
             else:
                 print(document.errors)
                 
