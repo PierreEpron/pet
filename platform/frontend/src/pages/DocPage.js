@@ -56,7 +56,7 @@ export default function CollapsibleTable({match}) {
         return (<div><Progress/></div>)
 
     return (
-        <div>
+        <div className={classes.container}>
             <Container className={classes.container} maxWidth="xl" >
                 <Grid container spacing={6}>
                     <Grid className={classes.panel} item xs={12} sm={7}>
