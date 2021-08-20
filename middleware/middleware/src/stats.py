@@ -4,7 +4,9 @@ from src.helpers import PATTERNS
 
 WORD_SPLIT_PATTERN = re.compile(PATTERNS['split_words'])
 
-def basic_filter(stop_words=stop_words, min_len_word=2):
+STOP_WORDS = set(list(stop_words)+['xxxx','XXXX'])
+
+def basic_filter(stop_words=STOP_WORDS, min_len_word=2):
     def wrapped_basic_filter(word):
         if word in stop_words or len(word) < min_len_word:
             return False
