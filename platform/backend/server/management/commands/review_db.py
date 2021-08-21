@@ -6,11 +6,30 @@ class Command(BaseCommand):
     help = '''Shorcuts for review database'''
 
     def add_arguments(self, parser):
-        parser.add_argument('--table', type=str, default='')
-        parser.add_argument('--columns', default=False, action='store_true')
-        parser.add_argument('--join', type=str, default='')
-        parser.add_argument('--select', type=str, default='*')
-        parser.add_argument('--where', type=str, default='')
+        parser.add_argument('--table', type=str, default='', 
+            help='''Table to review, if not specified, will list table names.
+            "python manage.py review_db" will display list of tables
+            "python manage.py review_db --table api_project" will display values in table api_project
+                "SELECT * FROM api_project"
+            ''')
+        parser.add_argument('--columns', default=False, action='store_true', 
+            help='''Use as flag to display columns of table in place instead of values.
+            "python manage.py review_db --table api_project --columns" will display columns of api_project
+                "SELECT * FROM information_schema.columns WHERE table_name = 'api_project'"
+            ''')
+        parser.add_argument('--join', type=str, default='',
+            help='''Make a LEFT JOIN. Should be in "x.y" format where x is the right table and y is the fk of the left table. --table is the left table.
+            "python manage.py review_db --table api_project --join auth_user.created_by_id" will make a LEFT JOIN on api_project and auth_user"
+                "SELECT * FROM api_project LEFT JOIN auth_user ON api_project.created_by_id = auth_user.id" 
+            ''')
+        parser.add_argument('--select', type=str, default='*',
+            help='''Use for specify SELECT sequence to request. * by default
+            "python manage.py review_db --table api_project --select "id, name" " will SELECT and display only id and name of table api_project"
+                "SELECT "id, name" FROM api_project" ''')
+        parser.add_argument('--where', type=str, default='',
+            help='''Use for specify WHERE sequence to request. None by default
+                "python manage.py review_db --table api_project --where "id=1" " will display only row of table api_project WHERE id is equal to 1"
+                "SELECT "id, name" FROM api_project WHERE id=1" ''')
 
     def handle(self, *args, **options):
         table = options.get('table')
