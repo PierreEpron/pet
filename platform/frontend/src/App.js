@@ -23,7 +23,7 @@ function App() {
             secondary: primaryColor,
         },
       }),
-      [prefersDarkMode],
+      [prefersDarkMode]// eslint-disable-line react-hooks/exhaustive-deps,
     );
 
     return (

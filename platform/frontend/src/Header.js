@@ -11,7 +11,7 @@ import ProjectButton from "./components/Button/ProjectButton";
 import ExitApp from "./components/Button/ExitApp";
 import RandomButton from "./components/Button/RandomButton";
 import ApplyQueueFeedBack from "./components/ApplyQueueFeedBack";
-
+import DocsButton from "./components/Button/DocsButton"
 
 const useStyles = makeStyles((theme) => ({
     menuButton: {
@@ -83,6 +83,7 @@ export default function SearchAppBar() {
                 <ApplyQueueFeedBack/>
                 <ImportButton/>
                 <ProjectButton/>
+                <DocsButton/>
                 <RandomButton/>
                 <StatsButton/>
                 <div className={classes.search}>
