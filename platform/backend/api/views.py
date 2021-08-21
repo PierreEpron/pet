@@ -96,15 +96,19 @@ def parse_datetime(date, time):
 
 @api_view(['POST'])
 def upload(request):
-    data = pd.read_csv(request.data['csv'], sep='\t', encoding='utf-8')
+    try:
+        data = pd.read_csv(request.data['csv'], sep='\t', encoding='utf-8')
+    except Exception as e:
+        print(e)
     project = get_object_or_404(Project, id=request.data['projectId'])
+    if len(data.values[0]) not in [2, 7]:
+        return Response()
     for item in data.values:
         title, text, meta = '', '', []
-
         if len(data.values[0]) == 2:
             title = item[0]
             text = correct_encoding(item[1])
-        else:
+        elif len(data.values[0]) == 7:
             title = item[0]
             text = item[6]
             meta = [
@@ -126,10 +130,10 @@ def upload(request):
                     }]
                 })
             if document.is_valid():
-                DocumentToApply.objects.get_or_create(document=document.save(project=project))
+                document.save(project=project)
+                # DocumentToApply.objects.get_or_create(document=)
             else:
-                print(document.errors)
-                
+                print(document.errors)               
     return Response()
 
 @api_view(['GET'])

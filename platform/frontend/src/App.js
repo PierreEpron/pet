@@ -10,7 +10,7 @@ import ProjectPage from "./pages/ProjectPage"
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { createTheme , ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import deepPurple from '@material-ui/core/colors/deepPurple';
+import deepPurple from '@material-ui/core/colors/deepPurple'
 
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: light)');
@@ -27,7 +27,7 @@ function App() {
     );
 
     return (
-        <div className="App" color={primaryColor}>
+        <div className="App">
             <ThemeProvider theme={theme}>
             <CssBaseline/>
             {window.location.pathname !== '/' && <Header/>}
