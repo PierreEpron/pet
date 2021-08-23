@@ -11,8 +11,8 @@ decorator==5.0.9
 filelock==3.0.12
 Flask==2.0.1
 Flask-Cors==3.0.10
-fr-core-news-lg @ https://github.com/explosion/spacy-models/releases/download/fr_core_news_lg-3.0.0/fr_core_news_lg-3.0.0-py3-none-any.whl
-fr-dep-news-trf @ https://github.com/explosion/spacy-models/releases/download/fr_dep_news_trf-3.0.0/fr_dep_news_trf-3.0.0-py3-none-any.whl
+fr-core-news-lg @ https://github.com/explosion/spacy-models/releases/download/fr_core_news_lg-3.1.0/fr_core_news_lg-3.1.0-py3-none-any.whl
+# fr-dep-news-trf @ https://github.com/explosion/spacy-models/releases/download/fr_dep_news_trf-3.0.0/fr_dep_news_trf-3.1.0-py3-none-any.whl
 idna==2.10
 ipykernel==5.5.5
 ipython==7.24.1
@@ -43,6 +43,7 @@ protobuf==3.17.3
 pydantic==1.7.4
 Pygments==2.9.0
 pyparsing==2.4.7
+pysbd==0.3.4
 python-dateutil==2.8.1
 pytz==2021.1
 pyzmq==22.1.0
@@ -54,13 +55,13 @@ seaborn==0.11.1
 sentencepiece==0.1.91
 six==1.16.0
 smart-open==3.0.0
-spacy==3.0.6
+spacy==3.1.1
 spacy-alignments==0.8.3
-spacy-legacy==3.0.5
+spacy-legacy==3.0.8
 spacy-lookups-data==1.0.0
 spacy-transformers==1.0.3
 srsly==2.4.1
-thinc==8.0.3
+thinc==8.0.8
 tokenizers==0.10.3
 torch==1.8.1
 tornado==6.1
