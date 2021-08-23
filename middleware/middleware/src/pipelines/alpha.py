@@ -4,6 +4,7 @@ from thinc.api import Config
 from src.pipelines.pipeline_ctrl import PipelineCtrl
 from src.components import section_splitter
 from src.components import regex_matcher
+from src.components import pysbd_sentence_boundaries
 from src.helpers import extract_sents
 
 class Alpha(PipelineCtrl):
@@ -22,9 +23,10 @@ class Alpha(PipelineCtrl):
             self.add_feature(features, feature)
             
     def build_model(self) -> None:
-        self.nlp = spacy.load("fr_dep_news_trf")
+        self.nlp = spacy.load("fr_core_news_lg")
+        self.nlp.add_pipe("sbd", first=True)
         self.nlp.add_pipe("sections_splitter", config={"patterns": self.sections_patterns})
-        self.nlp.add_pipe("regex_matcher", config={"patterns": self.regex_patterns}),
+        self.nlp.add_pipe("regex_matcher", config={"patterns": self.regex_patterns})
 
     def load_model(self, path) -> None:
         path = Path(path) if isinstance(path, str) else path
