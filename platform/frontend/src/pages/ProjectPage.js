@@ -69,8 +69,7 @@ export default function Dashboard() {
         <div>
             <div className={classes.appBarSpacer}/>
             <main className={classes.content}>
-                <Container maxWidth="lg" className={classes.container}>
-
+                <Container maxWidth="xl" className={classes.container}>
                     <form className={classes.form} noValidate>
                         <FormGroup row>
                             <FormControl className={classes.formControl}> 
@@ -95,7 +94,6 @@ export default function Dashboard() {
                             </FormControl>
                         </FormGroup>
                         {selectedProject !== -1 && <ProjectEditor projectData={data.results[selectedProject]}/>}
-                        
                     </form>
                 </Container>
             </main>
