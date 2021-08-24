@@ -37,4 +37,5 @@ class Alpha(PipelineCtrl):
 
     def save_model(self, path) -> None:
         path = Path(path) if isinstance(path, str) else path
-        self.nlp.to_disk(path / self.get_fullname())
+        path = path / self.get_fullname()
+        self.nlp.to_disk(path)
