@@ -52,7 +52,7 @@ export default function ButtonAppBar() {
                         className={classes.WebButton}
                         startIcon={<WebIcon/>}
                     >
-                        NancyClopet
+                        Nancyclotep
                     </Button>
                     <Button
                         target="_blank"
