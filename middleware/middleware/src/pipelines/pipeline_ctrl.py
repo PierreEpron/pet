@@ -1,13 +1,16 @@
 class PipelineCtrl:
-    def __init__(self, version, force_update=False) -> None:
-        self.name = self.__class__.__name__
-        self.version = version
-        self.force_update=force_update
-        self.desc= ""
-    
+    name = ''
+    version = ''
+    desc = ''
+    force_update = False
+
+    def __init__(self, ) -> None:
+        pass
+
     def __call__(self, text) -> dict:
         return {}
 
+    @classmethod
     def get_fullname(self) -> str:
         return f'{self.name}_{self.version}'
 
