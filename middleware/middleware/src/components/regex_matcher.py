@@ -24,7 +24,10 @@ class RegexMatcherComponent:
         data_path = path / "patterns.json"
         if not path.is_dir():
             path.mkdir()
-        data_path.write_text(json.dumps(self.patterns), encoding="utf-8")
+        data_path.write_text(
+            json.dumps(
+                {k: {kk: vv.pattern for kk, vv in v.items()} for k, v in self.patterns.items()}), 
+            encoding="utf-8")
 
     def from_disk(self, path, exclude=tuple()):        
         data_path = path / "patterns.json"
