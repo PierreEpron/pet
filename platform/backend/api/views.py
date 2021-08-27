@@ -1,7 +1,7 @@
 from django.http.response import JsonResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, status
-from .models import Document, DocumentToApply, Project
+from .models import Document, Project
 from .serializers import DocumentSerializer, ProjectSerializer
 from rest_framework.response import Response
 import os, json
@@ -49,7 +49,6 @@ def update_features(request, pk):
 
     if document.is_valid():
         document.save()
-        DocumentToApply.objects.filter(document=pk).delete()
     else:
         print(document.errors)
 
@@ -142,7 +141,6 @@ def upload(request):
                         'active_models':project.active_models
                     })
                 )
-                # DocumentToApply.objects.get_or_create(document=)
             else:
                 print(document.errors)               
     

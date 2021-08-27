@@ -25,6 +25,4 @@ class Document(Content):
     stats = models.JSONField(null=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
-class DocumentToApply(models.Model):
-    document = models.OneToOneField(Document, on_delete=models.CASCADE)
 
