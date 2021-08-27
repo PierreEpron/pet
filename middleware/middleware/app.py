@@ -1,16 +1,12 @@
-import re
 from flask import Flask
-from werkzeug.wrappers import response
-from src.pipelines.alpha import Alpha
-from src.pipelines.dim import Dim
+
 from flask import request
 from flask_cors import CORS
 
 from models import MODELS
-from src.stats import word_list_freq
 
+from datetime import datetime
 import requests
-import functools
 import json
 import os
 
@@ -26,7 +22,6 @@ CORS(app)
 
 @app.route('/apply', methods=['POST'])
 def apply():
-    print('in apply')
     _, result = apply_task(request.data)
 
     return app.response_class(
@@ -40,19 +35,17 @@ def apply_success(job, connection, result, *args, **kwargs):
     res = requests.post(f'{API_URL}/token/', json.dumps({'username':'admin', 'password':'1234'}), headers=headers)
     token = res.json()['access']
     headers['Authorization'] = "Bearer " + token
-    try:
-        requests.patch(f'{API_URL}/documents/{id}/', json.dumps(result), headers=headers)
-    except:
-        pass
+    res = requests.patch(f'{API_URL}/documents/{id}/', json.dumps(result), headers=headers).json()
+    if 'msg' in res:
+       print(f'apply_succes patch canceled for document {id} : {res["msg"]}')
+    else :
+       print(f'apply_succes patch succeed for document {id}')
 
 @app.route('/queue-apply', methods=['POST'])
 def queue_apply():
-    print('in queue-apply')
     with Connection(redis.from_url(REDIS_URL)):
-        print('in redis connection')
         q = Queue()
-        task = q.enqueue(apply_task, request.data, job_timeout='15m', on_success=apply_success)
-        print(task)
+        task = q.enqueue(apply_task, {'added_date': datetime.now().timestamp(), 'data':request.data}, job_timeout='15m', on_success=apply_success)
     return app.response_class(
             response= json.dumps({
                 "status": "success",
