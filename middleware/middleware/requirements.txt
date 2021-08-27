@@ -74,3 +74,5 @@ urllib3==1.26.5
 wasabi==0.8.2
 wcwidth==0.2.5
 Werkzeug==2.0.1
+redis==3.5.3
+rq==1.9.0
