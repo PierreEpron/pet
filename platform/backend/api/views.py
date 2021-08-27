@@ -14,7 +14,6 @@ import pandas as pd
 from datetime import datetime
 from django.utils import timezone
 
-
 class ContentViewSet(viewsets.ModelViewSet):
     FILTERSET_FIELDS = ['modified_by', 'created_by', 'created_date' , 'modified_date']
     filter_backends = [DjangoFilterBackend]
@@ -64,7 +63,18 @@ class DocumentViewSet(ContentViewSet):
         
         update_features(request, pk)
 
-        return super().retrieve(self, request, pk)
+        return super().retrieve(request, pk)
+    
+    def partial_update(self, request, pk=None):
+        print('update')
+        if 'added_date' in request.data and request.data['added_date'] != None:
+            added_date = datetime.fromtimestamp(request.data['added_date'], timezone.utc)
+            document = get_object_or_404(DocumentViewSet.queryset, pk=pk)
+            print('check cancel update')
+            if document.modified_date > added_date:
+                print('valid cancel update')
+                return Response({'msg':'Cancel partial_update because document has been modified after being queued'})
+        return super().partial_update(request, pk)
 
 class ProjectViewSet(ContentViewSet):
     """
