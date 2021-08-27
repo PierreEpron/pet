@@ -39,12 +39,9 @@ def update_features(request, pk):
                 })
             )
     data = data.json()
-    new_features = data['features']
-    stats = {'word_frequencies':data['word_frequencies']}
-
 
     document = DocumentViewSet.serializer_class(document,
-        context = {'request':request}, data={'features':new_features, 'stats':stats}, partial=True)
+        context = {'request':request}, data=data, partial=True)
 
     if document.is_valid():
         document.save()
@@ -163,3 +160,49 @@ def apply_queue_count(request):
         return Response({'queue':{'count':res.json()['count']}})
     else:
         return Response({'msg':res.text})
+
+
+AGE_SPLIT = [
+    ('0 - 18', lambda x: x < 18),
+    ('18 - 25', lambda x: x < 25),
+    ('25 - 35', lambda x: x < 35),
+    ('35 - 45', lambda x: x < 45),
+    ('45 - 55', lambda x: x < 55),
+    ('55 - 65', lambda x: x < 65),
+    ('65 et plus', lambda x: True),
+]
+
+@api_view(['GET'])
+def stats(request):
+    word_frequencies = {}
+    genders = {}
+    age_by_genders = {k:{} for k, _ in AGE_SPLIT}
+    for item in Document.objects.values_list('stats'):
+        stats = item[0]   
+        if stats == None:
+            continue
+        for wf in stats['word_frequencies']:
+            wf_v, wf_c = wf['value'], wf['count']
+            if wf_v not in word_frequencies:
+                word_frequencies[wf_v] = 0
+            word_frequencies[wf_v] += wf_c            
+     
+        identity = stats['identity']
+        if identity != None:
+            gender = identity['gender']
+            age = identity['age']
+            if gender not in genders:
+                genders[gender] = 0
+                for k in age_by_genders:
+                    age_by_genders[k].update({gender:0})
+            genders[gender] += 1    
+            for label, func in AGE_SPLIT:
+                if func(int(age)):
+                    age_by_genders[label][gender] += 1
+
+    return Response(
+        {
+        'word_frequencies':[{'value':k, 'count':v} for k, v in word_frequencies.items()],
+        'genders':[{'name':k, 'value':v} for k, v in genders.items()],
+        'age_by_genders':[dict({'name':k}, **{kk:vv for kk, vv in v.items()}) for k, v in age_by_genders.items()],
+        }, 200)
