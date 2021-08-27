@@ -33,6 +33,7 @@ def update_features(request, pk):
 
     data = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
                 json.dumps({
+                    'id':document.id,
                     'text':document.text, 
                     'features':document.features, 
                     'active_models':document.project.active_models
@@ -80,7 +81,6 @@ def models_info(request):
     data = data.json()
     return Response(data)
     
-
 @api_view(['GET'])
 def random_document(request):
     queryset = Document.objects.order_by("?")
@@ -100,7 +100,9 @@ def upload(request):
         data = pd.read_csv(request.data['csv'], sep='\t', encoding='utf-8')
     except Exception as e:
         print(e)
+
     project = get_object_or_404(Project, id=request.data['projectId'])
+
     if len(data.values[0]) not in [2, 7]:
         return Response()
     for item in data.values:
@@ -131,14 +133,25 @@ def upload(request):
                 })
             if document.is_valid():
                 document.save(project=project)
+
+                res = requests.post(f'{settings.MIDDLEWARE_URL}/queue-apply',
+                    json.dumps({
+                        'id':document.data['id'],
+                        'text':document.data['text'], 
+                        'features':document.data['features'], 
+                        'active_models':project.active_models
+                    })
+                )
                 # DocumentToApply.objects.get_or_create(document=)
             else:
                 print(document.errors)               
+    
     return Response()
 
 @api_view(['GET'])
-def apply_queue(request):
-    c = DocumentToApply.objects.count()
-    if c > 0 :
-        update_features(request, DocumentToApply.objects.first().document.id)
-    return Response({'queue':{'count':c}})
+def apply_queue_count(request):
+    res = requests.get(f'{settings.MIDDLEWARE_URL}/apply-queue-count')
+    if res.status_code == 200:
+        return Response({'queue':{'count':res.json()['count']}})
+    else:
+        return Response({'msg':res.text})
