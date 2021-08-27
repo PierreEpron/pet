@@ -199,10 +199,10 @@ def stats(request):
             for label, func in AGE_SPLIT:
                 if func(int(age)):
                     age_by_genders[label][gender] += 1
-
+    wfs = [{'value':k, 'count':v} for k, v in word_frequencies.items()]
+    wfs.sort(key=lambda x: x['count'], reverse=True)
     return Response(
-        {
-        'word_frequencies':[{'value':k, 'count':v} for k, v in word_frequencies.items()],
+        {'word_frequencies':wfs[:min(100, len(wfs))],
         'genders':[{'name':k, 'value':v} for k, v in genders.items()],
         'age_by_genders':[dict({'name':k}, **{kk:vv for kk, vv in v.items()}) for k, v in age_by_genders.items()],
         }, 200)

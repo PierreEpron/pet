@@ -5,6 +5,6 @@ export default (props) => (
   <TagCloud
     minSize={12}
     maxSize={35}
-    tags={props.data.filter(tag => tag.count >= props.minCount )}
+    tags={props.data}
   />
 )
