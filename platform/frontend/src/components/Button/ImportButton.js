@@ -13,6 +13,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import {green} from '@material-ui/core/colors';
 import {getContents, postContent} from '../../services/content.service'
 
+
+/**
+ * @const useStyles
+ * @description to change style property
+ */
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
@@ -40,7 +45,18 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+/**
+ * @function UploadButtons
+ * @param default
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export default function UploadButtons() {
+    /**
+     * @const React.useState
+     * @param default, null, true or false
+     * @description help for use react State in various constant
+     */
     const classes = useStyles();
     const [data, setData] =  React.useState (null);
     const [isLoading, setIsLoading] =  React.useState (true);
@@ -60,6 +76,11 @@ export default function UploadButtons() {
         }
     }, [data, setData, setIsLoading]);
 
+    /**
+     * @function onFileChange
+     * @param event
+     * @description showDialog box for uploads file on event
+     */
     function onFileChange(event) {
         setShowDialog(true);
         setFile(event.target.files[0])
