@@ -19,8 +19,7 @@ from rq import Queue, Connection
 from tasks import apply_task
 
 API_URL = os.environ.get("API_URL", "http://172.18.0.1:8000/api")
-REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379/0")
-REDIS_URL = "redis://172.19.0.7:6379/0"
+REDIS_URL = os.environ.get("REDIS_URL", "redis://172.19.0.7:6379/0")
 
 app = Flask(__name__)
 CORS(app)
