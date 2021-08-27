@@ -2,7 +2,7 @@ from os import name
 import re
 from src.pipelines.alpha import Alpha
 from src.pipelines.dim import Dim
-from src.stats import word_list_freq
+from src.stats import word_list_freq, gather_identity
 from models import MODELS
 import functools
 import json
@@ -31,7 +31,6 @@ def apply_task(req):
 
     for model_class in MODELS:
         if model_class.get_fullname() in active_models and (model_class.force_update == True or model_class.get_fullname() not in model_to_skips):
-            print('in')
             model = model_class()
             et = time.process_time()
             model(text, features)
@@ -42,6 +41,13 @@ def apply_task(req):
                         'type': 'model',
                         'items': [{'label':'ttc', 'value':str(time.process_time()-et)}]
                 }]})                        
-    word_frequencies = word_list_freq(text)
 
-    return data['id'], {'added_date':added_date, 'features':features, 'word_frequencies':word_frequencies}
+    word_frequencies = word_list_freq(text)
+    identity = gather_identity(text, features)
+    
+    return data['id'], {
+        'added_date':added_date, 'features':features, 
+        'stats':{
+            'word_frequencies':word_frequencies,
+            'identity':identity
+            }}
