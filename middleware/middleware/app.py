@@ -1,46 +1,79 @@
+import re
 from flask import Flask
+from werkzeug.wrappers import response
 from src.pipelines.alpha import Alpha
 from src.pipelines.dim import Dim
 from flask import request
 from flask_cors import CORS
+
+from models import MODELS
 from src.stats import word_list_freq
 
+import requests
 import functools
 import json
+import os
 
-MODELS = [Alpha(), Dim()]
+import redis
+from rq import Queue, Connection
+from tasks import apply_task
+
+API_URL = os.environ.get("API_URL", "http://172.18.0.1:8000/api")
+REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379/0")
+REDIS_URL = "redis://172.19.0.7:6379/0"
 
 app = Flask(__name__)
 CORS(app)
 
 @app.route('/apply', methods=['POST'])
 def apply():
-    data = json.loads(request.data)
-    text = data['text']
-    features = data['features']
-    active_models = data['active_models']
+    print('in apply')
+    _, result = apply_task(request.data)
 
-
-    if isinstance(features, list) and len(features) > 0:
-        model_to_skips = set(functools.reduce(lambda a, b: a + b, [item['name'] for item in features]))
-    else:
-        model_to_skips = set()
-        features = []
-
-    for model in MODELS:
-        if model.name in active_models and (model.force_update == True or model.get_fullname() not in model_to_skips):
-            model(text, features)
-    
-    word_frequencies = word_list_freq(text)
     return app.response_class(
-            response= json.dumps({'features':features,'word_frequencies':word_frequencies}),
+            response= json.dumps(result),
             status=200,
             mimetype='application/json')
+
+def apply_success(job, connection, result, *args, **kwargs):
+    id, result = result
+    headers = {"Content-Type":"application/json"}
+    res = requests.post(f'{API_URL}/token/', json.dumps({'username':'admin', 'password':'1234'}), headers=headers)
+    token = res.json()['access']
+    headers['Authorization'] = "Bearer " + token
+    try:
+        requests.patch(f'{API_URL}/documents/{id}/', json.dumps(result), headers=headers)
+    except:
+        pass
+
+@app.route('/queue-apply', methods=['POST'])
+def queue_apply():
+    print('in queue-apply')
+    with Connection(redis.from_url(REDIS_URL)):
+        print('in redis connection')
+        q = Queue()
+        task = q.enqueue(apply_task, request.data, job_timeout='15m', on_success=apply_success)
+        print(task)
+    return app.response_class(
+            response= json.dumps({
+                "status": "success",
+                "data": {
+                    "task_id": task.get_id()
+                }
+            }),
+            status=200,
+            mimetype='application/json')
+
+@app.route('/apply-queue-count', methods=['GET'])
+def apply_queue_count():
+    with Connection(redis.from_url(REDIS_URL)):
+        c = Queue().count
+    return app.response_class(response=json.dumps({'count':c}), status=200, mimetype='application/json')
 
 @app.route('/models-info', methods=['GET'])
 def models_info():
     return app.response_class(
-            response= json.dumps([{"name": model.name, "desc": model.desc} for model in MODELS]),
+            response= json.dumps([{"name": model.get_fullname(), "desc": model.desc} for model in MODELS]),
             status=200,
             mimetype='application/json')
             
