@@ -42,12 +42,9 @@ def apply_task(req):
                         'items': [{'label':'ttc', 'value':str(time.process_time()-et)}]
                 }]})                        
 
-    word_frequencies = word_list_freq(text)
+    stats = {'word_frequencies':word_list_freq(text)}
     identity = gather_identity(text, features)
+    if len(identity) > 0:
+        stats.update({'identity':identity}) 
     
-    return data['id'], {
-        'added_date':added_date, 'features':features, 
-        'stats':{
-            'word_frequencies':word_frequencies,
-            'identity':identity
-            }}
+    return data['id'], {'added_date':added_date, 'features':features, 'stats':stats}
