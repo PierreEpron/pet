@@ -9,6 +9,8 @@ import Chart from '../components/Charts/Chart';
 import PieCharts from "../components/Charts/PieCharts";
 import BarChart from "../components/Charts/BarChart"
 import ObjectWordCloud from "../components/Charts/ObjectWordCloud"
+import Progress from "../components/CircularProgress/CircularProgress";
+import {getContents} from "../services/content.service";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,32 +42,41 @@ export default function Dashboard() {
     // const [open, setOpen] = React.useState(true);
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+    const [data, setData] =  React.useState (null)
+    const [isLoading, setIsLoading] =  React.useState (true)
+
+    React.useEffect(() => {
+        if (data)
+            setIsLoading(false)
+        else {
+            setIsLoading(true)
+            getContents('/stats/', {}, setData)
+        }
+    }, [data, setData, setIsLoading]);
+
+    if (isLoading)
+        return (<div><Progress/></div>)
+
     return (
         <main className={classes.content}>
                 <div className={classes.appBarSpacer}/>
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={2}>
-                        {/* Chart */}
-                        <Grid xs={12}>
-                            <Paper className={fixedHeightPaper}>
-                                <Chart/>
-                            </Paper>
-                        </Grid>
                         {/*Recent Deposits*/}
                         <Grid xs={6} sm={6}>
                             <Paper className={fixedHeightPaper}>
-                                <PieCharts/>
+                                <PieCharts data={data.genders}/>
                             </Paper>
                         </Grid>
                         {/*Bar Chart*/}
                         <Grid xs={6} sm={6}>
                             <Paper className={fixedHeightPaper}>
-                                <BarChart/>
+                                <BarChart data={data.age_by_genders} genders={data.genders} />
                             </Paper>
                         </Grid>
                         <Grid xs={12}>
                             <Paper className={fixedHeightPaper}>
-                                <ObjectWordCloud/>
+                                <ObjectWordCloud data={data.word_frequencies} minCount={1}/>
                             </Paper>
                         </Grid>
                     </Grid>
