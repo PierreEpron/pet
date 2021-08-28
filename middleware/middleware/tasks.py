@@ -31,7 +31,7 @@ def apply_task(req):
 
     for model_class in MODELS:
         if model_class.get_fullname() in active_models and (model_class.force_update == True or model_class.get_fullname() not in model_to_skips):
-            model = model_class()
+            model = model_class('models')
             et = time.process_time()
             model(text, features)
             features.append(
