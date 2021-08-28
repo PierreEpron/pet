@@ -31,7 +31,7 @@ class RegexMatcherComponent:
 
     def from_disk(self, path, exclude=tuple()):        
         data_path = path / "patterns.json"
-        self.patterns = json.loads(data_path.read_text(), encoding="utf-8")
+        self.patterns = {k:self.load_patterns(v) for k, v in json.loads(data_path.read_text()).items()}
 
     def load_patterns(self, patterns):
         return {k:re.compile(v, re.I) for k, v in patterns.items()}
