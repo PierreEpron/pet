@@ -1,10 +1,28 @@
 from pathlib import Path
 import os, json
+import spacy
+from spacy.pipeline import EntityRecognizer
+from spacy.language import Language
 from spacy import displacy
 
 PATTERNS = json.loads(Path(os.path.join(os.path.dirname(__file__), 'regex.json')).read_text(encoding='utf-8'))
 
 DIM_KEYWORDS= json.loads(Path(os.path.join(os.path.dirname(__file__), 'dim_keywords.json')).read_text(encoding='utf-8'))
+
+def get_custom_ner_path(dirname):
+    return Path(f'../../samples/data/train/{dirname}/output/model-best')
+
+def add_custom_ner(nlp, dirname, name, after='tok2vec'):
+    ner = spacy.load(get_custom_ner_path(dirname))
+    Language.factory(
+        name, 
+        default_config=ner.get_pipe_config('ner'), 
+        func=lambda nlp, name: EntityRecognizer(nlp, name))
+    ner.rename_pipe('ner', name)
+    nlp.add_pipe(name, source=ner, after=after)
+
+def extract_ents(doc, labels):
+    return [{'start':ent.start_char, 'end':ent.end_char, 'label':ent.label_} for ent in doc.ents if ent.label_ in labels]
 
 def get_patterns(pattern_keys):
     return {k:v for k, v in PATTERNS.items() if k in pattern_keys}
