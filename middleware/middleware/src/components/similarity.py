@@ -28,7 +28,6 @@ def process_text(doc,keyword,tresholds,methods):
                     
                     result[i][1].append(
                         {'start':t.idx, 'end':t.idx+len(t), 'label':str(kw), 'probability': float(similarities[i])})
-                   # result.append([t.idx,t.idx+len(t)]+similarities)
     return result
 
     

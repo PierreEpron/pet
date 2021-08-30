@@ -12,7 +12,7 @@ class Dim(PipelineCtrl):
     desc = "Recherche des mots clés et des mots similaires en utilisant les méthodes de spaCy, de Jaro-Winkler et de Levenshtein"
     force_update=False
 
-    def __init__(self) -> None:
+    def __init__(self, path) -> None:
         super().__init__()
         self.build_model()
 

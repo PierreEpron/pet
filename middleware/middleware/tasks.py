@@ -31,7 +31,7 @@ def apply_task(req):
 
     for model_class in MODELS:
         if model_class.get_fullname() in active_models and (model_class.force_update == True or model_class.get_fullname() not in model_to_skips):
-            model = model_class()
+            model = model_class('models')
             et = time.process_time()
             model(text, features)
             features.append(
@@ -42,12 +42,9 @@ def apply_task(req):
                         'items': [{'label':'ttc', 'value':str(time.process_time()-et)}]
                 }]})                        
 
-    word_frequencies = word_list_freq(text)
+    stats = {'word_frequencies':word_list_freq(text)}
     identity = gather_identity(text, features)
+    if len(identity) > 0:
+        stats.update({'identity':identity}) 
     
-    return data['id'], {
-        'added_date':added_date, 'features':features, 
-        'stats':{
-            'word_frequencies':word_frequencies,
-            'identity':identity
-            }}
+    return data['id'], {'added_date':added_date, 'features':features, 'stats':stats}
