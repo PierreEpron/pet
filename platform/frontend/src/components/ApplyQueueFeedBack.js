@@ -14,12 +14,12 @@ export default function ApplyQueueFeedBack(props) {
             getContents("/apply-queue-count/", {}, handleApplySuccess)
         }
         getQueueCount()
-            if (queueCount && queueCount != 0){
-                const interval = setInterval(() => getQueueCount(), 10000)
-                return () => {
-                        clearInterval(interval);
-                }
+        if (queueCount && queueCount != 0){
+            const interval = setInterval(() => getQueueCount(), 10000)
+            return () => {
+                clearInterval(interval);
             }
+        }
         }, [queueCount])
         
     if (!queueCount || queueCount <= 0)
