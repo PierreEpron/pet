@@ -23,6 +23,6 @@ class Document(Content):
     text = models.TextField()
     features = models.JSONField(null=True)
     stats = models.JSONField(null=True)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
 
 
