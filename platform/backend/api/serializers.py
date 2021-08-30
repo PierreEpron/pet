@@ -25,53 +25,112 @@ class ContentSerializer(serializers.ModelSerializer):
             validated_data['modified_by'] = user
         return super().update(instance, validated_data)
 
-def valid_list_of_dict(value, error_msg, callback):
-    for v in value:
+def valid_list_of_dict(arr, error_msg, callback):
+    """
+    Valid if the given list has only dict inside.
+    Call callback on each child, for test them with custom method.
+
+    Parameters
+    ----------
+    arr : list, the list of dict to valid
+    error_msg : str, msg to show in Validation Error
+    callback : func, call after validation for each dict, often an other validation method
+    """
+    for v in arr:
         if not isinstance(v, dict):
             raise serializers.ValidationError(error_msg)
         callback(v)
 
-def valid_exist_type(value, newValue, obj, key, type):
-    if key not in value or not isinstance(value[key], type):
-        raise serializers.ValidationError(f"{obj}.{key} missing or should be a {type}.")
-    newValue[key] = value[key]
+def valid_exist_type(dic, newDic, dicName, key, type):
+    """
+    Shorcut for test if a given key exist in a dict and if the given value is instance of given type.
+    If not valid throw Validationtion error else assign key, value to the new dict.
 
-def valid_feature(value):
-    newValue = {}
-    valid_exist_type(value, newValue, 'feature', 'name', str)
-    valid_exist_type(value, newValue, 'feature', 'sources', list)
-    value = newValue
-    valid_list_of_dict(value['sources'], 'sources should be a list of dict', valid_source)
+    Parameters
+    ----------
+    dic : dict, dict to test.
+    newDic : dict, dict to assign
+    dicName : str, name of dict, use for error message
+    key : str, key to test exist
+    type : type, type to test
+    """
+    if key not in dic or not isinstance(dic[key], type):
+        raise serializers.ValidationError(f"{dicName}.{key} missing or should be a {type}.")
+    newDic[key] = dic[key]
 
-def valid_source(value):
-    newValue = {}
-    valid_exist_type(value, newValue, 'source', 'name', str)
-    valid_exist_type(value, newValue, 'source', 'type', str)
-    valid_exist_type(value, newValue, 'source', 'items', list)
-    value = newValue
-    valid_list_of_dict(value['items'], 'items should be a list of dict', valid_item)
+def valid_feature(dic):
+    """
+    Valid if given feature has :
+    - name of type str.
+    - sources of type list
+    Test if sources is a list of dict
+    If not valid throw ValidationException
 
-def valid_item(value):
-    newValue = {}
+    Parameters
+    ----------
+    dic : dict, the source to valid
+    """
+    newDic = {}
+    valid_exist_type(dic, newDic, 'feature', 'name', str)
+    valid_exist_type(dic, newDic, 'feature', 'sources', list)
+    dic = newDic
+    valid_list_of_dict(dic['sources'], 'sources should be a list of dict', valid_source)
 
-    valid_exist_type(value, newValue, 'item', 'label', str)
+def valid_source(dic):
+    """
+    Valid if given source has :
+    - name of type str.
+    - type of type str
+    - item of type list
+    Test if items is a list of dict
+    If not valid throw ValidationException
+
+    Parameters
+    ----------
+    dic : dict, the source to valid
+    """
+    newDic = {}
+    valid_exist_type(dic, newDic, 'source', 'name', str)
+    valid_exist_type(dic, newDic, 'source', 'type', str)
+    valid_exist_type(dic, newDic, 'source', 'items', list)
+    dic = newDic
+    valid_list_of_dict(dic['items'], 'items should be a list of dict', valid_item)
+
+def valid_item(dic):
+    """
+    Valid if given item has :
+    - at least a label of type str.
+    - optionaly a start AND a end of type int
+    - optionaly a value of type str
+    - optionaly a probality of type float
+    If not valid throw ValidationException 
+
+    Parameters
+    ----------
+    dic : dict, the item to valid
+    """
+    newDic = {}
+
+    valid_exist_type(dic, newDic, 'item', 'label', str)
     
-    if 'start' in value and 'end' in value:
-        if not isinstance(value['start'], int):
+    if 'start' in dic and 'end' in dic:
+        if not isinstance(dic['start'], int):
             raise serializers.ValidationError("item.start should be an int.")
-        if not isinstance(value['end'], int):
+        if not isinstance(dic['end'], int):
             raise serializers.ValidationError("item.end should be an int.")
+        newDic['start'] = dic['start']
+        newDic['end'] = dic['end']
 
-        newValue['start'] = value['start']
-        newValue['end'] = value['end']
+    if 'value' in dic:
+        if not isinstance(dic['value'], str):
+            raise serializers.ValidationError("item.value should be an str.")
 
-    if 'probability' in value:
-        # if not isinstance(value, float):
-        #     raise serializers.ValidationError("item.probability should be an float.")
+    if 'probability' in dic:
+        if not isinstance(dic['probability'], float):
+            raise serializers.ValidationError("item.probability should be an float.")
+        newDic['probability'] = dic['probability']
 
-        newValue['probability'] = value['probability']
-
-    value = newValue
+    dic = newDic
 
 class DocumentSerializer(ContentSerializer):
     class Meta:
