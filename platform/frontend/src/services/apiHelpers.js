@@ -1,5 +1,11 @@
 import {HOME_URL, SIGNIN_URL} from "./apiConfig"
 
+function getRefreshDate() {
+    const now = new Date();
+    now.setSeconds(now.getSeconds() + 270);
+    return now;
+}
+
 function clearCurrentUser() {
     localStorage.removeItem("currentUser")
     window.location = SIGNIN_URL
@@ -16,8 +22,9 @@ function checkCurrentUser() {
 function getHeader(auth=true) {
     const header = {"Content-Type":"application/json"}
     const user = JSON.parse(localStorage.getItem("currentUser"))
-    if (auth && user)
+    if (auth && user) {
         header["Authorization"] = "Bearer " + user.access
+    }
     return header
 }
 
@@ -28,4 +35,4 @@ function parseQuery(query) {
     return parsed.join('&')
 }
 
-export {clearCurrentUser, checkCurrentUser, getHeader, parseQuery}
+export {clearCurrentUser, checkCurrentUser, getHeader, parseQuery, getRefreshDate}
