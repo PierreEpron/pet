@@ -1,7 +1,7 @@
 from django.http.response import JsonResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, status
-from .models import Document, DocumentToApply, Project
+from .models import Document, Project
 from .serializers import DocumentSerializer, ProjectSerializer
 from rest_framework.response import Response
 import os, json
@@ -13,7 +13,6 @@ from rest_framework.decorators import api_view
 import pandas as pd
 from datetime import datetime
 from django.utils import timezone
-
 
 class ContentViewSet(viewsets.ModelViewSet):
     FILTERSET_FIELDS = ['modified_by', 'created_by', 'created_date' , 'modified_date']
@@ -33,22 +32,19 @@ def update_features(request, pk):
 
     data = requests.post(f'{settings.MIDDLEWARE_URL}/apply',
                 json.dumps({
+                    'id':document.id,
                     'text':document.text, 
                     'features':document.features, 
                     'active_models':document.project.active_models
                 })
             )
     data = data.json()
-    new_features = data['features']
-    stats = {'word_frequencies':data['word_frequencies']}
-
 
     document = DocumentViewSet.serializer_class(document,
-        context = {'request':request}, data={'features':new_features, 'stats':stats}, partial=True)
+        context = {'request':request}, data=data, partial=True)
 
     if document.is_valid():
         document.save()
-        DocumentToApply.objects.filter(document=pk).delete()
     else:
         print(document.errors)
 
@@ -64,7 +60,18 @@ class DocumentViewSet(ContentViewSet):
         
         update_features(request, pk)
 
-        return super().retrieve(self, request, pk)
+        return super().retrieve(request, pk)
+    
+    def partial_update(self, request, pk=None):
+        print('update')
+        if 'added_date' in request.data and request.data['added_date'] != None:
+            added_date = datetime.fromtimestamp(request.data['added_date'], timezone.utc)
+            document = get_object_or_404(DocumentViewSet.queryset, pk=pk)
+            print('check cancel update')
+            if document.modified_date > added_date:
+                print('valid cancel update')
+                return Response({'msg':'Cancel partial_update because document has been modified after being queued'})
+        return super().partial_update(request, pk)
 
 class ProjectViewSet(ContentViewSet):
     """
@@ -80,7 +87,6 @@ def models_info(request):
     data = data.json()
     return Response(data)
     
-
 @api_view(['GET'])
 def random_document(request):
     queryset = Document.objects.order_by("?")
@@ -100,7 +106,9 @@ def upload(request):
         data = pd.read_csv(request.data['csv'], sep='\t', encoding='utf-8')
     except Exception as e:
         print(e)
+
     project = get_object_or_404(Project, id=request.data['projectId'])
+
     if len(data.values[0]) not in [2, 7]:
         return Response()
     for item in data.values:
@@ -131,14 +139,70 @@ def upload(request):
                 })
             if document.is_valid():
                 document.save(project=project)
-                # DocumentToApply.objects.get_or_create(document=)
+
+                res = requests.post(f'{settings.MIDDLEWARE_URL}/queue-apply',
+                    json.dumps({
+                        'id':document.data['id'],
+                        'text':document.data['text'], 
+                        'features':document.data['features'], 
+                        'active_models':project.active_models
+                    })
+                )
             else:
                 print(document.errors)               
+    
     return Response()
 
 @api_view(['GET'])
-def apply_queue(request):
-    c = DocumentToApply.objects.count()
-    if c > 0 :
-        update_features(request, DocumentToApply.objects.first().document.id)
-    return Response({'queue':{'count':c}})
+def apply_queue_count(request):
+    res = requests.get(f'{settings.MIDDLEWARE_URL}/apply-queue-count')
+    if res.status_code == 200:
+        return Response({'queue':{'count':res.json()['count']}})
+    else:
+        return Response({'msg':res.text})
+
+
+AGE_SPLIT = [
+    ('0 - 18', lambda x: x < 18),
+    ('18 - 25', lambda x: x < 25),
+    ('25 - 35', lambda x: x < 35),
+    ('35 - 45', lambda x: x < 45),
+    ('45 - 55', lambda x: x < 55),
+    ('55 - 65', lambda x: x < 65),
+    ('65 et plus', lambda x: True),
+]
+
+@api_view(['GET'])
+def stats(request):
+    word_frequencies = {}
+    genders = {}
+    age_by_genders = {k:{} for k, _ in AGE_SPLIT}
+    for item in Document.objects.values_list('stats'):
+        stats = item[0]   
+        if stats == None:
+            continue
+        for wf in stats['word_frequencies']:
+            wf_v, wf_c = wf['value'], wf['count']
+            if wf_v not in word_frequencies:
+                word_frequencies[wf_v] = 0
+            word_frequencies[wf_v] += wf_c            
+     
+        identity = stats['identity']
+        if identity != None:
+            gender = identity['gender']
+            age = identity['age']
+            if gender not in genders:
+                genders[gender] = 0
+                for k in age_by_genders:
+                    age_by_genders[k].update({gender:0})
+            genders[gender] += 1    
+            for label, func in AGE_SPLIT:
+                if func(int(age)):
+                    age_by_genders[label][gender] += 1
+    wfs = [{'value':k, 'count':v} for k, v in word_frequencies.items()]
+    wfs.sort(key=lambda x: x['count'], reverse=True)
+    return Response(
+        {'word_frequencies':wfs[:min(100, len(wfs))],
+        'genders':[{'name':k, 'value':v} for k, v in genders.items()],
+        'age_by_genders':[dict({'name':k}, **{kk:vv for kk, vv in v.items()}) for k, v in age_by_genders.items()],
+        }, 200)

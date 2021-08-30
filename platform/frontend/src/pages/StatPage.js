@@ -9,12 +9,10 @@ import Chart from '../components/Charts/Chart';
 import PieCharts from "../components/Charts/PieCharts";
 import BarChart from "../components/Charts/BarChart"
 import ObjectWordCloud from "../components/Charts/ObjectWordCloud"
+import Progress from "../components/CircularProgress/CircularProgress";
+import {getContents} from "../services/content.service";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-    },
-    appBarSpacer: theme.mixins.toolbar,
     content: {
         flexGrow: 1,
         overflow: 'auto',
@@ -25,54 +23,58 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: theme.spacing(4),
     },
     paper: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(4),
+        margin: theme.spacing(2),
         display: 'flex',
         overflow: 'auto',
         flexDirection: 'column',
     },
     fixedHeight: {
-        height: 240,
+        height: 384,
     },
 }));
 
 export default function Dashboard() {
     const classes = useStyles();
-    // const [open, setOpen] = React.useState(true);
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-    return (
-        <main className={classes.content}>
-                <div className={classes.appBarSpacer}/>
-                <Container maxWidth="lg" className={classes.container}>
-                    <Grid container spacing={2}>
-                        {/* Chart */}
-                        <Grid xs={12}>
-                            <Paper className={fixedHeightPaper}>
-                                <Chart/>
-                            </Paper>
-                        </Grid>
-                        {/*Recent Deposits*/}
-                        <Grid xs={6} sm={6}>
-                            <Paper className={fixedHeightPaper}>
-                                <PieCharts/>
-                            </Paper>
-                        </Grid>
-                        {/*Bar Chart*/}
-                        <Grid xs={6} sm={6}>
-                            <Paper className={fixedHeightPaper}>
-                                <BarChart/>
-                            </Paper>
-                        </Grid>
-                        <Grid xs={12}>
-                            <Paper className={fixedHeightPaper}>
-                                <ObjectWordCloud/>
-                            </Paper>
-                        </Grid>
-                    </Grid>
+    const [data, setData] =  React.useState (null)
+    const [isLoading, setIsLoading] =  React.useState (true)
 
-                    <Box pt={3}>
-                    </Box>
-                </Container>
-            </main>
+    React.useEffect(() => {
+        if (data)
+            setIsLoading(false)
+        else {
+            setIsLoading(true)
+            getContents('/stats/', {}, setData)
+        }
+    }, [data, setData, setIsLoading]);
+
+    if (isLoading)
+        return (<div><Progress/></div>)
+
+    return (
+        <Container maxWidth="lg" className={classes.container}>
+            <Grid container >
+                {/*Recent Deposits*/}
+                <Grid xs={6} sm={6}>
+                    <Paper className={fixedHeightPaper}>
+                        <PieCharts data={data.genders}/>
+                    </Paper>
+                </Grid>
+                {/*Bar Chart*/}
+                <Grid xs={6} sm={6}>
+                    <Paper className={fixedHeightPaper}>
+                        <BarChart data={data.age_by_genders} genders={data.genders} />
+                    </Paper>
+                </Grid>
+                <Grid xs={12}>
+                    <Paper className={classes.paper}>
+                        <ObjectWordCloud data={data.word_frequencies}/>
+                    </Paper>
+                </Grid>
+            </Grid>
+
+        </Container>
     );
 }

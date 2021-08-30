@@ -30,3 +30,17 @@ def word_list_freq(text, filter=basic_filter()):
     for w in unique_words:
         word_freq.append(filtered_words.count(w))
     return [{"value":word,"count":freq} for word, freq in zip(unique_words, word_freq)]
+
+
+def gather_identity(text, features):
+    identity = list(filter(lambda feature: feature['name'] == 'identity', features))
+    result = {}
+    if len(identity) != 0:
+        for item in identity[0]['sources'][0]['items']:
+            if item['label'] == 'age':
+                txt = text[item['start']:item['end']]
+                result.update({item['label']:txt.split('(')[1].split(' ')[0].lower()})
+            elif item['label'] == 'gender':
+                txt = text[item['start']:item['end']]
+                result.update({item['label']:txt.split(' ')[0].lower()})
+    return result

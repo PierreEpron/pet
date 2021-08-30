@@ -7,9 +7,13 @@ from src.helpers import DIM_KEYWORDS
 
 
 class Dim(PipelineCtrl):
+    name="Dim"
+    version="0.1"
+    desc = "Recherche des mots clés et des mots similaires en utilisant les méthodes de spaCy, de Jaro-Winkler et de Levenshtein"
+    force_update=False
+
     def __init__(self) -> None:
-        super().__init__(version="0.1", force_update=True)
-        self.desc = "Recherche des mots clés et des mots similaires en utilisant les méthodes de spaCy, de Jaro-Winkler et de Levenshtein"
+        super().__init__()
         self.build_model()
 
     def __call__(self, text, features) -> None:

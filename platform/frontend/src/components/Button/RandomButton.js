@@ -3,6 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import {getContents} from "../../services/content.service";
 
+/**
+ * @const useStyles
+ * @description for change root margin
+ */
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
@@ -11,6 +15,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+/**
+ * @function DocsButton
+ * @param default
+ * @returns {JSX.Element}
+ * @constructor
+ * @description allows you to display a document randomly
+ */
 export default function ContainedButtons() {
   const classes = useStyles();
   const [data, setData] = React.useState(null);

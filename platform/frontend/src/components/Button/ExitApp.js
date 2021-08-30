@@ -4,13 +4,23 @@ import {makeStyles} from '@material-ui/core/styles';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {logout} from '../../services/auth.service';
 
-
+/**
+ * @const useStyles
+ * @description for change button margin
+ */
 const useStyles = makeStyles((theme) => ({
     button: {
         margin: theme.spacing(1),
     },
 }));
 
+/**
+ * @function IconLabelButtons
+ * @param default
+ * @returns {JSX.Element}
+ * @constructor
+ * @description Icon for logout app
+ */
 export default function IconLabelButtons() {
     const classes = useStyles();
 
