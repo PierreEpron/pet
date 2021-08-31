@@ -63,7 +63,6 @@ class DocumentViewSet(ContentViewSet):
         return super().retrieve(request, pk)
     
     def partial_update(self, request, pk=None):
-        print('update')
         if 'added_date' in request.data and request.data['added_date'] != None:
             added_date = datetime.fromtimestamp(request.data['added_date'], timezone.utc)
             document = get_object_or_404(DocumentViewSet.queryset, pk=pk)
@@ -186,19 +185,21 @@ def stats(request):
             if wf_v not in word_frequencies:
                 word_frequencies[wf_v] = 0
             word_frequencies[wf_v] += wf_c            
-     
-        identity = stats['identity']
-        if identity != None:
-            gender = identity['gender']
-            age = identity['age']
-            if gender not in genders:
-                genders[gender] = 0
-                for k in age_by_genders:
-                    age_by_genders[k].update({gender:0})
-            genders[gender] += 1    
-            for label, func in AGE_SPLIT:
-                if func(int(age)):
-                    age_by_genders[label][gender] += 1
+
+        if 'identity' in stats:
+            identity = stats['identity']
+            if identity != None:
+                gender = identity['gender']
+                age = identity['age']
+                if gender not in genders:
+                    genders[gender] = 0
+                    for k in age_by_genders:
+                        age_by_genders[k].update({gender:0})
+                genders[gender] += 1    
+                for label, func in AGE_SPLIT:
+                    if func(int(age)):
+                        age_by_genders[label][gender] += 1
+                        
     wfs = [{'value':k, 'count':v} for k, v in word_frequencies.items()]
     wfs.sort(key=lambda x: x['count'], reverse=True)
     return Response(
