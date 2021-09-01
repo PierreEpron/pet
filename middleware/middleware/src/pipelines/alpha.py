@@ -8,24 +8,40 @@ from src.components import regex_matcher
 from src.components import pysbd_sentence_boundaries
 from src.helpers import extract_sents, add_custom_ner, extract_ents
 
+SUV_NER_PATH = 'suv_28_09_21'
+TREATMENT_NER_PATH = 'treatment_28_09_21'
+
 class Alpha(PipelineCtrl):
     name = "Alpha"
     version="0.1"
-    desc = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+    desc = """
+        Listing des observation grace à l'utilisation de regex et d'un NER. 
+        Pour le moment, extrait les locatisation anatomique avec :
+            Precision : .84
+            Recall : .84
+            F-Score : .84
+        """
     force_update=False
     
     def __init__(self, path=None) -> None:
         super().__init__()
         if path:
+            # If path given load model by path
+            self.logger.info(f"Start Loading {self.get_fullname()} model")
             self.load_model(path)
+            self.logger.info(f"End Loading {self.get_fullname()} model")
         else:
+            self.logger.info(f"Start Building {self.get_fullname()} model")
+            # If not path given build model
             self.sections_patterns = ['intro', 'ctx', 'tech', 'obs', 'ccl']
             self.regex_patterns = {'identity':['gender', 'age'], 'medical':['suvmax', 'medobj_size']}
             self.treatment_ner_path = 'treatment_28_09_21'
             self.suv_ner_path = 'suv_28_09_21'
             self.build_model()
+            self.logger.info(f"End Building {self.get_fullname()} model")
 
     def __call__(self, text, features) -> None:
+        self.logger.info(f"Start features extraction for {self.get_fullname()} model")
         doc = self.nlp(text)
         self.add_feature(features, section_splitter.extract_sections(doc))
         self.add_feature(features, ('SUV_NER', extract_ents(doc, ['OBJ_LOC'])))
@@ -34,14 +50,25 @@ class Alpha(PipelineCtrl):
         self.add_feature(features, extract_sents(doc))
         for feature in regex_matcher.extract_matchs(doc):
             self.add_feature(features, feature)
-
+        self.logger.info(f"End features extraction for {self.get_fullname()} model")
             
     def build_model(self) -> None:
+        self.logger.info(f"Loading base model for {self.get_fullname()} model")
         self.nlp = spacy.load("fr_core_news_lg")
+
+        self.logger.info(f"Add sbd component {self.get_fullname()} model")
         self.nlp.add_pipe("sbd", first=True)
+
+        self.logger.info(f"Add sections_splitter component {self.get_fullname()} model")
         self.nlp.add_pipe("sections_splitter", config={"patterns": self.sections_patterns})
+
+        self.logger.info(f"Add regex_matcher component {self.get_fullname()} model")
         self.nlp.add_pipe("regex_matcher", config={"patterns": self.regex_patterns})
+
+        self.logger.info(f"Add treatment_ner component {self.get_fullname()} model")
         add_custom_ner(self.nlp, self.treatment_ner_path, 'treatment_ner')
+
+        self.logger.info(f"Add suv_ner component {self.get_fullname()} model")
         add_custom_ner(self.nlp, self.suv_ner_path, 'suv_ner')
 
     def load_model(self, path) -> None:
