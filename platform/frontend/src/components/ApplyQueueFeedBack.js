@@ -11,7 +11,7 @@ export default function ApplyQueueFeedBack(props) {
 
     React.useEffect(() => {
         function getQueueCount() {
-            getContents("/apply-queue-count/", {}, handleApplySuccess)
+            getContents("/queue-count/", {}, handleApplySuccess)
         }
         getQueueCount()
         if (queueCount && queueCount !== 0){

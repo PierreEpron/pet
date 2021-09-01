@@ -153,8 +153,8 @@ def upload(request):
     return Response()
 
 @api_view(['GET'])
-def apply_queue_count(request):
-    res = requests.get(f'{settings.MIDDLEWARE_URL}/apply-queue-count')
+def queue_count(request):
+    res = requests.get(f'{settings.MIDDLEWARE_URL}/queue-count')
     if res.status_code == 200:
         return Response({'queue':{'count':res.json()['count']}})
     else:
