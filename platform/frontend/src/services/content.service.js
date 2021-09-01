@@ -15,23 +15,16 @@ const errorHandler = (error) => {
 
 const checkRefresh = (callback) => {
     const user = JSON.parse(localStorage.getItem("currentUser"))
-    console.log('checkRefresh')
     if (user) {
-        console.log('checkRefresh + ')
-        console.log('refreshDate ' + new Date(user.refreshDate))
-        console.log('now :' + new Date())
         console.log(new Date(user.refreshDate) > new Date())
         if (new Date(user.refreshDate) < new Date()) {
-            console.log('checkRefresh ++ ')
             refreshToken(user, callback)
         }
         else {
-            console.log('checkRefresh +- ')
             callback();
         }
     }
     else {
-        console.log('checkRefresh - ')
         onBadAuth();
     }
 }

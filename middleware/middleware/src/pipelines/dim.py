@@ -1,6 +1,5 @@
 from pathlib import Path
 import spacy
-import json, os
 from .pipeline_ctrl import PipelineCtrl
 from src.components import similarity
 from src.helpers import DIM_KEYWORDS

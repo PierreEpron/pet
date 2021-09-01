@@ -2,7 +2,7 @@ from django.urls import include, path
 from rest_framework import routers
 from authentification import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from api.views import DocumentViewSet, ProjectViewSet, models_info, upload, random_document, apply_queue_count, stats
+from api.views import DocumentViewSet, ProjectViewSet, models_info, upload, random_document, queue_count, stats
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -20,6 +20,6 @@ urlpatterns = [
     path('api/upload/', upload, name='upload_csv'),
     path('api/random/', random_document, name='random_document'),
     path('api/models-info/', models_info, name='models_info'),
-    path('api/apply-queue-count/', apply_queue_count, name='apply_queue_count'),
+    path('api/queue-count/', queue_count, name='queue_count'),
     path('api/stats/', stats, name='stats'),
 ]
