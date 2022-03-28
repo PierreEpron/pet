@@ -14,7 +14,7 @@ function Copyright() {
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
             <Link color="inherit" href="https://material-ui.com/">
-                Micka
+                ...
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -24,30 +24,25 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
+        height:'100%',
+        margin:'0px',
+        padding:'0px'
     },
     WebButton: {
         marginRight: theme.spacing(2),
-
     },
     appbar: {
         alignItems: 'center',
     }
-
-
 }));
 
 export default function ButtonAppBar() {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <footer className={classes.root}>
             <AppBar className={classes.appbar} position="static">
                 <Toolbar>
-                    {/*<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>*/}
-
                     <Button
                         target="_blank"
                         href="https://nancyclotep.com/fr/accueil/"
@@ -57,7 +52,7 @@ export default function ButtonAppBar() {
                         className={classes.WebButton}
                         startIcon={<WebIcon/>}
                     >
-                        NancyClopet
+                        Nancyclotep
                     </Button>
                     <Button
                         target="_blank"
@@ -79,11 +74,9 @@ export default function ButtonAppBar() {
                     >
                         xxxx@chru-nancy.fr
                     </Button>
-
                 </Toolbar>
                 <Copyright/>
             </AppBar>
-
-        </div>
+        </footer>
     );
 }

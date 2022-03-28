@@ -7,9 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Header from "../components/Header";
 import Container from '@material-ui/core/Container';
-import Footer from "../components/Footer";
 import Progress from "../components/CircularProgress/CircularProgress";
 import Checkbox from '@material-ui/core/Checkbox';
 import {getContents, deleteContent} from "../services/content.service";
@@ -21,6 +19,11 @@ const columns = [
     {
         id: 'title', label: 'Title', extract: (row) => {
             return row.title;
+        }
+    },
+    {
+        id: 'project', label: 'Project', extract: (row) => {
+            return row.project.name;
         }
     },
     {
@@ -83,7 +86,6 @@ export default function StickyHeadTable(props) {
 
     const handleDocumentClick = (documentId) => {
         return (event) => {
-            console.log(documentId)
             window.location = "/document/" + documentId;
         }
     };
@@ -119,7 +121,6 @@ export default function StickyHeadTable(props) {
 
     return (
         <div className={classes.root}>
-            <Header/>
             <Container maxWidth="lg" className={classes.container}>
                 <TableContainer className={classes.container}>  
                     <Table stickyHeader aria-label="sticky table">
@@ -177,9 +178,6 @@ export default function StickyHeadTable(props) {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Container>
-
-            <Footer/>
         </div>
-
     );
 }

@@ -14,10 +14,15 @@ class Content(models.Model):
     class Meta:
         abstract = True
 
+class Project(Content):
+    name = models.TextField()
+    active_models = models.JSONField(null=True)
+
 class Document(Content):
     title = models.TextField()
     text = models.TextField()
     features = models.JSONField(null=True)
+    stats = models.JSONField(null=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
 
-class DocumentToApply(models.Model):
-    document = models.OneToOneField(Document, on_delete=models.CASCADE)
+

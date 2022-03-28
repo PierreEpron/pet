@@ -1,12 +1,19 @@
+from re import I
+from src.helpers import get_logger
+
 class PipelineCtrl:
-    def __init__(self, version, force_update=False) -> None:
-        self.name = self.__class__.__name__
-        self.version = version
-        self.force_update=force_update
-    
+    name = ''
+    version = ''
+    desc = ''
+    force_update = False
+
+    def __init__(self) -> None:
+        self.logger = get_logger()
+
     def __call__(self, text) -> dict:
         return {}
 
+    @classmethod
     def get_fullname(self) -> str:
         return f'{self.name}_{self.version}'
 
@@ -16,6 +23,7 @@ class PipelineCtrl:
         feature = self.add_or_create_feature(features, fname)
         source = self.add_or_create_source(feature['sources'])
         source['items'] = flist
+        self.logger.info(f"Add {fname} from {self.get_fullname()} model")
 
     def add_or_create_feature(self, features, fname):
         feature = next(filter(lambda x: x['name'] == fname, features), False)

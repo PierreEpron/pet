@@ -23,6 +23,9 @@ class SectionSplitterComponent:
                 print(f'{k} : skip by match')
                 return doc
             end = match.span()[0]
+            if start > end:
+                print(f'{k} : skip by start > end')
+                return doc
             span = doc.char_span(start, end, label=k)
             if span == None:
                 print(f'{k} : skip by span')
@@ -42,8 +45,7 @@ class SectionSplitterComponent:
 
     def from_disk(self, path, exclude=tuple()):        
         data_path = path / "patterns.json"
-
-        self.patterns = json.loads(data_path.read_text())
+        self.patterns = self.load_patterns(json.loads(data_path.read_text()))
 
     def load_patterns(self, patterns):
         return {k:re.compile(v, re.I) for k, v in patterns.items()}
